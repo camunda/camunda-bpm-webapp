@@ -23,6 +23,13 @@ module.exports = Base.extend({
     browser.wait(isPresent, 5000);
   },
 
+/*  selectPanelByKey: function (key) {
+    var selecta = 'accordion [is-open="accordion.' + key + '"]';
+    var btnSelecta = selecta + ' [ng-click="toggleOpen()"]';
+    this.formElement().element(by.css(btnSelecta)).click();
+    return this.isPanelOpen(key);
+  },
+
   isPanelOpen: function(key) {
     var selecta = 'accordion [is-open="accordion.' + key + '"]';
     var bdySelecta = selecta + ' .panel-body';
@@ -137,36 +144,50 @@ module.exports = Base.extend({
   },
 
   // variables
+  variablePageElement: function() {
+    return element(by.css('[cam-tasklist-filter-modal-form-variable]'));
+  },
+
+  variableHelpText: function() {
+    return element(by.css('[is-open="accordion.variable"]'))
+      .element(by.css('.task-filter-hint.text-help')).getText();
+  },
+
   showUndefinedVariablesCheckBox: function() {
-    return element(by.css('[cam-tasklist-filter-modal-form-variable]'))
-                            .element(by.model('filter.properties.showUndefinedVariable'));
+    return this.variablePageElement()
+      .element(by.model('filter.properties.showUndefinedVariable'));
   },
 
   addVariableButton: function() {
-    return this.formElement().element(by.css('[ng-click="addVariable()"]'));
+    return this.variablePageElement()
+      .element(by.css('[ng-click="addVariable()"]'));
   },
 
   removeVariableButton: function(idx) {
-    return this.variableList().get(idx).element(by.css('[ng-click="removeVariable(delta)"]'));
+    return this.variableList().get(idx)
+      .element(by.css('[ng-click="removeVariable(delta)"]'));
   },
 
   variableList: function() {
-    return this.formElement().all(by.repeater('(delta, variable) in variables'));
+    return this.variablePageElement()
+      .all(by.repeater('(delta, variable) in variables'));
   },
 
   variableNameInput: function(idx, inputValue) {
-    var inputField = this.variableList().get(idx).element(by.model('variable.name'));
+    var inputField = this.variableList().get(idx)
+                      .element(by.model('variable.name'));
 
-    if (arguments.length !== 0)
+    if (arguments.length === 2)
       inputField.sendKeys(inputValue);
 
     return inputField;
   },
 
   variableLabelInput: function(idx, inputValue) {
-    var inputField = this.variableList().get(idx).element(by.model('variable.label'));
+    var inputField = this.variableList().get(idx)
+                      .element(by.model('variable.label'));
 
-    if (arguments.length !== 0)
+    if (arguments.length === 2)
       inputField.sendKeys(inputValue);
 
     return inputField;
