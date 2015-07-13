@@ -9,7 +9,23 @@ module.exports = Base.extend({
   },
 
   formHeader: function() {
-    return this.formElement().element(by.css('.modal-title')).getText();
+    return this.formElement()
+      .element(by.css('.modal-title')).getText();
+  },
+
+  notificationList: function() {
+    return this.formElement()
+      .all(by.repeater('notification in notifications'));
+  },
+
+  notificationStatus: function(idx) {
+    return this.notificationList().get(idx)
+     .element(by.css('.status')).getText();
+  },
+
+  notificationMessage: function(idx) {
+    return this.notificationList().get(idx)
+     .element(by.css('.message')).getText();
   },
 
   selectPanelByKey: function (key) {
@@ -187,8 +203,16 @@ module.exports = Base.extend({
   },
 
   // criteria
+  criteriaPageElement: function() {
+    return element(by.css('[is-open="accordion.criteria"]'));
+  },
+
+  criteriaHelpText: function() {
+    return this.criteriaPageElement().element(by.css('.task-filter-hint.text-help')).getText();
+  },
+
   addCriterionButton: function() {
-    return this.formElement().element(by.css('[ng-click="addCriterion()"]'));
+    return this.criteriaPageElement().element(by.css('[ng-click="addCriterion()"]'));
   },
 
   removeCriterionButton: function(idx) {
@@ -196,7 +220,7 @@ module.exports = Base.extend({
   },
 
   criterionList: function() {
-    return this.formElement().all(by.repeater('(delta, queryParam) in query'));
+    return this.criteriaPageElement().all(by.repeater('(delta, queryParam) in query'));
   },
 
   selectCriterionKey: function(item, group, key) {
@@ -206,26 +230,31 @@ module.exports = Base.extend({
   criterionKeyInput: function(idx, inputKey) {
     var inputField = this.criterionList().get(idx).element(by.model('queryParam.key'));
 
-    if (arguments.length !== 0)
+    if (arguments.length === 2)
       inputField.sendKeys(inputKey);
 
     return inputField;
   },
 
+  criterionKeyHelpText: function(idx) {
+    return this.criterionList().get(idx)
+      .element(by.css('.help-block:not(.ng-hide)')).getText();
+  },
+
   criterionValueInput: function(idx, inputValue) {
     var inputField = this.criterionList().get(idx).element(by.model('queryParam.value'));
 
-    if (arguments.length !== 0)
+    if (arguments.length === 2)
       inputField.sendKeys(inputValue);
 
     return inputField;
   },
 
   includeAssignedTasksCheckbox: function () {
-    return this.formElement().element(by.css('[ng-model="filter.includeAssignedTasks"]'));
+    return this.criteriaPageElement().element(by.css('[ng-model="filter.includeAssignedTasks"]'));
   },
 
-  addCriteria: function(group, key, value) {
+  addCriterion: function(group, key, value) {
     var self = this;
 
     this.addCriterionButton().click().then(function() {
@@ -237,7 +266,7 @@ module.exports = Base.extend({
     });
   },
 
-  editCriteria: function(idx, group, key, value) {
+  editCriterion: function(idx, group, key, value) {
     this.selectCriterionKey(idx, group, key);
     this.criterionValueInput(idx).clear();
     this.criterionValueInput(idx, value);
