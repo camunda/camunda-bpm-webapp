@@ -39,13 +39,6 @@ module.exports = Base.extend({
     browser.wait(isPresent, 5000);
   },
 
-/*  selectPanelByKey: function (key) {
-    var selecta = 'accordion [is-open="accordion.' + key + '"]';
-    var btnSelecta = selecta + ' [ng-click="toggleOpen()"]';
-    this.formElement().element(by.css(btnSelecta)).click();
-    return this.isPanelOpen(key);
-  },
-
   isPanelOpen: function(key) {
     var selecta = 'accordion [is-open="accordion.' + key + '"]';
     var bdySelecta = selecta + ' .panel-body';

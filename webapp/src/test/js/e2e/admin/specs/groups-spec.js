@@ -6,8 +6,8 @@ var setupFile = require('./groups-setup');
 var groupsPage = require('../pages/groups');
 var usersPage = require('../pages/users');
 
-describe('Admin Groups Spec', function() {
 
+describe('Admin Groups Spec', function() {
 
   describe('create new group', function() {
 
