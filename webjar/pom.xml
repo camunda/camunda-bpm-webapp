@@ -26,6 +26,7 @@
       <artifactId>camunda-webapp</artifactId>
       <version>${project.parent.version}</version>
       <type>war</type>
+      <classifier>classes</classifier>
     </dependency>
   </dependencies>
 
