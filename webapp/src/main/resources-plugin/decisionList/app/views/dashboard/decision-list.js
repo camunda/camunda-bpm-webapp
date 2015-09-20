@@ -8,7 +8,8 @@ define([
   return [ 'ViewsProvider', function (ViewsProvider) {
     ViewsProvider.registerDefaultView('cockpit.dashboard', {
       id: 'decision-list',
-      label: 'Deployed Decisions',
+      label: 'Deployed Decision Tables',
+      dashboardMenuLabel: 'DMN Tables',
       template: template,
       controller: [
               '$scope', 'camAPI',
@@ -24,7 +25,7 @@ define([
 
       }],
 
-      priority: 0
+      priority: -5 // display below the process definition list
     });
   }];
 });

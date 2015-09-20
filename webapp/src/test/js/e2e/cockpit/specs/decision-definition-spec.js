@@ -24,7 +24,6 @@ describe('Cockpit Decision Definition Spec', function() {
     it('should go to decision definition view', function() {
 
       // given
-      //var runningInstances = dashboardPage.deployedProcessesList.runningInstances(0);
       dashboardPage.deployedDecisionsList.decisionName(0).then(function(decisionName) {
 
         // when
@@ -58,9 +57,9 @@ describe('Cockpit Decision Definition Spec', function() {
       expect(browser.getCurrentUrl()).to.eventually.contain('#/process-definition/');
     });
 
-    it('should go to the process instance page on click on activity instance id', function() {
+    it('should go to the process instance page on click on process instance id', function() {
       browser.navigate().back();
-      definitionPage.decisionInstancesTab.selectActivityId(0);
+      definitionPage.decisionInstancesTab.selectProcessInstanceId(0);
       expect(browser.getCurrentUrl()).to.eventually.contain('#/process-instance/');
     });
 
