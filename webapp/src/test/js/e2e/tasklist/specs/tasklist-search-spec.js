@@ -103,12 +103,13 @@ describe('Tasklist Search', function() {
       browser.getCurrentUrl().then(function(url) {
         browser.get(url).then(function() {
           browser.sleep(500);
+
+          // then
+          expect(page.taskList.taskList().count()).to.eventually.eql(1);
+          expect(page.taskList.taskName(0)).to.eventually.eql('Task 2');
         });
       });
 
-      // then
-      expect(page.taskList.taskList().count()).to.eventually.eql(1);
-      expect(page.taskList.taskName(0)).to.eventually.eql('Task 2');
     });
 
 

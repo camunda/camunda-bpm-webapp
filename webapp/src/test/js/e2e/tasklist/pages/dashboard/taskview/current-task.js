@@ -18,7 +18,7 @@ module.exports = Page.extend({
   },
 
   taskName: function() {
-    return this.formElement().element(by.binding('task.name')).getText();
+    return this.formElement().element(by.css('.names h2')).getText();
   },
 
   processName: function() {
