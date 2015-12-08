@@ -18,7 +18,7 @@ describe('Cockpit Process Instance Spec', function() {
 
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(1);
+        dashboardPage.deployedProcessesList.selectProcess(0);
       });
     });
 
@@ -88,7 +88,7 @@ describe('Cockpit Process Instance Spec', function() {
       return testHelper(setupFile.setup1, function() {
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(1);
+        dashboardPage.deployedProcessesList.selectProcess(0);
         definitionPage.processInstancesTab.selectInstanceId(0);
       });
     });
@@ -132,7 +132,7 @@ describe('Cockpit Process Instance Spec', function() {
       return testHelper(setupFile.setup1, function() {
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(1);
+        dashboardPage.deployedProcessesList.selectProcess(0);
         definitionPage.processInstancesTab.selectInstanceId(0);
       });
     });
@@ -216,7 +216,7 @@ describe('Cockpit Process Instance Spec', function() {
       return testHelper(setupFile.setup1, function() {
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(1);
+        dashboardPage.deployedProcessesList.selectProcess(0);
       });
     });
 
@@ -239,7 +239,7 @@ describe('Cockpit Process Instance Spec', function() {
   describe('Multi Instance Incidents', function() {
 
     before(function() {
-      return testHelper(setupFile.setup1, function() {
+      return testHelper(setupFile.setup2, function() {
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
         dashboardPage.deployedProcessesList.selectProcess(0);
