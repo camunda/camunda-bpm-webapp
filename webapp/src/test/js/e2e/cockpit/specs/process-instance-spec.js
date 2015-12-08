@@ -18,7 +18,7 @@ describe('Cockpit Process Instance Spec', function() {
 
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(0);
+        dashboardPage.deployedProcessesList.selectProcess(1);
       });
     });
 
@@ -88,7 +88,7 @@ describe('Cockpit Process Instance Spec', function() {
       return testHelper(setupFile.setup1, function() {
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(0);
+        dashboardPage.deployedProcessesList.selectProcess(1);
         definitionPage.processInstancesTab.selectInstanceId(0);
       });
     });
@@ -132,7 +132,7 @@ describe('Cockpit Process Instance Spec', function() {
       return testHelper(setupFile.setup1, function() {
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(0);
+        dashboardPage.deployedProcessesList.selectProcess(1);
         definitionPage.processInstancesTab.selectInstanceId(0);
       });
     });
@@ -216,7 +216,7 @@ describe('Cockpit Process Instance Spec', function() {
       return testHelper(setupFile.setup1, function() {
         dashboardPage.navigateToWebapp('Cockpit');
         dashboardPage.authentication.userLogin('admin', 'admin');
-        dashboardPage.deployedProcessesList.selectProcess(0);
+        dashboardPage.deployedProcessesList.selectProcess(1);
       });
     });
 
@@ -231,6 +231,29 @@ describe('Cockpit Process Instance Spec', function() {
 
         // then
         expect(definitionPage.processInstancesTab.table().count()).to.eventually.eql(numberOfInstances-1);
+      });
+    });
+
+  });
+
+  describe('Multi Instance Incidents', function() {
+
+    before(function() {
+      return testHelper(setupFile.setup1, function() {
+        dashboardPage.navigateToWebapp('Cockpit');
+        dashboardPage.authentication.userLogin('admin', 'admin');
+        dashboardPage.deployedProcessesList.selectProcess(0);
+      });
+    });
+
+    it('show incidents badge', function() {
+
+      // given
+      definitionPage.processInstancesTab.table().count().then(function(numberOfInstances) {
+        definitionPage.processInstancesTab.selectInstanceId(0);
+
+        // then
+        expect(instancePage.diagram.incidentsBadgeFor('ServiceTask_1').getText()).to.eventually.eql('!');
       });
     });
 
