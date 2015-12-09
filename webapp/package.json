@@ -18,6 +18,8 @@
     "chai": "2.0.0",
     "chai-as-promised": "4.2.0",
     "mocha": "2.1.0",
-    "xunit-file": "0.0.6"
+    "xunit-file": "0.0.6",
+    "mocha-multi": "0.7.2",
+    "mocha-proshot": "1.0.1"
   }
 }
