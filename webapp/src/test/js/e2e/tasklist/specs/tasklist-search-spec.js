@@ -117,6 +117,7 @@ describe('Tasklist Search', function() {
 
       // when
       page.taskList.taskSearch.changeValue(2, '\'4711\'');
+      browser.sleep(500);
 
       // then
       expect(page.taskList.taskList().count()).to.eventually.eql(1);

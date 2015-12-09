@@ -56,6 +56,14 @@ Page.prototype.waitForElementToBeVisible = function(element, max) {
   browser.wait(isVisible, max);
 };
 
+Page.prototype.waitForElementToBeInvisible = function(element, max) {
+  var EC = protractor.ExpectedConditions;
+  var isInvisible = EC.invisibilityOf(element);
+
+  max = max || 5000;
+  browser.wait(isInvisible, max);
+};
+
 Page.prototype.waitForElementToBePresent = function(selector, max) {
   var EC = protractor.ExpectedConditions;
   var isPresent = EC.presenceOf(element);

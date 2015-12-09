@@ -28,6 +28,7 @@ module.exports = Page.extend({
     }
     this.searchList().last().element(by.css('[value="operator.value"]')).click();
     this.searchList().last().element(by.cssContainingText('[value="operator.value"] .dropdown-menu li', operator)).click();
+    this.waitForElementToBeInvisible(element(by.css('[cam-tasks] .animate-spin')));
   },
 
   searchInputField: function() {
@@ -36,21 +37,25 @@ module.exports = Page.extend({
 
   deleteSearch: function(index) {
     this.searchList().get(index).element(by.css('.remove-search')).click();
+    this.waitForElementToBeInvisible(element(by.css('[cam-tasks] .animate-spin')));
   },
 
   changeType: function(index, type) {
     this.searchList().get(index).element(by.css('[cam-widget-inline-field][value="type.value"]')).click();
     this.searchList().get(index).element(by.cssContainingText('ul > li', type)).click();
+    this.waitForElementToBeInvisible(element(by.css('[cam-tasks] .animate-spin')));
   },
 
   changeOperator: function(index, operator) {
     this.searchList().get(index).element(by.css('[cam-widget-inline-field][value="operator.value"]')).click();
     this.searchList().get(index).element(by.cssContainingText('ul > li', operator)).click();
+    this.waitForElementToBeInvisible(element(by.css('[cam-tasks] .animate-spin')));
   },
 
   changeValue: function(index, value) {
     this.searchList().get(index).element(by.css('[cam-widget-inline-field][value="value.value"]')).click();
     this.searchList().get(index).element(by.model('editValue')).sendKeys(value, protractor.Key.ENTER);
+    this.waitForElementToBeInvisible(element(by.css('[cam-tasks] .animate-spin')));
   }
 
 });
