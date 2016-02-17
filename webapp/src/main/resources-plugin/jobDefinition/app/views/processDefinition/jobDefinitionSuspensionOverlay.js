@@ -26,7 +26,8 @@ define(['text!./job-definition-suspension-overlay.html'], function(template) {
     });
 
     $scope.isSuspended = function() {
-      return $scope.jobDefinitionsForElement.filter(function(jobDefinition) {
+      return $scope.jobDefinitionsForElement.filter &&
+             $scope.jobDefinitionsForElement.filter(function(jobDefinition) {
         return jobDefinition.suspended;
       }).length > 0;
     };
