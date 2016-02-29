@@ -63,6 +63,10 @@ function(uploadTemplate, inspectTemplate, instancesTemplate) {
           return promise.promise;
         };
 
+        $scope.downloadVariable = function(info) {
+          return Uri.appUri('engine://engine/:engine/variable-instance/' + info.variable.id +'/data');
+        };
+
         $scope.deleteVariable = function(info) {
           var promise = $q.defer();
 
