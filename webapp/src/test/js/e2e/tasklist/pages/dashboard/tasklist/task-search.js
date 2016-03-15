@@ -50,7 +50,7 @@ module.exports = Page.extend({
 
   changeValue: function(index, value) {
     this.searchList().get(index).element(by.css('[cam-widget-inline-field][value="value.value"]')).click();
-    this.searchList().get(index).element(by.model('editValue')).sendKeys(value, protractor.Key.ENTER);
+    this.searchList().get(index).element(by.css('[cam-widget-inline-field] .edit input')).clear().sendKeys(value, protractor.Key.ENTER);
   }
 
 });
