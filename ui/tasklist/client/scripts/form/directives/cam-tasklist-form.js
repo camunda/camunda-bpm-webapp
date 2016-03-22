@@ -67,10 +67,16 @@ var angular = require('camunda-commons-ui/vendor/angular');
       controller: [
         '$scope',
         'Uri',
+        'camAPI',
       function(
         $scope,
-        Uri
+        Uri,
+        camAPI
       ) {
+
+        var processDefinitionResource = camAPI.resource('process-definition');
+        var caseDefinitionResource = camAPI.resource('case-definition');
+        var deploymentResource = camAPI.resource('deployment');
 
         // setup //////////////////////////////////////////////////////////////////
 
@@ -96,6 +102,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
               applicationContextPath = form.contextPath;
 
           // structure may be [embedded:][app:]formKey
+          // structure may be [embedded:][deployment:]formKey
 
           if (!key) {
             form.type = 'generic';
@@ -110,12 +117,29 @@ var angular = require('camunda-commons-ui/vendor/angular');
           }
 
           if (key.indexOf(APP_KEY) === 0) {
-            if (applicationContextPath) {
-              key = compact([applicationContextPath, key.substring(APP_KEY.length)])
-                .join('/')
-                // prevents multiple "/" in the URI
-                .replace(/\/([\/]+)/, '/');
-            }
+            processDefinitionResource.get($scope.params.processDefinitionId, function(err, deploymentData) {
+              // get deployment resources -> Find the one with the name
+              // load byte array from therte
+              console.log(deploymentData);
+
+              deploymentResource.getResources(deploymentData.deploymentId, function(err, resourcesData) {
+                console.log(resourcesData);
+                for (var index = 0; index < resourcesData.length; ++index) {
+                  //if (resourcesData.name==form.key) {
+                    form.key = Uri.appUri('//engine/:engine/deployment/' + deploymentData.deploymentId + '/resources/' + resourcesData[index].id + '/data'); //data.deploymentId;
+                    console.log(resourcesData[index]);
+                    console.log(form.key);
+                  //}
+                }                
+              });
+
+            });
+//            if (applicationContextPath) {
+//              key = compact([applicationContextPath, key.substring(APP_KEY.length)])
+//                .join('/')
+//                // prevents multiple "/" in the URI
+//                .replace(/\/([\/]+)/, '/');
+//            }
           }
 
           if(key.indexOf(ENGINE_KEY) === 0) {
