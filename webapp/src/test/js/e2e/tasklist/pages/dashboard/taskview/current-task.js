@@ -55,7 +55,7 @@ module.exports = Page.extend({
 
     var closedDialogElement = this.commentSaveButton();
     this.commentSaveButton().click();
-    this.waitForElementToBeNotPresent(closedDialogElement);
+    this.waitForElementToBeNotVisible(closedDialogElement);
   },
 
   claim: function() {
