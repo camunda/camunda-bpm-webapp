@@ -64,7 +64,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
         $scope.params = { 
           taskId : task.id,
           processDefinitionId: task.processDefinitionId,
-          caseDefinitionId: task.processDefinitionId
+          caseDefinitionId: task.caseDefinitionId
         };
       }
       else {

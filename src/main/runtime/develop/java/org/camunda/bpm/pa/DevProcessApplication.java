@@ -301,6 +301,7 @@ public class DevProcessApplication extends ServletProcessApplication {
     
     // create task with form from deployment
     engine.getRuntimeService().startProcessInstanceByKey("process-with-deployment-form");
+    engine.getCaseService().createCaseInstanceByKey("case-with-deployment-form");
   }
 
   private Date createArtificalDate(int offset) {

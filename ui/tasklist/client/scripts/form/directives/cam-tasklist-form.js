@@ -121,27 +121,6 @@ var angular = require('camunda-commons-ui/vendor/angular');
             form.type = 'external';
           }
 
-          if (key.indexOf(DEPLOYMENT_KEY) === 0) {
-            var resourceName = key.substring(DEPLOYMENT_KEY.length);
-            // process definition -> Also care about case definition
-            processDefinitionResource.get($scope.params.processDefinitionId, function(err, deploymentData) {
-              // get deployment resources -> Find the one with the name
-              deploymentResource.getResources(deploymentData.deploymentId, function(err, resourcesData) {
-                for (var index = 0; index < resourcesData.length; ++index) {
-                  if (resourcesData[index].name==resourceName) {
-                    // load byte array from there
-                    form.key = Uri.appUri('engine://engine/:engine/deployment/' + deploymentData.deploymentId + '/resources/' + resourcesData[index].id + '/data'); //data.deploymentId;                    
-                    console.log(form.key);
-                    $scope.asynchronousFormKey.key = form.key;
-                    $scope.asynchronousFormKey.loaded = true;
-                    //$scope.$apply();     
-                  }
-                }                
-              });
-
-            });
-          }
-
           if (key.indexOf(APP_KEY) === 0) {
             if (applicationContextPath) {
               key = compact([applicationContextPath, key.substring(APP_KEY.length)])
@@ -152,6 +131,34 @@ var angular = require('camunda-commons-ui/vendor/angular');
               $scope.asynchronousFormKey.key = key;
               $scope.asynchronousFormKey.loaded = true;
               //$scope.$apply();
+            }
+          }
+
+          if (key.indexOf(DEPLOYMENT_KEY) === 0) {
+            var resourceName = key.substring(DEPLOYMENT_KEY.length);
+            function loadResourceInDeployment(deploymentId)  {
+              deploymentResource.getResources(deploymentId, function(err, resourcesData) {
+                // Find the resource with the given name from the list of all resources of a deployment
+                for (var index = 0; index < resourcesData.length; ++index) {
+                  if (resourcesData[index].name==resourceName) {
+                    var formContentUrl = Uri.appUri('engine://engine/:engine/deployment/' + deploymentId + '/resources/' + resourcesData[index].id + '/data'); //data.deploymentId;                    
+                    $scope.asynchronousFormKey.key = formContentUrl;
+                    $scope.asynchronousFormKey.loaded = true;
+                    //$scope.$apply();     
+                  }
+                }                
+              });              
+            }
+            
+            if ($scope.params.processDefinitionId) {
+              // process definition -> Also care about case definition
+              processDefinitionResource.get($scope.params.processDefinitionId, function(err, deploymentData) {
+                loadResourceInDeployment(deploymentData.deploymentId);
+              });
+            } else if ($scope.params.caseDefinitionId) {
+              caseDefinitionResource.get($scope.params.caseDefinitionId, function(err, deploymentData) {
+                loadResourceInDeployment(deploymentData.deploymentId);
+              });              
             }
           }
 

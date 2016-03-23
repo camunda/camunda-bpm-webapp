@@ -9,7 +9,7 @@
       <bpmn:incoming>SequenceFlow_1buvfpq</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1buvfpq" sourceRef="UserTask_043k4l7" targetRef="EndEvent_14j08s1" />
-    <bpmn:userTask id="UserTask_043k4l7" name="Form From Deployment" camunda:formKey="embedded:deployment:pa4/deployed-form.html">
+    <bpmn:userTask id="UserTask_043k4l7" name="Form From Deployment (BPMN)" camunda:formKey="embedded:deployment:pa4/deployed-form.html">
       <bpmn:incoming>SequenceFlow_11dohsm</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1buvfpq</bpmn:outgoing>
     </bpmn:userTask>
