@@ -121,16 +121,19 @@ var angular = require('camunda-commons-ui/vendor/angular');
             form.type = 'external';
           }
 
+          function setAsynchronousFormKey(formKey) {
+              $scope.asynchronousFormKey.key = formKey;
+              $scope.asynchronousFormKey.loaded = true;
+              //$scope.$apply();            
+          }
+
           if (key.indexOf(APP_KEY) === 0) {
             if (applicationContextPath) {
               key = compact([applicationContextPath, key.substring(APP_KEY.length)])
                 .join('/')
                 // prevents multiple "/" in the URI
                 .replace(/\/([\/]+)/, '/');
-
-              $scope.asynchronousFormKey.key = key;
-              $scope.asynchronousFormKey.loaded = true;
-              //$scope.$apply();
+              setAsynchronousFormKey(key);
             }
           }
 
@@ -141,10 +144,8 @@ var angular = require('camunda-commons-ui/vendor/angular');
                 // Find the resource with the given name from the list of all resources of a deployment
                 for (var index = 0; index < resourcesData.length; ++index) {
                   if (resourcesData[index].name==resourceName) {
-                    var formContentUrl = Uri.appUri('engine://engine/:engine/deployment/' + deploymentId + '/resources/' + resourcesData[index].id + '/data'); //data.deploymentId;                    
-                    $scope.asynchronousFormKey.key = formContentUrl;
-                    $scope.asynchronousFormKey.loaded = true;
-                    //$scope.$apply();     
+                    key = Uri.appUri('engine://engine/:engine/deployment/' + deploymentId + '/resources/' + resourcesData[index].id + '/data');
+                    setAsynchronousFormKey(key);
                   }
                 }                
               });              
@@ -168,7 +169,6 @@ var angular = require('camunda-commons-ui/vendor/angular');
           }
 
           form.key = key;
-          // special handling to allow asynchronous resolving of forms          
         }
 
         // completion /////////////////////////////////////////////
