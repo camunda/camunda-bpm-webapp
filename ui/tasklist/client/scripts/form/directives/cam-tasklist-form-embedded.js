@@ -41,12 +41,6 @@ var $ = require('jquery');
           }
         }, true);
 
-//        $scope.$watch('tasklistForm', function (value) {
-//          if (value) {
-//            showForm(container, value, formController.getParams());
-//          }
-//        });
-
         $scope.$watch(function() {
           return form && form.$valid;
         }, function(value) {
