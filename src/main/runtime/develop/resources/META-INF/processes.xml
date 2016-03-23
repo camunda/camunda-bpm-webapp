@@ -85,4 +85,9 @@
     </properties>
   </process-archive>
 
+  <process-archive name="deployed-form-test-process">
+  	<resource>pa4/process-with-deployment-form.bpmn</resource>
+  	<resource>pa4/deployed-form.html</resource>
+  </process-archive>
+
 </process-application>

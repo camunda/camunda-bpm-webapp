@@ -61,9 +61,6 @@ var angular = require('camunda-commons-ui/vendor/angular');
       $scope.options = angular.copy(DEFAULT_OPTIONS);
 
       if (task && task.id) {
-        console.log(task);
-        console.log(task.processDefinitionId);
-        console.log(task.caseDefinitionId);
         $scope.params = { 
           taskId : task.id,
           processDefinitionId: task.processDefinitionId,

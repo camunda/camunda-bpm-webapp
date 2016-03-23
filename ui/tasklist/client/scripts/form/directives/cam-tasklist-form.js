@@ -7,7 +7,8 @@ var angular = require('camunda-commons-ui/vendor/angular');
 
   var EMBEDDED_KEY = 'embedded:',
       APP_KEY = 'app:',
-      ENGINE_KEY = 'engine:';
+      ENGINE_KEY = 'engine:',
+      DEPLOYMENT_KEY = 'deployment:';
 
   function compact(arr) {
     var a = [];
@@ -97,6 +98,10 @@ var angular = require('camunda-commons-ui/vendor/angular');
           }
         });
 
+        $scope.asynchronousFormKey = {
+          loaded: false
+        };
+
         function parseForm(form) {
           var key = form.key,
               applicationContextPath = form.contextPath;
@@ -116,30 +121,38 @@ var angular = require('camunda-commons-ui/vendor/angular');
             form.type = 'external';
           }
 
-          if (key.indexOf(APP_KEY) === 0) {
+          if (key.indexOf(DEPLOYMENT_KEY) === 0) {
+            var resourceName = key.substring(DEPLOYMENT_KEY.length);
+            // process definition -> Also care about case definition
             processDefinitionResource.get($scope.params.processDefinitionId, function(err, deploymentData) {
               // get deployment resources -> Find the one with the name
-              // load byte array from therte
-              console.log(deploymentData);
-
               deploymentResource.getResources(deploymentData.deploymentId, function(err, resourcesData) {
-                console.log(resourcesData);
                 for (var index = 0; index < resourcesData.length; ++index) {
-                  //if (resourcesData.name==form.key) {
-                    form.key = Uri.appUri('//engine/:engine/deployment/' + deploymentData.deploymentId + '/resources/' + resourcesData[index].id + '/data'); //data.deploymentId;
-                    console.log(resourcesData[index]);
+                  if (resourcesData[index].name==resourceName) {
+                    // load byte array from there
+                    form.key = Uri.appUri('engine://engine/:engine/deployment/' + deploymentData.deploymentId + '/resources/' + resourcesData[index].id + '/data'); //data.deploymentId;                    
                     console.log(form.key);
-                  //}
+                    $scope.asynchronousFormKey.key = form.key;
+                    $scope.asynchronousFormKey.loaded = true;
+                    //$scope.$apply();     
+                  }
                 }                
               });
 
             });
-//            if (applicationContextPath) {
-//              key = compact([applicationContextPath, key.substring(APP_KEY.length)])
-//                .join('/')
-//                // prevents multiple "/" in the URI
-//                .replace(/\/([\/]+)/, '/');
-//            }
+          }
+
+          if (key.indexOf(APP_KEY) === 0) {
+            if (applicationContextPath) {
+              key = compact([applicationContextPath, key.substring(APP_KEY.length)])
+                .join('/')
+                // prevents multiple "/" in the URI
+                .replace(/\/([\/]+)/, '/');
+
+              $scope.asynchronousFormKey.key = key;
+              $scope.asynchronousFormKey.loaded = true;
+              //$scope.$apply();
+            }
           }
 
           if(key.indexOf(ENGINE_KEY) === 0) {
@@ -148,6 +161,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
           }
 
           form.key = key;
+          // special handling to allow asynchronous resolving of forms          
         }
 
         // completion /////////////////////////////////////////////
