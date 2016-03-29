@@ -99,8 +99,20 @@ var angular = require('camunda-commons-ui/vendor/angular');
         });
 
         $scope.asynchronousFormKey = {
-          loaded: false
+          loaded: false,
+          failure: false
         };
+
+        function setAsynchronousFormKeyFailure(err) {
+           $scope.asynchronousFormKey.failure = true;
+           $scope.asynchronousFormKey.error = err;
+        }
+
+        function setAsynchronousFormKey(formKey) {
+            $scope.asynchronousFormKey.key = formKey;
+            $scope.asynchronousFormKey.loaded = true;
+            //$scope.$apply();            
+        }
 
         function parseForm(form) {
           var key = form.key,
@@ -108,6 +120,9 @@ var angular = require('camunda-commons-ui/vendor/angular');
 
           // structure may be [embedded:][app:]formKey
           // structure may be [embedded:][deployment:]formKey
+
+          // structure may be [app:]formKey
+          // structure may be [deployment:]formKey
 
           if (!key) {
             form.type = 'generic';
@@ -121,12 +136,6 @@ var angular = require('camunda-commons-ui/vendor/angular');
             form.type = 'external';
           }
 
-          function setAsynchronousFormKey(formKey) {
-              $scope.asynchronousFormKey.key = formKey;
-              $scope.asynchronousFormKey.loaded = true;
-              //$scope.$apply();            
-          }
-
           if (key.indexOf(APP_KEY) === 0) {
             if (applicationContextPath) {
               key = compact([applicationContextPath, key.substring(APP_KEY.length)])
@@ -137,35 +146,57 @@ var angular = require('camunda-commons-ui/vendor/angular');
             }
           }
 
-          if (key.indexOf(DEPLOYMENT_KEY) === 0) {
+          else if (key.indexOf(DEPLOYMENT_KEY) === 0) {
             var resourceName = key.substring(DEPLOYMENT_KEY.length);
+
             function loadResourceInDeployment(deploymentId)  {
               deploymentResource.getResources(deploymentId, function(err, resourcesData) {
-                // Find the resource with the given name from the list of all resources of a deployment
-                for (var index = 0; index < resourcesData.length; ++index) {
-                  if (resourcesData[index].name==resourceName) {
-                    key = Uri.appUri('engine://engine/:engine/deployment/' + deploymentId + '/resources/' + resourcesData[index].id + '/data');
-                    setAsynchronousFormKey(key);
+                if (err) {
+                  setAsynchronousFormKeyFailure(err);
+                } else {
+                  var resourceFound = false;
+                  // Find the resource with the given name from the list of all resources of a deployment
+                  for (var index = 0; index < resourcesData.length; ++index) {
+                    if (resourcesData[index].name==resourceName) {
+                      key = Uri.appUri('engine://engine/:engine/deployment/' + deploymentId + '/resources/' + resourcesData[index].id + '/data');
+                      setAsynchronousFormKey(key);
+                      resourceFound = true;
+                    }
                   }
-                }                
+                  if (!resourceFound) {
+                    setAsynchronousFormKeyFailure(new Error("Resource " + resourceName + " not found in deployment"));
+                  }
+                }
               });              
             }
             
             if ($scope.params.processDefinitionId) {
-              // process definition -> Also care about case definition
               processDefinitionResource.get($scope.params.processDefinitionId, function(err, deploymentData) {
-                loadResourceInDeployment(deploymentData.deploymentId);
+                if (err) {
+                  setAsynchronousFormKeyFailure(err);
+                } else {
+                  loadResourceInDeployment(deploymentData.deploymentId);
+                }
               });
             } else if ($scope.params.caseDefinitionId) {
               caseDefinitionResource.get($scope.params.caseDefinitionId, function(err, deploymentData) {
-                loadResourceInDeployment(deploymentData.deploymentId);
+                if (err) {
+                  setAsynchronousFormKeyFailure(err);
+                } else {
+                  loadResourceInDeployment(deploymentData.deploymentId);
+                }
               });              
             }
           }
 
-          if(key.indexOf(ENGINE_KEY) === 0) {
+          else if(key.indexOf(ENGINE_KEY) === 0) {
             // resolve relative prefix
             key = Uri.appUri(key);
+            setAsynchronousFormKey(key);
+          }
+
+          else {
+            setAsynchronousFormKey(key);            
           }
 
           form.key = key;
