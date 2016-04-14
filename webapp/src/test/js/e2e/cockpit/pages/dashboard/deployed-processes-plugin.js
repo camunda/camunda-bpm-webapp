@@ -9,7 +9,7 @@ module.exports = Base.extend({
   },
 
   processCountHeader: function() {
-    return this.pluginObject().element(by.binding('{{ statistics.length }}')).getText();
+    return this.pluginObject().element(by.binding('{{ processDefinitionmData.length }}')).getText();
   },
 
   switchTab: function() {
