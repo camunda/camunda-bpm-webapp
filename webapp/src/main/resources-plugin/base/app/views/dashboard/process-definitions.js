@@ -23,7 +23,7 @@ define([
 
         var processData = $scope.processData.newChild($scope);
 
-        $scope.orderByPredicate = 'definition.name';
+        $scope.orderByPredicate = 'name || key';
         $scope.orderByReverse = false;
 
         var processDefinitionService = camAPI.resource('process-definition');
