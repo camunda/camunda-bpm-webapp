@@ -33,7 +33,7 @@ describe('Cockpit Variable Spec', function() {
       expect(instancePage.instanceTree.isInstanceSelected('User Tasks')).to.eventually.be.true;
       expect(instancePage.instanceTree.instanceSelectionLabel().getText()).to.eventually.eql('1 activity instance');
 
-      // finaly
+      // finally
       instancePage.instanceTree.clearInstanceSelection();
     });
 

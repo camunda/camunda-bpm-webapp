@@ -225,6 +225,21 @@ function(uploadTemplate, inspectTemplate, instancesTemplate) {
               item.instance = instance;
               variableCopies[item.id] = angular.copy(item);
 
+              var activityInstanceLink = '';
+              if(!!instance) {
+                activityInstanceLink = '<a cam-select-activity-instance="\'' +
+                  instance.id +
+                  '\'" ng-href="#/process-instance/' +
+                  processInstance.id +
+                  '?detailsTab=variables-tab&activityInstanceIds=' +
+                  instance.id +
+                  '" title="' +
+                  instance.id +
+                  '">' +
+                  instance.name  +
+                  '</a>';
+              }
+
               return {
                 variable: {
                   id:           item.id,
@@ -237,17 +252,7 @@ function(uploadTemplate, inspectTemplate, instancesTemplate) {
                 original: item,
                 additions: {
                   scope: {
-                    html:  '<a cam-select-activity-instance="\'' +
-                                      instance.id +
-                                      '\'" ng-href="#/process-instance/' +
-                                      processInstance.id +
-                                      '?detailsTab=variables-tab&activityInstanceIds=' +
-                                      instance.id +
-                                      '" title="' +
-                                      instance.id +
-                                      '">' +
-                                        instance.name  +
-                                      '</a>',
+                    html:  activityInstanceLink,
                     scopeVariables: {
                       processData: $scope.processData
                     }

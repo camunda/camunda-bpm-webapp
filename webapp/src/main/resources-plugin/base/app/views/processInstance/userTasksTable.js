@@ -141,7 +141,11 @@ define(['angular', 'text!./identity-links-modal.html', 'text!./user-tasks-table.
       }
 
       $scope.getHref = function (userTask) {
-        return '#/process-instance/' + processInstance.id + '?detailsTab=user-tasks-tab&activityInstanceIds=' + userTask.instance.id;
+        if(!!userTask.instance) {
+          return '#/process-instance/' + processInstance.id + '?detailsTab=user-tasks-tab&activityInstanceIds=' + userTask.instance.id;
+        }
+
+        return '';
       };
 
       $scope.submitAssigneeChange = function(editForm, cb) {
