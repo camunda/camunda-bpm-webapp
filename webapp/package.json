@@ -1,7 +1,7 @@
 {
   "name": "camunda-bpm-webapp",
   "private": true,
-  "version": "7.4.7-SNAPSHOT",
+  "version": "7.4.7",
   "gruntConfig": {
     "connectPort": 8020,
     "livereloadPort": 8021,
@@ -15,10 +15,10 @@
     "pluginSourceDir": "src/main/resources-plugin"
   },
   "dependencies": {
-    "camunda-tasklist-ui": "git://github.com/camunda/camunda-tasklist-ui#7.4",
-    "camunda-admin-ui": "git://github.com/camunda/camunda-admin-ui#7.4",
-    "camunda-cockpit-ui": "git://github.com/camunda/camunda-cockpit-ui#7.4",
-    "camunda-commons-ui": "git://github.com/camunda/camunda-commons-ui#7.4"
+    "camunda-tasklist-ui": "git://github.com/camunda/camunda-tasklist-ui#7.4.7",
+    "camunda-admin-ui": "git://github.com/camunda/camunda-admin-ui#7.4.7",
+    "camunda-cockpit-ui": "git://github.com/camunda/camunda-cockpit-ui#7.4.7",
+    "camunda-commons-ui": "git://github.com/camunda/camunda-commons-ui#7.4.7"
   },
   "devDependencies": {
     "grunt": "0.4.5",
@@ -33,7 +33,7 @@
     "load-grunt-tasks": "0.4.0",
     "requirejs-angular-define": "git://github.com/camunda/requirejs-angular-define#master",
     "requirejs-text": "2.0.12",
-    "camunda-bpm-sdk-js": "git://github.com/camunda/camunda-bpm-sdk-js#7.4",
+    "camunda-bpm-sdk-js": "git://github.com/camunda/camunda-bpm-sdk-js#7.4.7",
     "request": "2.53.0",
     "chai": "2.0.0",
     "chai-as-promised": "4.2.0",
