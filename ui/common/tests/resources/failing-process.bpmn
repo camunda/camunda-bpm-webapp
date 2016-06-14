@@ -7,7 +7,7 @@
     <bpmn2:scriptTask id="ScriptTask_1" camunda:async="true" scriptFormat="groovy">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[throw new java.lang.RuntimeException("i fail"]]></bpmn2:script>
+      <bpmn2:script><![CDATA[throw new java.lang.RuntimeException("i fail")]]></bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="ScriptTask_1"/>
     <bpmn2:endEvent id="EndEvent_1">

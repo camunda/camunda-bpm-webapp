@@ -70,8 +70,8 @@ module.exports = function (operations, noReset, done) {
     // now all process instances are started, we can start the jobs to create incidents
     // This method sets retries to 0 for all jobs that were created in the test setup
     if(err) {
-      deferred.reject();
-      return done(err, result);
+      deferred.reject(err);
+      return;
     }
 
     var resource = new camClient.resource('job');
@@ -81,13 +81,16 @@ module.exports = function (operations, noReset, done) {
       pollCount++;
       resource.count({ "executable" : true }, function(err, res) {
         if(pollCount > 50 || err) {
-          deferred.reject();
-          done(err || new Error('Job Executor could not execute jobs within 10 seconds. Giving up.'));
+          deferred.reject(err || new Error('Job Executor could not execute jobs within 10 seconds. Giving up.'));
           return;
         }
         if( res == 0 ) {
-          deferred.fulfill();
-          done(err, {});
+          try {
+            done(err, {});
+            deferred.resolve();
+          } catch(err) {
+            deferred.reject(err);
+          }
         } else {
           setTimeout(pollFct, 200);
         }

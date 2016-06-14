@@ -14,7 +14,6 @@ describe('Admin Tenants Spec', function() {
 
     before(function() {
       return testHelper(setupFile.setup1, function() {
-
         tenantsPage.navigateToWebapp('Admin');
         tenantsPage.authentication.userLogin('admin', 'admin');
       });
@@ -164,7 +163,7 @@ describe('Admin Tenants Spec', function() {
           usersPage.navigateTo();
         });
       });
-      
+
       it('displays a pager', function () {
         // given
         usersPage.selectUserByEditLink(0);
