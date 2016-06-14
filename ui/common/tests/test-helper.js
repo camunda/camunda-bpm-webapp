@@ -87,7 +87,7 @@ module.exports = function (operations, noReset, done) {
         if( res == 0 ) {
           try {
             done(err, {});
-            deferred.resolve();
+            deferred.fulfill();
           } catch(err) {
             deferred.reject(err);
           }
