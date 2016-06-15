@@ -9,7 +9,7 @@ var tenantsPage = require('../pages/tenants');
 var usersPage = require('../pages/users');
 var groupsPage = require('../pages/groups');
 
-describe('Admin Tenants Spec', function() {
+describe.only('Admin Tenants Spec', function() {
   describe('create new tenant', function() {
 
     before(function() {
