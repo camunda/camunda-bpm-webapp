@@ -47,6 +47,7 @@ module.exports = function (operations, noReset, done) {
 
         try {
           body = JSON.parse(body);
+          console.log('database cleared successfully');
           cb(null, body);
         }
         catch (err) {
@@ -59,14 +60,16 @@ module.exports = function (operations, noReset, done) {
   operations.forEach(function(operation) {
     var resource = new camClient.resource(operation.module);
     callbacks.push(function (cb) {
+      console.info('doing '+ operation.module +'.'+ operation.operation);
       resource[operation.operation](operation.params, function(err){
-        console.info('doing '+ operation.module +'.'+ operation.operation +':', err ? '\n' + err.message : 'OK');
+        console.log('done with '+ operation.module +'.'+ operation.operation +':', err ? '\n' + err.message : 'OK');
         cb(err);
       });
     });
   });
 
   CamSDK.utils.series(callbacks, function(err, result) {
+    console.log('setup instructions completed, waiting for jobs to finish', err, result);
     // now all process instances are started, we can start the jobs to create incidents
     // This method sets retries to 0 for all jobs that were created in the test setup
     if(err) {
@@ -86,7 +89,9 @@ module.exports = function (operations, noReset, done) {
         }
         if( res == 0 ) {
           try {
+            console.log('calling test-helper callback');
             done(err, {});
+            console.log('callback returned, resolving promise');
             deferred.fulfill();
           } catch(err) {
             deferred.reject(err);
