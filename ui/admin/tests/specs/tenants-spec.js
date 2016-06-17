@@ -13,7 +13,7 @@ describe.only('Admin Tenants Spec', function() {
   describe('create new tenant', function() {
 
     before(function() {
-      return testHelper(setupFile.setup1, function() {
+      testHelper(setupFile.setup1, function() {
         tenantsPage.navigateToWebapp('Admin');
         tenantsPage.authentication.userLogin('admin', 'admin');
       });
@@ -107,7 +107,7 @@ describe.only('Admin Tenants Spec', function() {
   describe('update/delete tenant', function() {
 
     before(function() {
-      return testHelper(setupFile.setup1, function() {
+      testHelper(setupFile.setup1, function() {
 
         tenantsPage.navigateToWebapp('Admin');
         tenantsPage.authentication.userLogin('admin', 'admin');
@@ -156,7 +156,7 @@ describe.only('Admin Tenants Spec', function() {
 
     describe('list of tenants in add tenants to user modal', function() {
       before(function() {
-        return testHelper(setupFile.setup5, function() {
+        testHelper(setupFile.setup5, function() {
           tenantsPage.navigateToWebapp('Admin');
           tenantsPage.authentication.userLogin('admin', 'admin');
 
@@ -180,7 +180,7 @@ describe.only('Admin Tenants Spec', function() {
 
     describe('list of tenants in add tenants to group modal', function() {
       before(function() {
-        return testHelper(setupFile.setup5, function() {
+        testHelper(setupFile.setup5, function() {
           tenantsPage.navigateToWebapp('Admin');
           tenantsPage.authentication.userLogin('admin', 'admin');
 
@@ -206,7 +206,7 @@ describe.only('Admin Tenants Spec', function() {
     describe('list of tenants', function() {
 
       before(function() {
-        return testHelper(setupFile.setup2, function() {
+        testHelper(setupFile.setup2, function() {
           tenantsPage.navigateToWebapp('Admin');
           tenantsPage.authentication.userLogin('admin', 'admin');
           tenantsPage.navigateTo();
@@ -225,7 +225,7 @@ describe.only('Admin Tenants Spec', function() {
     describe('list of users in tenant', function() {
 
       before(function() {
-        return testHelper(setupFile.setup4, function() {
+        testHelper(setupFile.setup4, function() {
           tenantsPage.navigateToWebapp('Admin');
           tenantsPage.authentication.userLogin('admin', 'admin');
           tenantsPage.navigateTo();
@@ -248,7 +248,7 @@ describe.only('Admin Tenants Spec', function() {
     describe('list of groups in tenant', function() {
 
       before(function() {
-        return testHelper(setupFile.setup3, function() {
+        testHelper(setupFile.setup3, function() {
           tenantsPage.navigateToWebapp('Admin');
           tenantsPage.authentication.userLogin('admin', 'admin');
           tenantsPage.navigateTo();

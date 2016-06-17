@@ -91,7 +91,7 @@ module.exports = function (operations, noReset, done) {
           try {
             console.log('calling test-helper callback');
             done(err, {});
-            console.log('callback returned, resolving promise');
+            console.log('callback returned, resolving placeholder promise');
             deferred.fulfill();
           } catch(err) {
             deferred.reject(err);
@@ -104,6 +104,8 @@ module.exports = function (operations, noReset, done) {
 
     pollFct();
   });
+
+  browser.controlFlow().execute(function() {return deferred.promise;}, 'my setup promise');
 
   return deferred.promise;
 };
