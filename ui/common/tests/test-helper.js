@@ -92,7 +92,7 @@ module.exports = function (operations, noReset, done) {
 
             var controlFlowObserver = setInterval(function(){
               console.log('current control flow update');
-              console.log(browser.controlFlow().getSchedule());
+              console.log(browser.controlFlow().getSchedule(true));
             }, 1000);
 
 
@@ -102,7 +102,7 @@ module.exports = function (operations, noReset, done) {
             });
             console.log('current control flow content');
 
-            console.log(browser.controlFlow().getSchedule());
+            console.log(browser.controlFlow().getSchedule(true));
 
 
             console.log('resolving placeholder promise');
