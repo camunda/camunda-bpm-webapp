@@ -89,12 +89,21 @@ module.exports = function (operations, noReset, done) {
             console.log('calling test-helper callback');
             done(err, {});
             console.log('callback returned, registering idle listener');
+
+            var controlFlowObserver = setInterval(function(){
+              console.log('current control flow update');
+              console.log(browser.controlFlow().getSchedule());
+            }, 1000);
+
+
             browser.controlFlow().once('idle', function() {
               console.log('control flow is now idle');
+              clearInterval(controlFlowObserver);
             });
             console.log('current control flow content');
 
             console.log(browser.controlFlow().getSchedule());
+
 
             console.log('resolving placeholder promise');
             deferred.fulfill();
