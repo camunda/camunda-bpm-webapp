@@ -92,7 +92,14 @@ module.exports = function (operations, noReset, done) {
 
             var controlFlowObserver = setInterval(function(){
               console.log('current control flow update');
-              console.log(browser.controlFlow().getSchedule(true));
+              console.log(browser.controlFlow().getSchedule());
+
+              // HAXX: For unknown reasons, the controlFlow sometimes does not emit an idle event
+              if(!browser.controlFlow().activeFrame_) {
+                console.log('FAILURE DETECTED: Control Flow has no active frame, but did not fire an idle event');
+                console.log('FAILURE DETECTED: Triggering idle event externally');
+                browser.controlFlow().emit('idle');
+              }
             }, 1000);
 
 
@@ -102,7 +109,7 @@ module.exports = function (operations, noReset, done) {
             });
             console.log('current control flow content');
 
-            console.log(browser.controlFlow().getSchedule(true));
+            console.log(browser.controlFlow().getSchedule());
 
 
             console.log('resolving placeholder promise');
