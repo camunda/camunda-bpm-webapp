@@ -106,6 +106,7 @@ module.exports = function (operations, noReset, done) {
             browser.controlFlow().once('idle', function() {
               console.log('control flow is now idle');
               clearInterval(controlFlowObserver);
+              deferred.fulfill();
             });
             console.log('current control flow content');
 
@@ -113,7 +114,7 @@ module.exports = function (operations, noReset, done) {
 
 
             console.log('resolving placeholder promise');
-            deferred.fulfill();
+            // deferred.fulfill();
 
           } catch(err) {
             deferred.reject(err);
@@ -127,7 +128,7 @@ module.exports = function (operations, noReset, done) {
     pollFct();
   });
 
-  browser.controlFlow().execute(function() {return deferred.promise;}, 'my setup promise');
+  // browser.controlFlow().execute(function() {return deferred.promise;}, 'my setup promise');
 
   return deferred.promise;
 };
