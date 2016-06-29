@@ -73,6 +73,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
       close('filters');
       close('list');
       open('task');
+      document.querySelector('.reset-regions').focus();
     };
 
     $scope.resetRegions = function($event) {
@@ -83,5 +84,6 @@ var angular = require('camunda-commons-ui/vendor/angular');
       open('filters');
       open('list');
       open('task');
+      document.querySelector('.maximize').focus();
     };
   }];
