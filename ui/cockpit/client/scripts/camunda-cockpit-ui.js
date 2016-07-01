@@ -90,7 +90,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
       }
     }]);
 
-      angular.bootstrap(document, [ appNgModule.name ]);
+      angular.bootstrap(document.documentElement, [ appNgModule.name ]);
 
       if (top !== window) {
         window.parent.postMessage({ type: 'loadamd' }, '*');

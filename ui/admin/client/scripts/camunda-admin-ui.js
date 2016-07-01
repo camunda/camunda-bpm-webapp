@@ -125,7 +125,7 @@ var pagesModule = require('./pages/main'),
     }
 
     $(document).ready(function () {
-      angular.bootstrap(document, [ appNgModule.name ]);
+      angular.bootstrap(document.documentElement, [ appNgModule.name ]);
 
       if (top !== window) {
         window.parent.postMessage({ type: 'loadamd' }, '*');
