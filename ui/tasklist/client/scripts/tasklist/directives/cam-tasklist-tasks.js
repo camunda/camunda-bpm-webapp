@@ -133,7 +133,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
           searchParams.task = taskId;
           updateSilently(searchParams);
 
-          var el = document.querySelector('[cam-tasks] .tasks-list .task [href="#/?task=' + taskId + '"]');
+          var el = document.querySelector('[cam-tasks] .tasks-list .task [href*="#/?task=' + taskId + '"]');
           if(el) {
             el.focus();
           }
