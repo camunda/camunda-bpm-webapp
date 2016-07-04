@@ -37,7 +37,7 @@ module.exports = Page.extend({
     this.passwordInput().clear();
     this.usernameInput(username);
     this.passwordInput(password);
-    this.loginButton().click();
+    return this.loginButton().click();
   },
 
   ensureUserLogout: function () {

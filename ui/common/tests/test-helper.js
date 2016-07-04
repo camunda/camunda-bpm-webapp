@@ -60,7 +60,7 @@ module.exports = function (operations, noReset, done) {
     var resource = new camClient.resource(operation.module);
     callbacks.push(function (cb) {
       resource[operation.operation](operation.params, function(err){
-        console.log('done with '+ operation.module +'.'+ operation.operation +':', err ? '\n' + err.message : 'OK');
+        // console.log('done with '+ operation.module +'.'+ operation.operation +':', err ? '\n' + err.message : 'OK');
         cb(err);
       });
     });
@@ -86,34 +86,34 @@ module.exports = function (operations, noReset, done) {
         }
         if( res == 0 ) {
           try {
-            console.log('calling test-helper callback');
+            // console.log('calling test-helper callback');
             done(err, {});
-            console.log('callback returned, registering idle listener');
+            // console.log('callback returned, registering idle listener');
 
             var controlFlowObserver = setInterval(function(){
-              console.log('current control flow update');
-              console.log(browser.controlFlow().getSchedule());
+              // console.log('current control flow update');
+              // console.log(browser.controlFlow().getSchedule());
 
               // HAXX: For unknown reasons, the controlFlow sometimes does not emit an idle event
               if(!browser.controlFlow().activeFrame_) {
-                console.log('FAILURE DETECTED: Control Flow has no active frame, but did not fire an idle event');
-                console.log('FAILURE DETECTED: Triggering idle event externally');
+                // console.log('FAILURE DETECTED: Control Flow has no active frame, but did not fire an idle event');
+                // console.log('FAILURE DETECTED: Triggering idle event externally');
                 browser.controlFlow().emit('idle');
               }
             }, 1000);
 
 
             browser.controlFlow().once('idle', function() {
-              console.log('control flow is now idle');
+              // console.log('control flow is now idle');
               clearInterval(controlFlowObserver);
               deferred.fulfill();
             });
-            console.log('current control flow content');
+            // console.log('current control flow content');
 
-            console.log(browser.controlFlow().getSchedule());
+            // console.log(browser.controlFlow().getSchedule());
 
 
-            console.log('resolving placeholder promise');
+            // console.log('resolving placeholder promise');
             // deferred.fulfill();
 
           } catch(err) {

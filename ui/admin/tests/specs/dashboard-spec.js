@@ -19,9 +19,9 @@ describe('Admin Dashboard Spec', function() {
 
 
     describe('as an admin', function () {
-      before(function () {
+      before(function (done) {
         dashboardPage.navigateToWebapp('Admin');
-        dashboardPage.authentication.userLogin('admin', 'admin');
+        dashboardPage.authentication.userLogin('admin', 'admin').then(done);
       });
 
       after(function () {
@@ -55,9 +55,9 @@ describe('Admin Dashboard Spec', function() {
 
 
     describe('as a conventional user', function () {
-      before(function () {
+      before(function (done) {
         dashboardPage.navigateToWebapp('Admin');
-        dashboardPage.authentication.userLogin('john', 'MobyDick');
+        dashboardPage.authentication.userLogin('john', 'MobyDick').then(done);
       });
 
       after(function () {
@@ -94,10 +94,10 @@ describe('Admin Dashboard Spec', function() {
 
   describe('logout', function () {
 
-    before(function() {
+    before(function(done) {
       dashboardPage.authentication.ensureUserLogout();
       dashboardPage.navigateToWebapp('Admin');
-      dashboardPage.authentication.userLogin('admin', 'admin');
+      dashboardPage.authentication.userLogin('admin', 'admin').then(done);
     });
 
 
