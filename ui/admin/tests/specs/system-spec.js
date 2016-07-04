@@ -8,6 +8,9 @@ var setupFile = require('./system-setup');
 
 testHelper.expectStringEqual = require('../../../common/tests/string-equal');
 
+var mocha = require('mocha');
+var before = mocha.before;
+
 describe('Admin system Spec with normal user', function() {
   before(function() {
     return testHelper(setupFile.setup1, function() {

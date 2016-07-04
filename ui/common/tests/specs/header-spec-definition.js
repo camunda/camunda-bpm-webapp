@@ -12,6 +12,9 @@ var testHelper = require('./../test-helper');
 var frontPage = new FrontPage();
 frontPage.authentication = new AuthenticationPage();
 
+var mocha = require('mocha');
+var before = mocha.before;
+
 module.exports = function (appName) {
   return function() {
     before([], function () {

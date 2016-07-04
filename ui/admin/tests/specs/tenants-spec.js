@@ -9,29 +9,10 @@ var tenantsPage = require('../pages/tenants');
 var usersPage = require('../pages/users');
 var groupsPage = require('../pages/groups');
 
-var mochaOriginal = require('mocha');
+var mocha = require('mocha');
+var before = mocha.before;
 
-describe.only('Admin Tenants Spec', function() {
-
-  var before = mochaOriginal.before;
-
-  before(function() {
-
-    console.log('--- SETTING UP VERBOSE CONTROLFLOW DEBUGGING ---');
-
-    browser.controlFlow().on('idle', function() {
-      console.log('CONTROL FLOW: IDLE', arguments);
-    });
-    browser.controlFlow().on('reset', function() {
-      console.log('CONTROL FLOW: RESET', arguments);
-    });
-    browser.controlFlow().on('scheduleTask', function() {
-      console.log('CONTROL FLOW: SCHEDULE TASK', arguments);
-    });
-    browser.controlFlow().on('uncaughtException', function() {
-      console.log('CONTROL FLOW: UNCAUGHT EXCEPTION', arguments);
-    });
-  });
+describe('Admin Tenants Spec', function() {
 
   describe('create new tenant', function() {
 

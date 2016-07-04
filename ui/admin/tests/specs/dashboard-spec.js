@@ -5,6 +5,9 @@ var setupFile = require('./dashboard-setup');
 
 var dashboardPage = require('../pages/dashboard');
 
+var mocha = require('mocha');
+var before = mocha.before;
+
 describe('Admin Dashboard Spec', function() {
 
   before(function() {

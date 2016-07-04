@@ -10,6 +10,8 @@ testHelper.expectStringEqual = require('../../../common/tests/string-equal');
 var usersPage = require('../pages/users');
 var groupsPage = require('../pages/groups');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Admin Users Spec', function() {
 

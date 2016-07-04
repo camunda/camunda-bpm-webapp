@@ -6,6 +6,8 @@ var setupFile = require('./authorizations-setup');
 var authorizationsPage = require('../pages/authorizations');
 var cockpitPage = require('../../../cockpit/tests/pages/dashboard');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Admin Authorizations Spec', function() {
 

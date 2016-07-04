@@ -8,6 +8,9 @@ testHelper.expectStringEqual = require('../../../common/tests/string-equal');
 var groupsPage = require('../pages/groups');
 var usersPage = require('../pages/users');
 
+var mocha = require('mocha');
+var before = mocha.before;
+
 describe('Admin Groups Spec', function() {
 
 
@@ -104,7 +107,7 @@ describe('Admin Groups Spec', function() {
     });
 
   });
-  
+
   describe('update/delete group', function() {
 
     before(function() {
@@ -186,7 +189,7 @@ describe('Admin Groups Spec', function() {
       expect(groupsPage.editGroupTenants.selectTenantModal.pageHeader()).to.eventually.eql('Select Tenants');
       expect(groupsPage.editGroupTenants.selectTenantModal.tenantList().count()).to.eventually.eql(2);
     });
-    
+
     it('should add group to tenants', function() {
       // when
       groupsPage.editGroupTenants.selectTenantModal.addTenant(0);
