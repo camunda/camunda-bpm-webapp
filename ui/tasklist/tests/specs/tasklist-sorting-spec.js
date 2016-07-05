@@ -5,6 +5,8 @@ var setupFile = require('./tasklist-sorting-setup');
 
 var dashboardPage = require('../pages/dashboard');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Tasklist Sorting Spec', function() {
 

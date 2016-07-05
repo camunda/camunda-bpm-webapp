@@ -8,6 +8,9 @@ var deploymentsPage = repositoryPage.deployments;
 var resourcesPage = repositoryPage.resources;
 var resourcePage = repositoryPage.resource;
 
+var mocha = require('mocha');
+var before = mocha.before;
+
 describe('Repository Spec', function() {
 
   describe('deployments sorting', function() {

@@ -69,7 +69,7 @@ Page.prototype.waitForElementToBeNotPresent = function(element, max) {
   var isNotPresent = EC.not(EC.presenceOf(element));
 
   max = max || 5000;
-  browser.wait(isNotPresent, max);
+  return browser.wait(isNotPresent, max);
 };
 
 /* notification */

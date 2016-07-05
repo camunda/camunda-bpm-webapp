@@ -6,6 +6,8 @@ var setupFile = require('./filter-criteria-setup');
 var dashboardPage = require('../pages/dashboard');
 var editModalPage = dashboardPage.taskFilters.editFilterPage;
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Tasklist Filter Criteria Spec', function() {
 
@@ -319,9 +321,9 @@ describe('Tasklist Filter Criteria Spec', function() {
     });
 
   });
-  
+
   describe('multi tenacy', function() {
-   
+
       before(function() {
         return testHelper(setupFile.multiTenancySetup, function() {
           dashboardPage.navigateToWebapp('Tasklist');
@@ -332,11 +334,11 @@ describe('Tasklist Filter Criteria Spec', function() {
       beforeEach(function() {
         dashboardPage.taskFilters.selectFilter(0);
         dashboardPage.taskFilters.editFilter(0);
-        editModalPage.selectPanelByKey('criteria');        
+        editModalPage.selectPanelByKey('criteria');
       });
-      
+
       it('should add tenant id criterion and validate result', function() {
-        
+
         // when
         editModalPage.addCriterion('Task', 'Tenant ID In', 'tenant1');
         editModalPage.saveFilter();
@@ -354,7 +356,7 @@ describe('Tasklist Filter Criteria Spec', function() {
         // then
         expect(dashboardPage.taskList.taskList().count()).to.eventually.eql(2);
       });
-      
+
       it('should add without tenant id criterion and validate result', function() {
 
         // when

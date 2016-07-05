@@ -8,6 +8,8 @@ var dashboardPage = require('../pages/dashboard');
 var decisionsPage = require('../pages/decisions');
 var definitionPage = require('../pages/decision-definition');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Cockpit Decision Definition Spec', function() {
 

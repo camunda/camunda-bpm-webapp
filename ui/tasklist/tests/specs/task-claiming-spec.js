@@ -5,6 +5,8 @@ var setupFile = require('./task-claiming-setup');
 
 var dashboardPage = require('../pages/dashboard');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Task Claiming Spec', function() {
 

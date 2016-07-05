@@ -8,6 +8,9 @@ var processesPage = require('../pages/processes');
 var definitionPage = require('../pages/process-definition');
 var instancePage = require('../pages/process-instance');
 
+var mocha = require('mocha');
+var before = mocha.before;
+
 describe('Cockpit Variable Spec', function() {
 
   describe('work with variables', function() {

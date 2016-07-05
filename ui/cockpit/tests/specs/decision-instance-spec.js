@@ -9,6 +9,8 @@ var decisionsPage = require('../pages/decisions');
 var definitionPage = require('../pages/decision-definition');
 var instancePage = require('../pages/decision-instance');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Cockpit Decision Instance Spec', function() {
 

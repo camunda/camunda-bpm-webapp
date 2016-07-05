@@ -5,6 +5,8 @@ var setupFile = require('./dashboard-setup');
 
 var processesPage = require('../pages/processes');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Cockpit Processes Dashboard Spec', function() {
 

@@ -160,11 +160,7 @@ module.exports = function (appName) {
       });
 
 
-      describe.skip('for authenticated user', function () {
-        before(function () {
-          return frontPage.authentication.userLogin('admin', 'admin');
-        });
-
+      describe('for authenticated user', function () {
         after(function () {
           frontPage.accountDropdown().isDisplayed().then(function (displayed) {
             if (!displayed) {
@@ -178,6 +174,7 @@ module.exports = function (appName) {
 
 
         it('does not show the engine selection', function () {
+          frontPage.authentication.userLogin('admin', 'admin');
           expect(frontPage.engineSelectDropdown().isDisplayed()).to.eventually.eql(false);
         });
 
@@ -191,12 +188,8 @@ module.exports = function (appName) {
 
 
         describe('after beeing expanded', function () {
-          before(function () {
-            return frontPage.hamburgerButton().click();
-          });
-
-
           it('shows the account', function () {
+            frontPage.hamburgerButton().click();
             expect(frontPage.accountDropdown().isDisplayed()).to.eventually.eql(true);
             expect(frontPage.accountDropdownButton().isDisplayed()).to.eventually.eql(true);
           });
@@ -217,12 +210,8 @@ module.exports = function (appName) {
 
 
           describe('after beeing collapsed again', function () {
-            before(function () {
-              return frontPage.hamburgerButton().click();
-            });
-
-
             it('does not show the engine selection', function () {
+              frontPage.hamburgerButton().click();
               expect(frontPage.engineSelectDropdown().isDisplayed()).to.eventually.eql(false);
             });
 

@@ -7,6 +7,8 @@ var dashboardPage = require('../pages/dashboard');
 var processesPage = require('../pages/processes');
 var definitionPage = require('../pages/process-definition');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Cockpit Process Definition Filter Spec', function() {
 

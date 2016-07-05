@@ -8,6 +8,8 @@ var setupFile = require('./tasklist-search-setup');
 
 var page = require('../pages/dashboard');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Tasklist Search', function() {
 

@@ -6,6 +6,8 @@ var setupFile = require('./filter-variables-setup');
 var dashboardPage = require('../pages/dashboard');
 var editModalPage = dashboardPage.taskFilters.editFilterPage;
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Tasklist Filter Variables Spec', function() {
 
@@ -108,12 +110,9 @@ describe('Tasklist Filter Variables Spec', function() {
 
   describe('operate with variables', function() {
 
-    before(function() {
-      dashboardPage.navigateTo();
-    });
-
     it('should display variables in the list of task', function() {
 
+      dashboardPage.navigateTo();
       // when
       dashboardPage.taskFilters.selectFilter(1);
       dashboardPage.taskList.taskList().get(0).click();
@@ -127,13 +126,10 @@ describe('Tasklist Filter Variables Spec', function() {
 
     describe('add additional variable', function() {
 
-      before(function() {
-        dashboardPage.taskFilters.selectFilter(1);
-        dashboardPage.taskFilters.editFilter(1);
-      });
-
       it('should enter variable data', function() {
 
+        dashboardPage.taskFilters.selectFilter(1);
+        dashboardPage.taskFilters.editFilter(1);
         // given
         editModalPage.selectPanelByKey('variable');
         expect(editModalPage.variableList().count()).to.eventually.eql(1);
@@ -162,13 +158,9 @@ describe('Tasklist Filter Variables Spec', function() {
 
     describe('display undefined variables', function() {
 
-      before(function() {
-        // dashboardPage.taskFilters.selectFilter(0);
-        dashboardPage.taskFilters.editFilter(0);
-      });
-
       it('should select show-undefined option', function() {
 
+        dashboardPage.taskFilters.editFilter(0);
         // given
         editModalPage.selectPanelByKey('variable');
         expect(editModalPage.variableList().count()).to.eventually.eql(0);

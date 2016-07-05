@@ -9,6 +9,8 @@ var setups = require('./create-task-setup');
 var dashboardPage = require('../pages/dashboard');
 var createTaskDialogPage = dashboardPage.createTask;
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Tasklist Create Task Spec', function () {
 

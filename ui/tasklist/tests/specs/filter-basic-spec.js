@@ -6,6 +6,8 @@ var setupFile = require('./filter-basic-setup');
 var dashboardPage = require('../pages/dashboard');
 var editModalPage = dashboardPage.taskFilters.editFilterPage;
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Tasklist Filter Basic Spec', function() {
 

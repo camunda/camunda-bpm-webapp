@@ -9,6 +9,8 @@ var setupFile = require('./process-start-setup');
 var dashboardPage = require('../pages/dashboard');
 var startDialogPage = dashboardPage.startProcess;
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Tasklist Start Spec', function () {
 
@@ -244,11 +246,11 @@ describe('Tasklist Start Spec', function () {
         dashboardPage.navigateToWebapp('Tasklist');
         dashboardPage.authentication.userLogin('admin', 'admin');
         dashboardPage.navigateTo();
-        dashboardPage.startProcess.openStartDialogAndSelectProcess('User Tasks');
       });
     });
 
     it('should enter variables and business key', function() {
+      dashboardPage.startProcess.openStartDialogAndSelectProcess('User Tasks');
 
       // when
       startDialogPage.genericStartForm.addVariable('var_1', 'Date', '2012-12-12T12:12:12');

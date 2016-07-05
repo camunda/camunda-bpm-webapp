@@ -5,6 +5,8 @@ var setupFile = require('./dashboard-setup');
 
 var dashboardPage = require('../pages/dashboard');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Cockpit Dashboard Spec', function() {
   before(function() {

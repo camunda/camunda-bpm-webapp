@@ -4,6 +4,8 @@ var testHelper = require('../../../common/tests/test-helper');
 
 var reportsPage = require('../pages/reports');
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Cockpit Reports Spec', function() {
 

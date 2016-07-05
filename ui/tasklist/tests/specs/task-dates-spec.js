@@ -7,6 +7,8 @@ var dashboardPage = require('../pages/dashboard');
 var taskViewPage = dashboardPage.currentTask;
 var taskListPage = dashboardPage.taskList;
 
+var mocha = require('mocha');
+var before = mocha.before;
 
 describe('Task Dates Spec', function() {
 

@@ -38,7 +38,7 @@ module.exports = Page.extend({
   closeStartDialog: function() {
     var closeButtonElement = this.closeButton();
     closeButtonElement.click();
-    this.waitForElementToBeNotPresent(closeButtonElement, 5000);
+    return this.waitForElementToBeNotPresent(closeButtonElement, 5000);
   },
 
   startButton: function() {
@@ -91,7 +91,7 @@ module.exports = Page.extend({
     return this.startProcessDialog()
       .element(by.css('.glyphicon-info-sign'));
   },
-  
+
   processTenantIdField: function(idx) {
     return this.processList().get(idx).element(by.css('.tenant-id'));
   }
