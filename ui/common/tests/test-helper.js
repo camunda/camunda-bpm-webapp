@@ -66,67 +66,75 @@ module.exports = function (operations, noReset, done) {
     });
   });
 
-  CamSDK.utils.series(callbacks, function(err, result) {
-    // now all process instances are started, we can start the jobs to create incidents
-    // This method sets retries to 0 for all jobs that were created in the test setup
-    if(err) {
-      deferred.reject(err);
-      return;
-    }
-
-    var resource = new camClient.resource('job');
-
-    var pollCount = 0;
-    var pollFct = function() {
-      pollCount++;
-      resource.count({ "executable" : true }, function(err, res) {
-        if(pollCount > 50 || err) {
-          deferred.reject(err || new Error('Job Executor could not execute jobs within 10 seconds. Giving up.'));
-          return;
-        }
-        if( res == 0 ) {
-          try {
-            // console.log('calling test-helper callback');
-            done(err, {});
-            // console.log('callback returned, registering idle listener');
-
-            var controlFlowObserver = setInterval(function(){
-              // console.log('current control flow update');
-              // console.log(browser.controlFlow().getSchedule());
-
-              // HAXX: For unknown reasons, the controlFlow sometimes does not emit an idle event
-              if(!browser.controlFlow().activeFrame_) {
-                // console.log('FAILURE DETECTED: Control Flow has no active frame, but did not fire an idle event');
-                // console.log('FAILURE DETECTED: Triggering idle event externally');
-                browser.controlFlow().emit('idle');
-              }
-            }, 1000);
-
-
-            browser.controlFlow().once('idle', function() {
-              // console.log('control flow is now idle');
-              clearInterval(controlFlowObserver);
-              deferred.fulfill();
-            });
-            // console.log('current control flow content');
-
-            // console.log(browser.controlFlow().getSchedule());
-
-
-            // console.log('resolving placeholder promise');
-            // deferred.fulfill();
-
-          } catch(err) {
+  // wait until the control flow is empty before starting with the tests
+  var doIt = function() {
+    if(!browser.controlFlow().activeFrame_) {
+      CamSDK.utils.series(callbacks, function(err, result) {
+          // now all process instances are started, we can start the jobs to create incidents
+          // This method sets retries to 0 for all jobs that were created in the test setup
+          if(err) {
             deferred.reject(err);
+            return;
           }
-        } else {
-          setTimeout(pollFct, 200);
-        }
-      });
-    };
 
-    pollFct();
-  });
+          var resource = new camClient.resource('job');
+
+          var pollCount = 0;
+          var pollFct = function() {
+            pollCount++;
+            resource.count({ "executable" : true }, function(err, res) {
+              if(pollCount > 50 || err) {
+                deferred.reject(err || new Error('Job Executor could not execute jobs within 10 seconds. Giving up.'));
+                return;
+              }
+              if( res == 0 ) {
+                try {
+                  // console.log('calling test-helper callback');
+                  done(err, {});
+                  // console.log('callback returned, registering idle listener');
+
+                  var controlFlowObserver = setInterval(function(){
+                    // console.log('current control flow update');
+                    // console.log(browser.controlFlow().getSchedule());
+
+                    // HAXX: For unknown reasons, the controlFlow sometimes does not emit an idle event
+                    if(!browser.controlFlow().activeFrame_) {
+                      // console.log('FAILURE DETECTED: Control Flow has no active frame, but did not fire an idle event');
+                      // console.log('FAILURE DETECTED: Triggering idle event externally');
+                      browser.controlFlow().emit('idle');
+                    }
+                  }, 1000);
+
+
+                  browser.controlFlow().once('idle', function() {
+                    // console.log('control flow is now idle');
+                    clearInterval(controlFlowObserver);
+                    deferred.fulfill();
+                  });
+                  // console.log('current control flow content');
+
+                  // console.log(browser.controlFlow().getSchedule());
+
+
+                  // console.log('resolving placeholder promise');
+                  // deferred.fulfill();
+
+                } catch(err) {
+                  deferred.reject(err);
+                }
+              } else {
+                setTimeout(pollFct, 200);
+              }
+            });
+          };
+
+          pollFct();
+        });
+    } else {
+      setTimeout(doIt, 100);
+    }
+  };
+  doIt();
 
   // browser.controlFlow().execute(function() {return deferred.promise;}, 'my setup promise');
 
