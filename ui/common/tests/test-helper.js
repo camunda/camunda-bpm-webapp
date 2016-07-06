@@ -8,6 +8,21 @@ var camClient = new CamSDK.Client({
   apiUri: 'http://localhost:8080/engine-rest'
 });
 
+console.log('--- SETTING UP VERBOSE CONTROLFLOW DEBUGGING ---');
+
+browser.controlFlow().on('idle', function() {
+  console.log('CONTROL FLOW: IDLE', arguments);
+});
+browser.controlFlow().on('reset', function() {
+  console.log('CONTROL FLOW: RESET', arguments);
+});
+browser.controlFlow().on('scheduleTask', function() {
+  console.log('CONTROL FLOW: SCHEDULE TASK', arguments);
+});
+browser.controlFlow().on('uncaughtException', function() {
+  console.log('CONTROL FLOW: UNCAUGHT EXCEPTION', arguments);
+});
+
 module.exports = function (operations, noReset, done) {
   var deferred = protractor.promise.defer();
   var arity = arguments.length;
@@ -89,31 +104,31 @@ module.exports = function (operations, noReset, done) {
               }
               if( res == 0 ) {
                 try {
-                  // console.log('calling test-helper callback');
+                  console.log('calling test-helper callback');
                   done(err, {});
-                  // console.log('callback returned, registering idle listener');
+                  console.log('callback returned, registering idle listener');
 
                   var controlFlowObserver = setInterval(function(){
-                    // console.log('current control flow update');
-                    // console.log(browser.controlFlow().getSchedule());
+                    console.log('current control flow update');
+                    console.log(browser.controlFlow().getSchedule());
 
                     // HAXX: For unknown reasons, the controlFlow sometimes does not emit an idle event
                     if(!browser.controlFlow().activeFrame_) {
-                      // console.log('FAILURE DETECTED: Control Flow has no active frame, but did not fire an idle event');
-                      // console.log('FAILURE DETECTED: Triggering idle event externally');
+                      console.log('FAILURE DETECTED: Control Flow has no active frame, but did not fire an idle event');
+                      console.log('FAILURE DETECTED: Triggering idle event externally');
                       browser.controlFlow().emit('idle');
                     }
                   }, 1000);
 
 
                   browser.controlFlow().once('idle', function() {
-                    // console.log('control flow is now idle');
+                    console.log('control flow is now idle, resolving before promise');
                     clearInterval(controlFlowObserver);
                     deferred.fulfill();
                   });
-                  // console.log('current control flow content');
+                  console.log('current control flow content');
 
-                  // console.log(browser.controlFlow().getSchedule());
+                  console.log(browser.controlFlow().getSchedule());
 
 
                   // console.log('resolving placeholder promise');
