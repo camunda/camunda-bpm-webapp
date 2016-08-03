@@ -180,17 +180,6 @@ var angular = require('camunda-commons-ui/vendor/angular');
 
               // activate the inline edit field
               evt.target.firstChild.click();
-
-              // wait for angular to open the date picker
-              $timeout(function() {
-
-                // wait for the update of the inline edit field, otherwise it will steal out focus
-                $timeout(function() {
-
-                  // set the focus to the date picker
-                  document.querySelector('.cam-widget-inline-field.field-control > .datepicker > table').focus();
-                });
-              });
             });
           }
         };
