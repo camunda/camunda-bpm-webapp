@@ -197,53 +197,6 @@ public class DevProcessApplication extends ServletProcessApplication {
       .setVariable("anotherVariable", "xyz")
       .create();
 
-    CaseExecutionQuery query = caseService.createCaseExecutionQuery();
-
-    String stageId = query
-        .activityId("PI_collectDataStage")
-        .singleResult()
-        .getId();
-
-    caseService
-      .withCaseExecution(stageId)
-      .manualStart();
-
-    String first = query
-        .activityId("PI_captureAppDataHumanTask")
-        .singleResult()
-        .getId();
-
-    caseService
-      .withCaseExecution(first)
-      .manualStart();
-
-    String second = query
-        .activityId("PI_obtainCreditWorthinessHumanTask")
-        .singleResult()
-        .getId();
-
-    caseService
-      .withCaseExecution(second)
-      .manualStart();
-
-    String third = query
-        .activityId("PI_reviewDocumentsHumanTask")
-        .singleResult()
-        .getId();
-
-    caseService
-      .withCaseExecution(third)
-      .manualStart();
-
-    String fourth = query
-        .activityId("PI_obtainSchufaInfoProcessTask")
-        .singleResult()
-        .getId();
-
-    caseService
-      .withCaseExecution(fourth)
-      .manualStart();
-
     Task standaloneTask = taskService.newTask();
     standaloneTask.setName("A Standalone Task");
     standaloneTask.setAssignee("jonny1");
