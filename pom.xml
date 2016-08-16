@@ -45,6 +45,30 @@
 
       </modules>
     </profile>
+
+    <!--  check history audit -->
+    <profile>
+      <id>cfghistoryaudit</id>
+      <properties>
+        <history.level>audit</history.level>
+      </properties>
+    </profile>
+
+    <!--  check history activity -->
+    <profile>
+      <id>cfghistoryactivity</id>
+      <properties>
+        <history.level>activity</history.level>
+      </properties>
+    </profile>
+
+    <!--  check history none -->
+    <profile>
+      <id>cfghistorynone</id>
+      <properties>
+        <history.level>none</history.level>
+      </properties>
+    </profile>
   </profiles>
 
   <properties>
@@ -54,6 +78,7 @@
     <tomcat6.connector.ajp.port>48009</tomcat6.connector.ajp.port>
     <tomcat6.connector.ajp.redirectPort>48443</tomcat6.connector.ajp.redirectPort>
     <tomcat6.server.port>48005</tomcat6.server.port>
+    <history.level>full</history.level>
   </properties>
 
   <dependencyManagement>
