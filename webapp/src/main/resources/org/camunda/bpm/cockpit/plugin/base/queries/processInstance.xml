@@ -49,7 +49,7 @@
         HISTORY.START_TIME_
         </if>
         <if test="!historyEnabled">
-        null START_TIME_
+        ${constant.null.startTime}
         </if>
         <include refid="selectProcessInstances"/>
         ${orderBy}
@@ -165,7 +165,7 @@
           and NAME_= #{queryVariableValue.name}
 
         <if test="queryVariableValue.valueConditions != null">
-          and 
+          and
           <if test="queryVariableValue.operatorName.equals('NOT_EQUALS')">NOT</if><!-- NOT_EQUALS uses the same conditions as EQUALS -->
           (
           <foreach collection="queryVariableValue.valueConditions" item="valueCondition" separator="or">
