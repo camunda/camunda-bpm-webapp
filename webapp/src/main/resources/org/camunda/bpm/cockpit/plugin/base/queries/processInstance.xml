@@ -49,7 +49,7 @@
         HISTORY.START_TIME_
         </if>
         <if test="!historyEnabled">
-        null START_TIME_
+        ${constant.null.startTime}
         </if>
         <include refid="selectProcessInstances"/>
         ${orderBy}
