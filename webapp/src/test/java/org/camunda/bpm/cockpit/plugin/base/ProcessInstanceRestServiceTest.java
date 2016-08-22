@@ -12,29 +12,12 @@
  */
 package org.camunda.bpm.cockpit.plugin.base;
 
-import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.EQUALS_OPERATOR_NAME;
-import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.GREATER_THAN_OPERATOR_NAME;
-import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.GREATER_THAN_OR_EQUALS_OPERATOR_NAME;
-import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.LESS_THAN_OPERATOR_NAME;
-import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.LESS_THAN_OR_EQUALS_OPERATOR_NAME;
-import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.LIKE_OPERATOR_NAME;
-import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.NOT_EQUALS_OPERATOR_NAME;
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.camunda.bpm.cockpit.impl.plugin.base.dto.IncidentStatisticsDto;
 import org.camunda.bpm.cockpit.impl.plugin.base.dto.ProcessInstanceDto;
 import org.camunda.bpm.cockpit.impl.plugin.base.dto.query.ProcessInstanceQueryDto;
 import org.camunda.bpm.cockpit.impl.plugin.base.resources.ProcessInstanceRestService;
 import org.camunda.bpm.cockpit.plugin.test.AbstractCockpitPluginTest;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.impl.calendar.DateTimeUtil;
@@ -44,18 +27,21 @@ import org.camunda.bpm.engine.rest.dto.CountResultDto;
 import org.camunda.bpm.engine.rest.dto.VariableQueryParameterDto;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.engine.test.RequiredHistoryLevel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.util.*;
+
+import static org.camunda.bpm.engine.rest.dto.ConditionQueryParameterDto.*;
+import static org.fest.assertions.Assertions.assertThat;
+
 /**
  * @author roman.smirnov
  * @author nico.rehwaldt
  */
-@RequiredHistoryLevel(ProcessEngineConfiguration.HISTORY_AUDIT)
 public class ProcessInstanceRestServiceTest extends AbstractCockpitPluginTest {
 
   private ProcessEngine processEngine;
