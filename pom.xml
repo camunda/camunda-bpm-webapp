@@ -48,9 +48,46 @@
 
       </modules>
     </profile>
+
+    <!--  check history audit -->
+    <profile>
+      <id>cfghistoryaudit</id>
+      <properties>
+        <history.level>audit</history.level>
+      </properties>
+    </profile>
+
+    <!--  check history activity -->
+    <profile>
+      <id>cfghistoryactivity</id>
+      <properties>
+        <history.level>activity</history.level>
+      </properties>
+    </profile>
+
+    <!--  check history none -->
+    <profile>
+      <id>cfghistorynone</id>
+      <properties>
+        <history.level>none</history.level>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/ProcessInstanceRestServiceTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
-  <properties> 
+  <properties>
     <version.tomcat>7.0.50</version.tomcat>
     <tomcat6.connector.http.port>48080</tomcat6.connector.http.port>
     <tomcat6.connector.http.redirectPort>48443</tomcat6.connector.http.redirectPort>
