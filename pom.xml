@@ -902,13 +902,13 @@
                     <exec executable="cmd" failonerror="true">
                       <arg value="/c" />
                       <arg value="npm" />
-                      <arg value="install" />
+                      <arg value="install --no-optional" />
                     </exec>
                     <!--
                     <exec executable="cmd" failonerror="true">
                       <arg value="/c" />
                       <arg value="node_modules\.bin\bower.cmd" />
-                      <arg value="install" />
+                      <arg value="install --no-optional" />
                     </exec>
                     -->
                     <exec executable="cmd" failonerror="true">
@@ -951,11 +951,11 @@
                   <target>
                     <!-- run node build -->
                     <exec executable="npm" failonerror="true">
-                      <arg value="install" />
+                      <arg value="install --no-optional" />
                     </exec>
                     <!--
                     <exec executable="./node_modules/bower/bin/bower" failonerror="true">
-                      <arg value="install" />
+                      <arg value="install --no-optional" />
                     </exec>
                     -->
                     <exec executable="./node_modules/grunt-cli/bin/grunt" failonerror="true">
