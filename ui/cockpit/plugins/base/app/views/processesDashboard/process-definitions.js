@@ -4,15 +4,15 @@ var fs = require('fs');
 
 var template = fs.readFileSync(__dirname + '/process-definitions.html', 'utf8');
 
-  module.exports = [ 'ViewsProvider', function (ViewsProvider) {
-    ViewsProvider.registerDefaultView('cockpit.processes.dashboard', {
-      id: 'process-definition',
-      label: 'Deployed Process Definitions',
-      template: template,
-      controller: [
-              '$scope',
-              'Views',
-              'camAPI',
+module.exports = [ 'ViewsProvider', function(ViewsProvider) {
+  ViewsProvider.registerDefaultView('cockpit.processes.dashboard', {
+    id: 'process-definition',
+    label: 'Deployed Process Definitions',
+    template: template,
+    controller: [
+      '$scope',
+      'Views',
+      'camAPI',
       function($scope, Views, camAPI) {
         var processInstancePlugins = Views.getProviders({ component: 'cockpit.processInstance.view' });
         $scope.hasHistoryPlugin = processInstancePlugins.filter(function(plugin) {
@@ -24,13 +24,20 @@ var template = fs.readFileSync(__dirname + '/process-definitions.html', 'utf8');
         $scope.hasReportPlugin = Views.getProviders({ component: 'cockpit.report' }).length > 0;
 
         var processDefinitionService = camAPI.resource('process-definition');
+        $scope.loadingState = 'LOADING';
 
         processDefinitionService.list({
           latest: true
         }, function(err, data) {
           $scope.processDefinitionData = data.items;
 
-          processData.observe('processDefinitionStatistics', function (processDefinitionStatistics) {
+          if (err) {
+            $scope.loadingState = 'ERROR';
+          }
+
+          $scope.loadingState = 'LOADED';
+
+          processData.observe('processDefinitionStatistics', function(processDefinitionStatistics) {
             $scope.statistics = processDefinitionStatistics;
 
             $scope.statistics.forEach(function(statistic) {
@@ -40,20 +47,20 @@ var template = fs.readFileSync(__dirname + '/process-definitions.html', 'utf8');
               });
 
               var foundObject = foundIds[0];
-              if(!!foundObject) {
+              if(foundObject) {
                 foundObject.incidents = statistic.incidents;
                 foundObject.instances = statistic.instances;
               }
-            })
+            });
           });
         });
 
         $scope.selected = 'list';
-        $scope.selectTab = function (which) {
+        $scope.selectTab = function(which) {
           $scope.selected = which;
         };
       }],
 
-      priority: 0
-    });
-  }];
+    priority: 0
+  });
+}];
