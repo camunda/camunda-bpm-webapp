@@ -14,22 +14,30 @@ package org.camunda.bpm.cockpit.impl.plugin.base.resources;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.Providers;
 
-import org.camunda.bpm.cockpit.impl.plugin.base.BasePlugin;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginRootResource;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.camunda.bpm.cockpit.impl.plugin.CockpitPlugins;
+import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
+import org.camunda.bpm.engine.rest.util.ProvidersUtil;
 
 /**
  * Root resource of the base plugin
- * 
+ *
  * @author nico.rehwaldt
  */
 @Path("plugin/" + BasePlugin.ID)
 public class BaseRootResource extends AbstractPluginRootResource {
 
+  @Context
+  protected Providers providers;
+
   public BaseRootResource() {
     super(BasePlugin.ID);
   }
-  
+
   @Path("{engine}" + ProcessDefinitionRestService.PATH)
   public ProcessDefinitionRestService getProcessDefinitionResource(@PathParam("engine") String engineName) {
     return subResource(new ProcessDefinitionRestService(engineName), engineName);
@@ -37,12 +45,24 @@ public class BaseRootResource extends AbstractPluginRootResource {
 
   @Path("{engine}" + ProcessInstanceRestService.PATH)
   public ProcessInstanceRestService getProcessInstanceRestService(@PathParam("engine") String engineName) {
-    return subResource(new ProcessInstanceRestService(engineName), engineName);
+    ProcessInstanceRestService subResource = new ProcessInstanceRestService(engineName);
+    subResource.setObjectMapper(getObjectMapper());
+    return subResource(subResource, engineName);
   }
-  
+
   @Path("{engine}" + IncidentRestService.PATH)
   public IncidentRestService getIncidentRestService(@PathParam("engine") String engineName) {
     return subResource(new IncidentRestService(engineName), engineName);
+  }
+
+  protected ObjectMapper getObjectMapper() {
+    if(providers != null) {
+      return ProvidersUtil
+        .resolveFromContext(providers, ObjectMapper.class, MediaType.APPLICATION_JSON_TYPE, this.getClass());
+    }
+    else {
+      return null;
+    }
   }
 
 }
