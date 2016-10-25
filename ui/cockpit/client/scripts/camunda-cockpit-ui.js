@@ -60,7 +60,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
       UriProvider.replace(':engine', [ '$window', function($window) {
         var uri = $window.location.href;
 
-        var match = uri.match(/\/app\/cockpit\/(\w+)(|\/)/);
+        var match = uri.match(/\/app\/cockpit\/([a-zA-Z0-9-]+)(|\/)/);
         if (match) {
           return match[1];
         } else {
