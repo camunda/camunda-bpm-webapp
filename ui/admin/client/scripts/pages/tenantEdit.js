@@ -7,16 +7,17 @@ var confirmationTemplate = fs.readFileSync(__dirname + '/generic-confirmation.ht
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-  var Controller = [
-    '$scope',
-    'page',
-    '$routeParams',
-    'search',
-    'camAPI',
-    'Notifications',
-    '$location',
-    '$modal',
-  function (
+var Controller = [
+  '$scope',
+  'page',
+  '$routeParams',
+  'search',
+  'camAPI',
+  'Notifications',
+  '$location',
+  '$modal',
+  'unescape',
+  function(
     $scope,
     pageService,
     $routeParams,
@@ -24,16 +25,17 @@ var angular = require('camunda-commons-ui/vendor/angular');
     camAPI,
     Notifications,
     $location,
-    $modal
+    $modal,
+    unescape
   ) {
 
     var TenantResource        = camAPI.resource('tenant'),
         GroupResource         = camAPI.resource('group'),
         UserResource          = camAPI.resource('user');
-    
+
     $scope.$root.showBreadcrumbs = true;
 
-    
+
 
     pageService.titleSet('Tenant');
 
@@ -43,19 +45,16 @@ var angular = require('camunda-commons-ui/vendor/angular');
       pageService.breadcrumbsClear();
 
       pageService.breadcrumbsAdd([{
-          label: 'Tenants',
-          href: '#/tenants'
-        }]);
+        label: 'Tenants',
+        href: '#/tenants'
+      }]);
     }
     refreshBreadcrumbs();
 
 
     $scope.tenant = null;
     $scope.tenantName = null;
-    $scope.encodedTenantId = $routeParams.tenantId
-                                            .replace(/\//g, '%2F')
-                                            .replace(/\\/g, '%5C');
-
+    $scope.decodedTenantId = unescape(encodeURIComponent($routeParams.tenantId));
     $scope.availableOperations = {};
     $scope.tenantGroupList = null;
     $scope.tenantUserList = null;
@@ -76,7 +75,8 @@ var angular = require('camunda-commons-ui/vendor/angular');
 
     var loadTenant = $scope.loadTenant = function() {
       $scope.tenantLoadingState = 'LOADING';
-      TenantResource.get($scope.encodedTenantId , function(err, res) {
+
+      TenantResource.get($scope.decodedTenantId, function(err, res) {
         $scope.tenantLoadingState = 'LOADED';
         $scope.tenant = res;
         $scope.tenantName = (!!res.name ? res.name : res.id);
@@ -90,7 +90,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
           label: $scope.tenantName,
           href: '#/tenants/' + $scope.tenant.id
         }]);
-        
+
       }, function () {
         $scope.tenantLoadingState = 'ERROR';
       });
@@ -127,7 +127,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
 
       return {
         searchParams : {
-          memberOfTenant : $scope.encodedTenantId
+          memberOfTenant : $scope.decodedTenantId
         },
         pagingParams : {
           firstResult : firstResult,
@@ -172,8 +172,8 @@ var angular = require('camunda-commons-ui/vendor/angular');
       });
     }
 
-    TenantResource.options($scope.encodedTenantId, function(err, res) {
-      angular.forEach(res.links, function(link){
+    TenantResource.options($scope.decodedTenantId, function(err, res) {
+      angular.forEach(res.links, function(link) {
         $scope.availableOperations[link.rel] = true;
       });
     });
@@ -181,11 +181,11 @@ var angular = require('camunda-commons-ui/vendor/angular');
     $scope.updateTenant = function() {
 
       var updateData = {
-        id: $scope.encodedTenantId,
+        id: $scope.decodedTenantId,
         name: $scope.tenant.name
       };
 
-      TenantResource.update(updateData, function(err, res) {
+      TenantResource.update(updateData, function(err) {
         if( err === null ) {
           Notifications.addMessage({
             type : 'success',
@@ -207,11 +207,11 @@ var angular = require('camunda-commons-ui/vendor/angular');
     $scope.deleteTenant = function() {
       $modal.open({
         template: confirmationTemplate,
-        controller: ['$scope', function ($dialogScope) {
+        controller: ['$scope', function($dialogScope) {
           $dialogScope.question = 'Really delete tenant ' + $scope.tenant.id + '?';
         }]
-      }).result.then(function () {
-        TenantResource.delete({ id: $scope.encodedTenantId }, function(err, res) {
+      }).result.then(function() {
+        TenantResource.delete({ id: $scope.decodedTenantId }, function(err) {
           if(err === null) {
             Notifications.addMessage({
               type: 'success',
