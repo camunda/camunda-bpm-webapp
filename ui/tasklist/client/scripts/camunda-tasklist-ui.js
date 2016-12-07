@@ -8,6 +8,7 @@ require('angular-data-depend');
 
 var angular = require('camunda-commons-ui/vendor/angular');
 var dataDepend = require('angular-data-depend');
+var camCommon = require('../../../common/scripts/module');
 
   /**
    * @namespace cam
@@ -17,53 +18,51 @@ var dataDepend = require('angular-data-depend');
    * @module cam.tasklist
    */
 
-  function bootstrapApp() {
-    $(document).ready(function() {
-      angular.bootstrap(document.documentElement, [
-        'cam.tasklist',
-        'cam.embedded.forms',
-        'cam.tasklist.custom'
-      ]);
+function bootstrapApp() {
+  $(document).ready(function() {
+    angular.bootstrap(document.documentElement, [
+      'cam.tasklist',
+      'cam.embedded.forms',
+      'cam.tasklist.custom'
+    ]);
 
-      setTimeout(function() {
-        var $aufocused = $('[autofocus]');
-        if ($aufocused.length) {
-          $aufocused[0].focus();
-        }
-      }, 300);
-    });
+    setTimeout(function() {
+      var $aufocused = $('[autofocus]');
+      if ($aufocused.length) {
+        $aufocused[0].focus();
+      }
+    }, 300);
+  });
+}
+
+module.exports = function(pluginDependencies) {
+  function parseUriConfig() {
+    var $baseTag = $('base');
+    var config = {};
+    var names = ['href', 'app-root', 'admin-api', 'tasklist-api', 'engine-api'];
+    for(var i = 0; i < names.length; i++) {
+      config[names[i]] = $baseTag.attr(names[i]);
+    }
+    return config;
   }
 
-  module.exports = function(pluginDependencies) {
-
-    function parseUriConfig() {
-      var $baseTag = $('base');
-      var config = {};
-      var names = ['href', 'app-root', 'admin-api', 'tasklist-api', 'engine-api'];
-      for(var i = 0; i < names.length; i++) {
-        config[names[i]] = $baseTag.attr(names[i]);
-      }
-      return config;
-    }
-
-    var ngDeps = [
-      'cam.commons',
-      'pascalprecht.translate',
-      'ngRoute',
-      'dataDepend',
-      require('./user/index').name,
-      require('./variable/index').name,
-      require('./tasklist/index').name,
-      require('./task/index').name,
-      require('./process/index').name,
-      require('./navigation/index').name,
-      require('./form/index').name,
-      require('./filter/index').name,
-      require('./api/index').name,
-      require('./shortcuts/plugins/index').name,
-    ].concat(pluginDependencies.map(function(el){
-      return el.ngModuleName;
-    }));
+  var ngDeps = [
+    commons.name,
+    'pascalprecht.translate',
+    'ngRoute',
+    'dataDepend',
+    require('./variable/index').name,
+    require('./tasklist/index').name,
+    require('./task/index').name,
+    require('./process/index').name,
+    require('./navigation/index').name,
+    require('./form/index').name,
+    require('./filter/index').name,
+    require('./api/index').name,
+    require('./shortcuts/plugins/index').name
+  ].concat(pluginDependencies.map(function(el) {
+    return el.ngModuleName;
+  }));
 
     var uriConfig = parseUriConfig();
 
