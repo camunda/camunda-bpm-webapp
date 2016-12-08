@@ -8,14 +8,13 @@ require('angular-data-depend');
 
 var angular = require('camunda-commons-ui/vendor/angular');
 var dataDepend = require('angular-data-depend');
-var camCommon = require('../../../common/scripts/module');
 
   /**
    * @namespace cam
    */
 
   /**
-   * @module cam.tasklist
+   * @module camgrunt.tasklist
    */
 
 function bootstrapApp() {
