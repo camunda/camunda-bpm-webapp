@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
   'use strict';
 
+  var child_process = require('child_process');
   require('load-grunt-tasks')(grunt);
 
   var pkg = require('./package.json');
@@ -154,7 +155,28 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('ensureSelenium', function() {
+
+    // set correct webdriver version
+    require('fs').writeFileSync('node_modules/grunt-protractor-runner/node_modules/protractor/config.json',
+'    {\n'+
+'      "webdriverVersions": {\n' +
+'        "selenium": "2.47.1",\n' +
+'        "chromedriver": "2.24",\n' +
+'        "iedriver": "2.47.0"\n' +
+'      }\n' +
+'    }'
+    );
+
+    // async task
+    var done = this.async();
+
+    child_process.execFile('node', [__dirname + '/node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager', '--chrome', 'update'], function(err) {
+      done();
+    });
+  });
+
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('test-e2e', ['protractor:e2e']);
+  grunt.registerTask('test-e2e', ['ensureSelenium', 'protractor:e2e']);
 };
