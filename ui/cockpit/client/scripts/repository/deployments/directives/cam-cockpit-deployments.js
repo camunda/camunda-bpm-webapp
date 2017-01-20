@@ -40,11 +40,12 @@ var template = fs.readFileSync(__dirname + '/cam-cockpit-deployments.html', 'utf
         // control ///////////////////////////////////////////////////////////////////
 
         var control = $scope.control = {};
-        control.addMessage = function (status, msg) {
+        control.addMessage = function(status, msg, unsafe) {
           Notifications.addMessage({
             status: status,
             message: msg,
-            scope: $scope
+            scope: $scope,
+            unsafe: unsafe
           });
         };
 
