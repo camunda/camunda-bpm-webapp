@@ -92,10 +92,10 @@ var angular = require('camunda-commons-ui/vendor/angular');
         // order by process definition name / key and secondary by tenant id
         var aName = (a.name || a.key).toLowerCase();
         var bName = (b.name || b.key).toLowerCase();
-        
+
         var aTenantId = a.tenantId ? a.tenantId.toLowerCase() : '';
         var bTenantId = b.tenantId ? b.tenantId.toLowerCase() : '';
-        
+
         if (aName < bName)
            return -1;
         else if (aName > bName)
@@ -104,7 +104,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
           return -1;
         else if (aTenantId > bTenantId)
           return 1;
-        else 
+        else
           return 0;
       });
 
@@ -168,6 +168,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
     // start a process view /////////////////////////////////////////////////////////////////
 
     $scope.$invalid = true;
+    $scope.requestInProgress = false;
 
     $scope.$on('embedded.form.rendered', function() {
       $timeout(function() {
@@ -180,6 +181,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
 
     $scope.back = function() {
       $scope.$invalid = true;
+      $scope.requestInProgress = false;
       $scope.PROCESS_TO_START_SELECTED = false;
       $scope.options = DEFAULT_OPTIONS;
       processStartData.set('currentProcessDefinitionId', { id: null });
@@ -205,6 +207,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
     // will be called when the form has been submitted
     $scope.completionCallback = function(err, result) {
       if (err) {
+        $scope.requestInProgress = false;
         return errorNotification('PROCESS_START_ERROR', err);
       }
 
@@ -226,6 +229,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
 
     // will be triggered when the user select on 'Start'
     $scope.startProcessInstance = function () {
+      $scope.requestInProgress = true;
       $scope.triggerOnStart();
     };
 
