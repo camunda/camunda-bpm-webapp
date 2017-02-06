@@ -857,6 +857,7 @@
                       <arg value="/c" />
                       <arg value="npm" />
                       <arg value="install" />
+                      <arg value="--no-optional" />
                     </exec>
                     <!--
                     <exec executable="cmd" failonerror="true">
@@ -906,6 +907,7 @@
                     <!-- run node build -->
                     <exec executable="npm" failonerror="true">
                       <arg value="install" />
+                      <arg value="--no-optional" />
                     </exec>
                     <!--
                     <exec executable="./node_modules/bower/bin/bower" failonerror="true">
