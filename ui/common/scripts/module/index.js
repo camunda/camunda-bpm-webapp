@@ -8,7 +8,6 @@ var loaders = require('./services/loaders');
 
 var camToolbar = require('./components/cam-toolbar');
 var camPagination = require('./components/cam-pagination');
-var camSearch = require('./components/cam-search');
 var camSearchableArea = require('./components/cam-searchable-area');
 var camTabs = require('./components/cam-tabs');
 
@@ -18,9 +17,8 @@ var camHoverableTitle = require('./directives/cam-hoverable-title');
 
 var HoverAreaController = require('./controllers/hover-area');
 var CamPaginationController = require('./controllers/cam-pagination');
-var CamSearchController = require('./controllers/cam-search');
-var CamSearchAbleAreaController = require('./controllers/cam-searchable-area');
 var CamTabsController = require('./controllers/cam-tabs');
+var CamPaginationSearchIntegrationController = require('./controllers/cam-pagination-search-integration');
 
 var routeUtil = require('../util/routeUtil');
 var paginationUtils = require('../util/pagination-utils');
@@ -36,7 +34,6 @@ ngModule.factory('Loaders', loaders);
 // Components
 ngModule.directive('camToolbar', camToolbar);
 ngModule.directive('camPagination', camPagination);
-ngModule.directive('camSearch', camSearch);
 ngModule.directive('camSearchableArea', camSearchableArea);
 ngModule.directive('camTabs', camTabs);
 
@@ -48,9 +45,8 @@ ngModule.directive('camHoverableTitle', camHoverableTitle);
 // Controllers
 ngModule.controller('HoverAreaController', HoverAreaController);
 ngModule.controller('CamPaginationController', CamPaginationController);
-ngModule.controller('CamSearchController', CamSearchController);
-ngModule.controller('CamSearchAbleAreaController', CamSearchAbleAreaController);
 ngModule.controller('CamTabsController', CamTabsController);
+ngModule.controller('CamPaginationSearchIntegrationController', CamPaginationSearchIntegrationController);
 
 // Values
 ngModule.value('routeUtil', routeUtil);
