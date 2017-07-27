@@ -1,6 +1,7 @@
 'use strict';
 
 var angular = require('camunda-commons-ui/vendor/angular');
+var moment = require('camunda-commons-ui/vendor/moment');
 
 var copy = angular.copy;
 var each = angular.forEach;
@@ -36,6 +37,22 @@ function unfixLike(key, value) {
     if (value.slice(-1) === '%') {
       value = value.slice(0, -1);
     }
+  }
+  return value;
+}
+
+var dateProperties = ['createdBefore', 'createdAfter', 'dueBefore', 'dueAfter', 'followUpBefore', 'followUpAfter'];
+var completeDateExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(|\.[0-9]{0,4})([+-][0-9]{4}|Z)$/;
+function unfixDate(key, value) {
+  if(dateProperties.indexOf(key) !== -1 && completeDateExp.test(value)) {
+    return moment(value).format('YYYY-MM-DDTHH:mm:ss');
+  }
+  return value;
+}
+var simpleDateExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(|\.[0-9]{0,4})$/;
+function fixDate(key, value) {
+  if(dateProperties.indexOf(key) !== -1 && simpleDateExp.test(value)) {
+    return moment(value).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
   }
   return value;
 }
@@ -137,7 +154,7 @@ module.exports = [
       if (!isQueryVariable(key)) {
         query.push({
           key: key,
-          value: unfixLike(key, value)
+          value: unfixDate(key, unfixLike(key, value))
         });
       }
       else {
@@ -243,7 +260,7 @@ module.exports = [
         if (!isQueryVariable(key)) {
 
           // if key == '...Like' -> value = '%' + value + '%'
-          value = fixLike(key, value);
+          value = fixDate(key, fixLike(key, value));
 
           if (isExpression(value)) {
 
