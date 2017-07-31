@@ -1,6 +1,7 @@
 'use strict';
 
 var angular = require('angular');
+var moment = require('moment');
 var fs = require('fs');
 
 var searchWidgetUtils = require('../../../../../../common/scripts/util/search-widget-utils');
@@ -153,6 +154,10 @@ module.exports = function(ngModule) {
         var newValue = variable.value;
         var newType = variable.type;
 
+        if(newType === 'Date') {
+          newValue = moment(newValue).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+        }
+
         var newVariable = { value: newValue, type: newType };
         modifiedVariable[variable.name] = newVariable;
 
@@ -172,6 +177,11 @@ module.exports = function(ngModule) {
               message: 'The variable \'' + variable.name + '\' has been changed successfully.',
               duration: 5000
             });
+
+            if(newVariable.type === 'Date') {
+              newVariable.value = moment(newVariable.value).format('YYYY-MM-DDTHH:mm:ss');
+            }
+
             angular.extend(variable, newVariable);
             promise.resolve(info.variable);
           }
@@ -235,7 +245,11 @@ module.exports = function(ngModule) {
                   item.instance = instance;
                   variableCopies[item.id] = angular.copy(item);
 
-                    // prevents the list to throw an error when the activity instance is missing
+                  if(item.type === 'Date') {
+                    item.value = moment(item.value).format('YYYY-MM-DDTHH:mm:ss');
+                  }
+
+                  // prevents the list to throw an error when the activity instance is missing
                   var activityInstanceLink = '';
                   if(instance) {
                     activityInstanceLink = '<a ng-href="#/process-instance/' +

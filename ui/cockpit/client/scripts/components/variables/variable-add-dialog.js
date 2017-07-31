@@ -1,6 +1,7 @@
 'use strict';
 
 var angular = require('angular');
+var moment = require('moment');
 var fs = require('fs');
 
 var template = fs.readFileSync(__dirname + '/variable-add-dialog.html', 'utf8');
@@ -24,7 +25,7 @@ var Controller = [
   ) {
 
 
-    $scope.isProcessInstance = isProcessInstance;  
+    $scope.isProcessInstance = isProcessInstance;
 
     $scope.variableTypes = [
       'String',
@@ -76,6 +77,11 @@ var Controller = [
           name = data.name;
 
       delete data.name;
+
+      console.log('adding variable data', data);
+      if(data.type === 'Date') {
+        data.value = moment(data.value).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+      }
 
       $http
       .put(Uri.appUri('engine://engine/:engine/'+(isProcessInstance ? 'process' : 'case')+'-instance/'+instance.id+'/variables/'+name), data)
