@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var lodash = require('lodash');
+var lodash = require('camunda-commons-ui/vendor/lodash');
 
 var template = fs.readFileSync(__dirname + '/cam-cockpit-deployments.html', 'utf8');
 var searchConfigJSON = fs.readFileSync(__dirname + '/cam-cockpit-deployments-search-plugin-config.json', 'utf8');
