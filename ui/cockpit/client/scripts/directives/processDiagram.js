@@ -6,9 +6,10 @@ var template = fs.readFileSync(__dirname + '/processDiagram.html', 'utf8');
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-var DirectiveController = ['$scope', '$compile', 'Views', function( $scope,   $compile,   Views) {
+var DirectiveController = ['$scope', '$compile', '$injector', 'Views', function( $scope, $compile, $injector,Views) {
 
   $scope.vars = { read: [ 'processData', 'bpmnElement', 'pageData', 'viewer' ] };
+  var diagramPlugins = $scope.diagramProviderComponent ?  Views.getProviders({component: $scope.diagramProviderComponent}) : [];
 
   $scope.overlayProviders = Views.getProviders({ component:  $scope.overlayProviderComponent });
 
@@ -56,8 +57,19 @@ var DirectiveController = ['$scope', '$compile', 'Views', function( $scope,   $c
       addActions();
     }
 
-// update selection in case it has been provided earlier
+    // update selection in case it has been provided earlier
     updateSelection(selection);
+
+    //Apply diagram provider plugins
+    diagramPlugins.forEach(function(plugin) {
+      $injector.invoke(plugin.overlay, null, {
+        control: $scope.control,
+        processData: $scope.processData,
+        processDiagram: $scope.processDiagram,
+        pageData: $scope.pageData,
+        $scope: $scope
+      });
+    });
   };
 
   var isElementSelectable = function(element) {
@@ -111,7 +123,7 @@ var DirectiveController = ['$scope', '$compile', 'Views', function( $scope,   $c
 
     var elem = $scope.control.getElement(bpmnElement.id);
 
-    if(elem) {
+    if(elem && $scope.overlayProviders && $scope.overlayProviders.length) {
       var childScope = $scope.$new();
 
       childScope.bpmnElement = bpmnElement;
@@ -223,6 +235,7 @@ var Directive = function() {
       pageData: '=',
       overlayProviderComponent: '@',
       actionProviderComponent: '@',
+      diagramProviderComponent: '@',
       selectAll: '&',
       collapsed: '='
     },
