@@ -61,9 +61,11 @@ module.exports = [ function() {
             });
 
           }
-          else {
-            errorNotification(status, err);
+          else if (_status === 'SUBMISSION_PREVENTED') {
+            return;
           }
+
+          errorNotification(status, err);
 
         };
 
@@ -76,6 +78,10 @@ module.exports = [ function() {
             else if(msg.indexOf('is suspended') !== -1) {
               // process instance is suspended
               return 'INSTANCE_SUSPENDED';
+            }
+            else if(msg.indexOf('submission prevented') !== -1) {
+              // embedded form submission prevented
+              return 'SUBMISSION_PREVENTED';
             }
           }
           return msg;
