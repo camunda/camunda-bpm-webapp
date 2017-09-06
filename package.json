@@ -67,6 +67,7 @@
     "karma-mocha": "1.2.0",
     "karma-mocha-reporter": "2.2.0",
     "load-grunt-tasks": "0.4.0",
+    "lodash": "2.4.1",
     "mocha": "2.1.0",
     "mocha-multi": "0.7.2",
     "mocha-proshot": "1.0.1",
@@ -74,7 +75,6 @@
     "sinon": "1.17.6",
     "source-map": "0.4.4",
     "watchify": "3.7.0",
-    "xunit-file": "0.0.6",
-    "lodash": "2.4.1"
+    "xunit-file": "0.0.6"
   }
 }
