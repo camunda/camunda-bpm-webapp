@@ -12,8 +12,8 @@ var camCommons = require('camunda-commons-ui/lib');
 var ngModule = angular.module('cam.cockpit.pages.processDefinition', ['dataDepend', camCommons.name]);
 
 var Controller = [
-  '$location', '$scope', '$rootScope', '$q', 'search', 'ProcessDefinitionResource', 'ProcessInstanceResource', 'Views', 'Data', 'Transform', 'Variables', 'dataDepend', 'processDefinition', 'page',
-  function($location, $scope,   $rootScope,   $q,   search,   ProcessDefinitionResource,   ProcessInstanceResource,   Views,   Data,   Transform,   Variables,   dataDepend,   processDefinition,   page
+  '$location', '$scope', '$rootScope', '$q', 'search', 'ProcessDefinitionResource', 'ProcessInstanceResource', 'Views', 'Data', 'Transform', 'Variables', 'dataDepend', 'processDefinition', 'page', 'translateFilter',
+  function($location, $scope,   $rootScope,   $q,   search,   ProcessDefinitionResource,   ProcessInstanceResource,   Views,   Data,   Transform,   Variables,   dataDepend,   processDefinition,   page, translateFilter
   ) {
     var processData = $scope.processData = dataDepend.create($scope);
 
@@ -208,7 +208,7 @@ var Controller = [
       page.breadcrumbsClear();
 
       page.breadcrumbsAdd({
-        label: 'Processes',
+        label: translateFilter('PROCESS_DEFINITION_PROCESSES'),
         href: '#/processes/'
       });
 
@@ -442,7 +442,7 @@ var ViewConfig = [ 'ViewsProvider', function(ViewsProvider) {
   ViewsProvider.registerDefaultView('cockpit.processDefinition.view', {
     id: 'runtime',
     priority: 20,
-    label: 'Runtime',
+    label: 'BREAD_CRUMBS_RUNTIME',
     keepSearchParams: [
       'parentProcessDefinitionId',
       'businessKey',

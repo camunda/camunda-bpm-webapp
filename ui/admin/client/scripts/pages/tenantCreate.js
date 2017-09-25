@@ -4,23 +4,23 @@ var fs = require('fs');
 
 var template = fs.readFileSync(__dirname + '/tenantCreate.html', 'utf8');
 
-var Controller = ['$scope', 'page', 'camAPI', 'Notifications', '$location', function($scope, page, camAPI, Notifications, $location) {
+var Controller = ['$scope', 'page', 'camAPI', 'Notifications', '$location', 'translateFilter', function($scope, page, camAPI, Notifications, $location, translateFilter) {
 
   var TenantResource = camAPI.resource('tenant');
 
   $scope.$root.showBreadcrumbs = true;
 
-  page.titleSet('Create Tenant');
+  page.titleSet(translateFilter('TENANTS_CREATE_TENANT'));
 
   page.breadcrumbsClear();
 
   page.breadcrumbsAdd([
     {
-      label: 'Tenants',
+      label: translateFilter('TENANTS_TENANTS'),
       href: '#/tenants/'
     },
     {
-      label: 'Create New Tenant',
+      label: translateFilter('TENANTS_CREATE_NEW'),
       href: '#/tenants-create'
     }
   ]);
@@ -38,15 +38,15 @@ var Controller = ['$scope', 'page', 'camAPI', 'Notifications', '$location', func
       if( err === null ) {
         Notifications.addMessage({
           type : 'success',
-          status : 'Success',
-          message : 'Created new tenant ' + tenant.id
+          status : translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+          message : translateFilter('TENANTS_CREATE_TENANT_SUCCESS') + ' ' + tenant.id
         });
         $location.path('/tenants');
 
       } else {
         Notifications.addError({
-          status : 'Failed',
-          message : 'Failed to create tenant. Check if it already exists.'
+          status : translateFilter('NOTIFICATIONS_STATUS_FAILED'),
+          message : translateFilter('TENANTS_CREATE_TENANT_FAILED') + '.'
         });
       }
     });

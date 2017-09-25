@@ -66,6 +66,21 @@
          my-profile="{{ 'MY_PROFILE' | translate }}"
          ng-cloak
          brand-name="{{ welcomePage.appVendor }} {{ welcomePage.appName }}">
+         <ul class="languages">
+           <li class="app-switch dropdown">
+             <a href
+                class="dropdown-toggle">
+               <span class="glyphicon glyphicon-flag"></span>
+               <span class="caret"></span>
+             </a>
+
+             <ul class="dropdown-menu dropdown-menu-right">
+               <li ng-repeat="lang in welcomePage.langs" ng-class="{active : lang === welcomePage.langCurrent}">
+                 <a ng-click="welcomePage.selectLang(lang)">{{ lang  }}</a>
+               </li>
+             </ul>
+          </li>
+        </ul>
     </div>
 
     <div notifications-panel

@@ -57,36 +57,55 @@
          authentication="authentication"
          user-name="userFullName"
          current-app="admin"
+         sign-out="{{ 'SIGN_OUT_ACTION' | translate }}"
+         my-profile="{{ 'MY_PROFILE' | translate }}"
          brand-name="Camunda Admin"
          ng-cloak>
       <ul cam-if-logged-in
           ng-controller="NavigationController">
 
         <li ng-class="activeClass('#/user')">
-          <a href="#/users">Users</a>
+          <a href="#/users">{{ 'USERS_USERS' | translate }}</a>
         </li>
 
         <li ng-class="activeClass('#/group')">
-          <a href="#/groups">Groups</a>
+          <a href="#/groups">{{ 'GROUPS_GROUPS' | translate }}</a>
         </li>
 
         <li ng-class="activeClass('#/tenant')">
-          <a href="#/tenants">Tenants</a>
+          <a href="#/tenants">{{ 'TENANTS_TENANTS' | translate }}</a>
         </li>
 
         <li ng-class="activeClass('#/authorization')"
             show-if-authorized
             auth-permission="ALL"
             auth-resource-name="authorization">
-          <a href="#/authorization?resource=0">Authorizations</a>
+          <a href="#/authorization?resource=0">{{ 'AUTHORIZATION_AUTHORIZATIONS' | translate }}</a>
         </li>
         <li ng-class="activeClass('#/system')"
             show-if-authorized
             auth-permission="ALL"
             auth-resource-name="authorization">
-          <a href="#/system?section=system-settings-general">System</a>
+          <a href="#/system?section=system-settings-general">{{ 'SYSTEM_SYSTEM' | translate }}</a>
         </li>
       </ul>
+
+      <ul class="languages">
+        <li class="app-switch dropdown">
+          <a href
+             class="dropdown-toggle">
+            <span class="glyphicon glyphicon-flag"></span>
+            <span class="caret"></span>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li ng-repeat="lang in langs" ng-class="{active : lang === langCurrent}">
+              <a ng-click="selectLang(lang)">{{ lang  }}</a>
+            </li>
+          </ul>
+       </li>
+     </ul>
+
     </div>
 
     <!-- content -->

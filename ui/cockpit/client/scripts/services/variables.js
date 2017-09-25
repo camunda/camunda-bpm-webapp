@@ -1,7 +1,7 @@
   'use strict';
-
-  var VariablesFactory = [ function() {
-
+  
+  var VariablesFactory = [ 'translateFilter', function(translateFilter) {
+  
     // variable specific stuff //////////////
 
     function reverse(hash) {
@@ -65,7 +65,7 @@
         return value === 'true';
       }
 
-      throw new Error('Cannot infer type of value ' + value);
+      throw new Error( translateFilter('VARIABLE_ERROR_INFER_TYPE') + ' ' + value);
     }
 
     function typedString(value) {
@@ -87,7 +87,7 @@
       }
 
 
-      throw new Error('Cannot infer type of value ' + value);
+      throw new Error(translateFilter('VARIABLE_ERROR_INFER_TYPE') + ' ' + value);
     }
 
     /**
@@ -106,7 +106,7 @@
             value;
 
         if (!match) {
-          throw new Error('Invalid variable syntax: ' + str);
+          throw new Error(translateFilter('VARIABLE_ERROR_VARIABLE_SYNTAX') + ': ' + str);
         }
 
         value = typed(match[3]);

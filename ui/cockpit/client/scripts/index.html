@@ -53,35 +53,53 @@
           sizes="114x114"
           href="$APP_ROOT/app/cockpit/assets/images/camunda.114.png" />
   </head>
-  <body>
+  <body ng-controller="camCokpitAppCtrl">
     <!-- navigation -->
     <div cam-widget-header
          authentication="authentication"
          user-name="userFullName"
          current-app="cockpit"
          ng-cloak
+         sign-out="{{ 'SIGN_OUT_ACTION' | translate }}"
+         my-profile="{{ 'MY_PROFILE' | translate }}"
          brand-name="Camunda Cockpit">
       <ul cam-if-logged-in
           ng-controller="camHeaderViewsCtrl">
         <li ng-repeat="actionProvider in menuActions"
             ng-if="actionProvider.pagePath && actionProvider.accessible"
             ng-class="activeClass(actionProvider)">
-          <a ng-href="{{ actionProvider.pagePath }}">{{ actionProvider.label }}</a>
+          <a ng-href="{{ actionProvider.pagePath }}">{{ actionProvider.label | translate}}</a>
         </li>
 
         <li class="dropdown"
             ng-if="dropdownActions.length">
           <a class="dropdown-toggle"
-             href>More <i class="caret"></i></a>
+             href>{{ 'COCKPIT_MORE' | translate}} <i class="caret"></i></a>
           <ul class="dropdown-menu">
             <li ng-repeat="actionProvider in dropdownActions"
                 ng-if="actionProvider.pagePath && actionProvider.accessible"
                 ng-class="activeClass(actionProvider)">
-              <a ng-href="{{ actionProvider.pagePath }}">{{ actionProvider.label }}</a>
+              <a ng-href="{{ actionProvider.pagePath }}">{{ actionProvider.label | translate}}</a>
             </li>
           </ul>
         </li>
       </ul>
+
+      <ul class="languages">
+        <li class="app-switch dropdown">
+          <a href
+             class="dropdown-toggle">
+            <span class="glyphicon glyphicon-flag"></span>
+            <span class="caret"></span>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li ng-repeat="lang in langs" ng-class="{active : lang === langCurrent}">
+              <a ng-click="selectLang(lang)">{{ lang  }}</a>
+            </li>
+          </ul>
+       </li>
+     </ul>
     </div>
 
     <!-- content -->

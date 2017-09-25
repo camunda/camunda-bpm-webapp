@@ -11,9 +11,21 @@ var searchConfig = JSON.parse(searchConfigJSON);
 
 var Controller = [
   '$scope',
+  'translateFilter',
   function(
-    $scope
+    $scope, translateFilter
   ) {
+    for (var i = 0; i < searchConfig.types.length; i++) {
+      searchConfig.types[i].id.value = translateFilter(searchConfig.types[i].id.value);
+      if(searchConfig.types[i].hasOwnProperty('operators')) {
+        for (var j = 0; j < searchConfig.types[i].operators.length; j++) {
+          searchConfig.types[i].operators[j].value = translateFilter(searchConfig.types[i].operators[j].value);
+        }
+      }
+    }
+    for (var tooltip in searchConfig.tooltips) {
+      searchConfig.tooltips[tooltip] = translateFilter(searchConfig.tooltips[tooltip]);
+    }
 
     var parseValue = function(value, enforceString) {
       if(enforceString) {

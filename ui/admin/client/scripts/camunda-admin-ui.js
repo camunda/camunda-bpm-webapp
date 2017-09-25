@@ -20,6 +20,7 @@ module.exports = function(pluginDependencies) {
   var ngDependencies = [
     'ng',
     'ngResource',
+    'pascalprecht.translate',
     camCommonsUi.name,
     directivesModule.name,
     filtersModule.name,
@@ -32,6 +33,15 @@ module.exports = function(pluginDependencies) {
 
   var appNgModule = angular.module(APP_NAME, ngDependencies);
 
+  function getUri(id) {
+    var uri = $('base').attr(id);
+    if (!id) {
+      throw new Error('Uri base for ' + id + ' could not be resolved');
+    }
+
+    return uri;
+  }
+
   var ModuleConfig = [
     '$routeProvider',
     'UriProvider',
@@ -40,16 +50,6 @@ module.exports = function(pluginDependencies) {
       UriProvider
     ) {
       $routeProvider.otherwise({ redirectTo: '/' });
-
-
-      function getUri(id) {
-        var uri = $('base').attr(id);
-        if (!id) {
-          throw new Error('Uri base for ' + id + ' could not be resolved');
-        }
-
-        return uri;
-      }
 
       UriProvider.replace(':appName', 'admin');
       UriProvider.replace('app://', getUri('href'));
@@ -70,16 +70,22 @@ module.exports = function(pluginDependencies) {
       }]);
     }];
 
+  appNgModule.provider('configuration', require('./../../../common/scripts/services/cam-configuration')(window.camAdminConf, 'Admin'));
+
   appNgModule.config(ModuleConfig);
+
+  require('./../../../common/scripts/services/locales')(appNgModule, getUri('app-root'), 'admin');
 
   appNgModule.controller('camAdminAppCtrl', [
     '$scope',
     '$route',
     'camAPI',
+    'configuration',
     function(
       $scope,
       $route,
-      camAPI
+      camAPI,
+      configuration
     ) {
       var userService = camAPI.resource('user');
       function getUserProfile(auth) {
@@ -105,6 +111,14 @@ module.exports = function(pluginDependencies) {
       });
 
       getUserProfile($scope.authentication);
+
+      $scope.langs = configuration.getAvailableLocales();
+      $scope.langCurrent = localStorage.getItem('lang_cam') || navigator.language
+        || window.navigator.language || configuration.getFallbackLocale();
+      $scope.selectLang = function(langSelect) {
+        localStorage.setItem('lang_cam', langSelect);
+        location.reload();
+      };
     }]);
 
   if (typeof window.adminConf !== 'undefined' && window.adminConf.polyfills) {

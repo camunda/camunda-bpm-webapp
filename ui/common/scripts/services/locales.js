@@ -6,7 +6,6 @@ module.exports = function(ngModule, appRoot, appName) {
   ngModule.factory('localeLoader', ['$q', '$http', 'Notifications',
       function($q, $http, Notifications) {
         return function(options) {
-
           if (!options || (!angular.isString(options.prefix) || !angular.isString(options.suffix))) {
             throw new Error('Couldn\'t load static files, no prefix or suffix specified!');
           }
@@ -37,11 +36,9 @@ module.exports = function(ngModule, appRoot, appName) {
             });
             deferred.reject(options.key);
           });
-
           return deferred.promise;
         };
       }]);
-
   ngModule.config([
     '$translateProvider',
     'configurationProvider',
@@ -51,6 +48,19 @@ module.exports = function(ngModule, appRoot, appName) {
       ) {
       var avail = configurationProvider.getAvailableLocales();
       var fallback = configurationProvider.getFallbackLocale();
+      var itemLocal = localStorage.getItem('lang_cam');
+      if (itemLocal) {
+        if(avail.indexOf(itemLocal) >= 0) {
+          fallback = itemLocal;
+          var items = [];
+          items.push(itemLocal);
+          itemLocal = items;
+        }
+      }
+      if (!Array.isArray(itemLocal)) {
+        itemLocal = null;
+      }
+      avail = itemLocal || avail;
 
       $translateProvider.useLoader('localeLoader', {
         prefix: appRoot + '/app/'+ appName +'/locales/',

@@ -3,8 +3,8 @@
 var angular = require('angular');
 
 module.exports = [
-  '$scope', '$q', 'Notifications', 'JobDefinitionResource', '$modalInstance', 'jobDefinitions',
-  function($scope,   $q,   Notifications,   JobDefinitionResource,   $modalInstance,   jobDefinitions) {
+  '$scope', '$q', 'Notifications', 'JobDefinitionResource', '$modalInstance', 'jobDefinitions', 'translateFilter',
+  function($scope,   $q,   Notifications,   JobDefinitionResource,   $modalInstance,   jobDefinitions, translateFilter) {
 
     $scope.status;
     var FINISHED = 'FINISHED',
@@ -68,15 +68,15 @@ module.exports = [
 
           if ($scope.setJobPriority) {
             Notifications.addMessage({
-              status: 'Finished',
-              message: 'Overriding the priority completed successfully.',
+              status: translateFilter('BULK_OVERRIDE_STATUS_FINISHED'),
+              message: translateFilter('BULK_OVERRIDE_MESSAGE'),
               exclusive: true
             });
           }
           else {
             Notifications.addMessage({
-              status: 'Finished',
-              message: 'Clearing the priority completed successfully.',
+              status: translateFilter('BULK_OVERRIDE_STATUS_FINISHED'),
+              message: translateFilter('BULK_OVERRIDE_MESSAGE'),
               exclusive: true
             });
           }
@@ -84,15 +84,15 @@ module.exports = [
         else {
           if ($scope.setJobPriority) {
             Notifications.addError({
-              status: 'Finished',
-              message: 'Overriding the priority was not successfully.',
+              status: translateFilter('BULK_OVERRIDE_STATUS_FINISHED'),
+              message: translateFilter('BULK_OVERRIDE_ERROR_1'),
               exclusive: true
             });
           }
           else {
             Notifications.addError({
-              status: 'Finished',
-              message: 'Clearing the priority was not successfully.',
+              status: translateFilter('BULK_OVERRIDE_STATUS_FINISHED'),
+              message: translateFilter('BULK_OVERRIDE_ERROR_2'),
               exclusive: true
             });
           }

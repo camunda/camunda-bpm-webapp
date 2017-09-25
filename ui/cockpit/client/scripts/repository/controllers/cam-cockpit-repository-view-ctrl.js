@@ -11,6 +11,7 @@ module.exports = [
   'dataDepend',
   'page',
   'camAPI',
+  'translateFilter',
   function(
     $scope,
     $q,
@@ -19,17 +20,18 @@ module.exports = [
     search,
     dataDepend,
     page,
-    camAPI
+    camAPI,
+    translateFilter
   ) {
     $scope.$root.showBreadcrumbs = false;
 
     page.breadcrumbsClear();
 
     page.breadcrumbsAdd({
-      label: 'Deployments'
+      label: translateFilter('REPOSITORY_CONTROLLER_CAM_BREAD_CRUMB')
     });
 
-    page.titleSet('Deployments');
+    page.titleSet(translateFilter('REPOSITORY_CONTROLLER_CAM_TITLE_SET'));
 
     // utilities /////////////////////////////////////////////////////////////////
 

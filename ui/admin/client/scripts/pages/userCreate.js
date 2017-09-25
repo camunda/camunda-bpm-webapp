@@ -4,21 +4,21 @@ var fs = require('fs');
 
 var template = fs.readFileSync(__dirname + '/userCreate.html', 'utf8');
 
-var Controller = ['$scope', 'page', 'UserResource', 'Notifications', '$location', function($scope, page, UserResource, Notifications, $location) {
+var Controller = ['$scope', 'page', 'UserResource', 'Notifications', '$location', 'translateFilter', function($scope, page, UserResource, Notifications, $location, translateFilter) {
 
   $scope.$root.showBreadcrumbs = true;
 
-  page.titleSet('Create User');
+  page.titleSet(translateFilter('USERS_CREATE_USER'));
 
   page.breadcrumbsClear();
 
   page.breadcrumbsAdd([
     {
-      label: 'Users',
+      label: translateFilter('USERS_USERS'),
       href: '#/users/'
     },
     {
-      label: 'Create',
+      label: translateFilter('USERS_CREATE'),
       href: '#/users-create'
     }
   ]);
@@ -44,11 +44,11 @@ var Controller = ['$scope', 'page', 'UserResource', 'Notifications', '$location'
     };
 
     UserResource.createUser(user).$promise.then(function() {
-      Notifications.addMessage({ type: 'success', status: 'Success', message: 'Created new user '+user.profile.id});
+      Notifications.addMessage({ type: 'success', status: translateFilter('NOTIFICATIONS_STATUS_SUCCESS'), message: translateFilter('USERS_CREATE_SUCCESS') + ' ' + user.profile.id});
       $location.path('/users');
     },
       function() {
-        Notifications.addError({ status: 'Failed', message: 'Failed to create user. Check if it already exists.' });
+        Notifications.addError({ status: translateFilter('NOTIFICATIONS_STATUS_FAILED'), message: translateFilter('USERS_CREATE_FAILED') });
       });
   };
 

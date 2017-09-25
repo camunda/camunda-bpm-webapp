@@ -15,6 +15,7 @@ var Controller = [
   'history',
   'readonly',
   'variable',
+  'translateFilter',
   function(
     $http,
     $modalInstance,
@@ -24,7 +25,8 @@ var Controller = [
     basePath,
     history,
     readonly,
-    variable
+    variable,
+    translateFilter
   ) {
 
     var BEFORE_CHANGE = 'beforeChange',
@@ -91,8 +93,8 @@ var Controller = [
         catch(e) {
           $scope.status = BEFORE_CHANGE;
           Notifications.addError({
-            status: 'Variable',
-            message: 'Could not parse JSON input: ' + e,
+            status: translateFilter('VARIABLE_INSPECT_VARIABLE'),
+            message: translateFilter('VARIABLE_INSPECT_MESSAGE_ERR_1') + e,
             exclusive: true
           });
           return;
@@ -188,16 +190,16 @@ var Controller = [
 
     function addError(variable) {
       Notifications.addError({
-        status: 'Variable',
-        message: 'The variable \'' + variable.name + '\' could not be changed successfully.',
+        status: translateFilter('VARIABLE_INSPECT_VARIABLE'),
+        message: translateFilter('VARIABLE_INSPECT_MESSAGE_ERR_2', { name : variable.name }),
         exclusive: true
       });
     }
 
     function addMessage(variable) {
       Notifications.addMessage({
-        status: 'Variable',
-        message: 'The variable \'' + variable.name + '\' has been changed successfully.'
+        status: translateFilter('VARIABLE_INSPECT_VARIABLE'),
+        message: translateFilter('VARIABLE_INSPECT_MESSAGE_ERR_2', { name : variable.name })
       });
     }
 

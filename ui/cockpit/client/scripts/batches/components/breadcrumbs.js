@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = function(page, rootScope) {
+module.exports = function(page, rootScope, translateFilter) {
   rootScope.showBreadcrumbs = true;
 
   page.breadcrumbsClear();
 
   page.breadcrumbsAdd({
-    label: 'Batches'
+    label: translateFilter('BATCHES_BREAD_BATCHES')
   });
 
-  page.titleSet('Batches');
+  page.titleSet(translateFilter('BATCHES_TITLE_BATCHES'));
 };

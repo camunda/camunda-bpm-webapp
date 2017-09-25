@@ -6,7 +6,7 @@ var template = fs.readFileSync(__dirname + '/tenants.html', 'utf8');
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-var Controller = ['$scope', '$location', 'search', 'camAPI', 'page', function($scope, $location, search, camAPI, pageService) {
+var Controller = ['$scope', '$location', 'search', 'camAPI', 'page', 'translateFilter', function($scope, $location, search, camAPI, pageService, translateFilter) {
 
   var TenantResource = camAPI.resource('tenant');
     
@@ -56,12 +56,12 @@ var Controller = ['$scope', '$location', 'search', 'camAPI', 'page', function($s
 
   $scope.$root.showBreadcrumbs = true;
 
-  pageService.titleSet('Tenants');
+  pageService.titleSet(translateFilter('TENANTS_TENANTS'));
 
   pageService.breadcrumbsClear();
 
   pageService.breadcrumbsAdd({
-    label: 'Tenants',
+    label: translateFilter('TENANTS_TENANTS'),
     href: '#/tenants/'
   });
 }];

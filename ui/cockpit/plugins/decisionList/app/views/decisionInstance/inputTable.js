@@ -8,11 +8,12 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
 
   ViewsProvider.registerDefaultView('cockpit.decisionInstance.tab', {
     id: 'decision-input-table',
-    label: 'Inputs',
+    label: 'PLUGIN_INPUT_TABLE_LABEL',
     template: template,
     controller: [
       '$scope',
-      function($scope) {
+      'translateFilter',
+      function($scope, translateFilter) {
         $scope.loadingState = $scope.decisionInstance.inputs.length > 0 ? 'LOADED' : 'EMPTY';
 
         $scope.variables = $scope.decisionInstance.inputs.map(function(variable) {
@@ -25,8 +26,14 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
             }
           };
         });
+
+        // Variables table header
+        $scope.getHeaderVariable = {
+          'name' : translateFilter('PLUGIN_INPUT_TABLE_LABEL_NAME'),
+          'type': translateFilter('PLUGIN_INPUT_TABLE_LABEL_TYPE'),
+          'value' : translateFilter('PLUGIN_INPUT_TABLE_LABEL_VALUE')
+        };
       }],
     priority: 20
   });
 }];
-

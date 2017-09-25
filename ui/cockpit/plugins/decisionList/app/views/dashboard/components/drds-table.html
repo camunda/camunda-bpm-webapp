@@ -1,15 +1,14 @@
 <section ng-if="isDrdAvailable">
   <div class="inner">
     <header>
-      <h1 class="section-title">{{drdsCount}} decision requirements
-        {{ (drdsCount > 1 ? 'definitions' : 'definition') }} deployed</h1>
+      <h1 class="section-title">{{ (decisionCount > 1 ? 'PLUGIN_DRDS_TABLE_TITLE_DEFINITIONS' : 'PLUGIN_DRDS_TABLE_TITLE_DEFINITION' | translate:'{count: drdsCount}') }}</h1>
     </header>
 
     <table class="drd-definitions-list cam-table" ng-if="drdsCount">
       <thead>
         <tr>
-          <th class="name">Name</th>
-          <th class="tenant-id">Tenant ID</th>
+          <th class="name">{{ 'PLUGIN_DRDS_NAME' | translate }}</th>
+          <th class="tenant-id">{{ 'PLUGIN_DRDS_TENANT_ID' | translate }}</th>
         </tr>
       </thead>
 
@@ -28,7 +27,7 @@
     </table>
 
     <h3 ng-if="!drdsCount">
-      No decision requirements definitions deployed
+      {{ 'PLUGIN_DRDS_NO_DECISION_REQUIREMENTS' | translate }}
     </h3>
   </div>
 </section>

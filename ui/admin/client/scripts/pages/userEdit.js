@@ -13,8 +13,8 @@ module.exports = [ '$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/:userId', {
     template: template,
     controller: [
-      '$scope', 'page', '$routeParams', 'camAPI', 'Notifications', '$location', '$modal', 'authentication',
-      function($scope,   page,   $routeParams,   camAPI,   Notifications,   $location,   $modal,   authentication) {
+      '$scope', 'page', '$routeParams', 'camAPI', 'Notifications', '$location', '$modal', 'authentication', 'translateFilter',
+      function($scope,   page,   $routeParams,   camAPI,   Notifications,   $location,   $modal,   authentication, translateFilter) {
 
         var AuthorizationResource = camAPI.resource('authorization'),
             GroupResource         = camAPI.resource('group'),
@@ -32,7 +32,7 @@ module.exports = [ '$routeProvider', function($routeProvider) {
         var refreshBreadcrumbs = function() {
           page.breadcrumbsClear();
           page.breadcrumbsAdd({
-            label: 'Users',
+            label: translateFilter('USERS_USERS'),
             href: '#/users/'
           });
         };
@@ -90,7 +90,7 @@ module.exports = [ '$routeProvider', function($routeProvider) {
             $scope.profile = angular.copy(res);
             $scope.profileCopy = angular.copy(res);
 
-            page.titleSet('Edit `' + $scope.user + '` user');
+            page.titleSet(translateFilter('USERS_EDIT_USER') + ' ' + $scope.user);
 
             refreshBreadcrumbs();
 
@@ -107,16 +107,16 @@ module.exports = [ '$routeProvider', function($routeProvider) {
             if( err === null ) {
               Notifications.addMessage({
                 type : 'success',
-                status : 'Success',
-                message : 'User profile successfully updated.'
+                status : translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+                message : translateFilter('USERS_EDIT_SUCCESS_MSN')
               });
               loadProfile();
 
             } else {
 
               Notifications.addError({
-                status : 'Failed',
-                message : 'Failed to update user profile'
+                status : translateFilter('NOTIFICATIONS_STATUS_FAILED'),
+                message : translateFilter('USERS_EDIT_FAILED')
               });
             }
           });
@@ -143,8 +143,8 @@ module.exports = [ '$routeProvider', function($routeProvider) {
             if( err === null ) {
               Notifications.addMessage({
                 type: 'success',
-                status: 'Password',
-                message: 'Changed the password.',
+                status: translateFilter('NOTIFICATIONS_STATUS_PASSWORD'),
+                message: translateFilter('USERS_PASSWORD_CHANGED'),
                 duration: 5000,
                 exclusive: true
               });
@@ -154,22 +154,22 @@ module.exports = [ '$routeProvider', function($routeProvider) {
               if( err.status === 400 ) {
                 if( $scope.decodedUserId === $scope.authenticatedUser ) {
                   Notifications.addError({
-                    status : 'Password',
-                    message : 'Old password is not valid.',
+                    status : translateFilter('NOTIFICATIONS_STATUS_PASSWORD'),
+                    message : translateFilter('USERS_OLD_PASSWORD_NOT_VALID'),
                     exclusive : true
                   });
 
                 } else {
                   Notifications.addError({
-                    status : 'Password',
-                    message : 'Your password is not valid.',
+                    status : translateFilter('NOTIFICATIONS_STATUS_PASSWORD'),
+                    message : translateFilter('USERS_PASSWORD_NOT_VALID'),
                     exclusive : true
                   });
                 }
               } else {
                 Notifications.addError({
-                  status : 'Password',
-                  message : 'Could not change the password.'
+                  status : translateFilter('NOTIFICATIONS_STATUS_PASSWORD'),
+                  message : translateFilter('USERS_PASSWORD_COULD_NOT_CHANGE')
                 });
               }
             }
@@ -182,14 +182,14 @@ module.exports = [ '$routeProvider', function($routeProvider) {
           $modal.open({
             template: confirmationTemplate,
             controller: ['$scope', function($dialogScope) {
-              $dialogScope.question = 'Really delete user ' + $scope.user.id + '?';
+              $dialogScope.question = translateFilter('USERS_USER_DELETE_CONFIRM') + ' ' + $scope.user.id + '?';
             }]
           }).result.then(function() {
             UserResource.delete({ id: $scope.encodedUserId }, function() {
               Notifications.addMessage({
                 type: 'success',
-                status: 'Success',
-                message: 'User '+$scope.user.id+' successfully deleted.'
+                status: translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+                message: translateFilter('USERS_USER_DELETE_USER') + ' ' + $scope.user.id + ' ' + translateFilter('USERS_USER_DELETE_SUCCESS') + '.'
               });
               $location.path('/users');
             }
@@ -224,8 +224,8 @@ module.exports = [ '$routeProvider', function($routeProvider) {
           GroupResource.deleteMember({ userId: $scope.encodedUserId, id: encodedGroupId}, function() {
             Notifications.addMessage({
               type:'success',
-              status:'Success',
-              message:'User '+$scope.user.id+' removed from group.'
+              status:translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+              message: translateFilter('USERS_USER_DELETE_USER') + ' ' + $scope.user.id + ' ' + translateFilter('USERS_USER_DELETE_FROM_GROUP')
             });
             loadGroups();
           }
@@ -281,8 +281,8 @@ module.exports = [ '$routeProvider', function($routeProvider) {
           TenantResource.deleteUserMember({userId: $scope.encodedUserId, id: encodedTenantId}, function() {
             Notifications.addMessage({
               type:'success',
-              status:'Success',
-              message:'User '+$scope.user.id+' removed from tenant.'
+              status:translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+              message: translateFilter('USERS_USER_DELETE_USER') + ' ' + $scope.user.id + ' ' + translateFilter('USERS_USER_DELETE_FROM_TENANT')
             });
             loadTenants();
           }

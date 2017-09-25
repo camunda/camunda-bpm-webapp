@@ -10,10 +10,10 @@ window.camWelcomeConf = {
   //   "long":   "LLLL"
   // },
   //
-  // "locales": {
-  //    "availableLocales": ["en", "de"],
-  //    "fallbackLocale": "en"
-  //  },
+  'locales': {
+    'availableLocales': ['es', 'en'],
+    'fallbackLocale': 'en'
+  }
   // links: [
   //   {
   //     label: 'Angular.js Docs',

@@ -2,7 +2,7 @@
 var throttle = require('lodash').throttle;
 
 
-function PieChart(options) {
+function PieChart(options, translateFilter) {
   this.canvas = options.canvas || document.createElement('canvas');
 
   this.resize(options.width || this.canvas.width, options.height || this.canvas.height);
@@ -11,7 +11,7 @@ function PieChart(options) {
 
   this.lineWidth = options.lineWidth || 1;
 
-  this.missingData = [{color: '#959595', label: 'No Data', value: 1}];
+  this.missingData = [{color: '#959595', label: translateFilter('PIE_CHART_NO_DATA'), value: 1}];
 
   this.setData(this.missingData);
 }
@@ -139,7 +139,7 @@ proto.draw = function() {
   return this;
 };
 
-module.exports = ['$location', '$window', function($location, $window) {
+module.exports = ['$location', '$window', 'translateFilter', function($location, $window, translateFilter) {
   return {
     restrict: 'A',
 
@@ -156,7 +156,7 @@ module.exports = ['$location', '$window', function($location, $window) {
       var pieChart = new PieChart({
         canvas: $element[0].querySelector('canvas'),
         lineColors: $scope.colors
-      });
+      }, translateFilter);
 
       function getMousePos(evt) {
         var rect = pieChart.canvas.getBoundingClientRect();
@@ -202,13 +202,13 @@ module.exports = ['$location', '$window', function($location, $window) {
         $window.removeEventListener('resize', _resize);
       });
     },
-
+    
     template: '<div class="pie-chart">' +
                 '<div class="canvas-holder">' +
                   '<canvas width="150" height="150"></canvas>' +
                 '</div>' +
 
-                '<h4 class="legend-holder text-center" ng-if="values[0].label !== \'No Data\'">' +
+                '<h4 class="legend-holder text-center" ng-if="values[0].label !== \'' + translateFilter('PIE_CHART_NO_DATA') + '\'">' +
                   '<span ng-if="hoveredSlice.value" ng-style="{color: hoveredSlice.color}">{{ hoveredSlice.value | abbreviateNumber }}: {{ hoveredSlice.label }}</span>' +
                   '<span ng-if="!hoveredSlice.value">{{ placeholder }}</span>' +
                 '</h4>' +

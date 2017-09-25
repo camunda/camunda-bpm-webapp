@@ -3,7 +3,7 @@
       ng-show="activityInstanceStatistics"
       ng-click="selectRunningInstances($event)">
   <span class="badge"
-        tooltip="Running Activity Instances"
+        tooltip="{{ 'PLUGIN_ACTIVITY_INSTANCE_RUNNING_ACTIVITY_INSTANCES' | translate }}"
         tooltip-placement="top"
         tooltip-animation="false"
         ng-show="activityInstanceStatistics.instances   && activityInstanceStatistics.instances.length ||
@@ -12,7 +12,7 @@
   </span>
 
   <span class="badge badge-important"
-        tooltip="Open Incidents"
+        tooltip="{{ 'PLUGIN_ACTIVITY_INSTANCE_OPEN_INCIDENTS' | translate }}"
         tooltip-placement="top"
         tooltip-animation="false"
         ng-show="activityInstanceStatistics.incidents   && activityInstanceStatistics.incidents.length ||

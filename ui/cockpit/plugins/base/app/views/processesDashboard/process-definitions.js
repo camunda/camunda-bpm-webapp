@@ -59,6 +59,16 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
         $scope.selectTab = function(tab) {
           $scope.activeTab = tab;
         };
+        
+        
+        /**
+         * Custom function for translation
+         */
+        $scope.getLanguage = function() {
+          var lang = localStorage.getItem('lang_cam') || window.navigator.language || navigator.language;
+          return lang;
+        };        
+        
       }],
 
     priority: 0

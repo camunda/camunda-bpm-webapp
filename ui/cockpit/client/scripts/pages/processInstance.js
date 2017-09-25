@@ -21,10 +21,10 @@ var ngModule = angular.module('cam.cockpit.pages.processInstance',
 var Controller = [
   '$scope', '$filter', '$rootScope', '$location', 'search', 'ProcessDefinitionResource', 'ProcessInstanceResource',
   'IncidentResource', 'Views', 'Data', 'Transform', 'processInstance', 'dataDepend', 'page', 'breadcrumbTrails',
-  'integrateActivityInstanceFilter', 'isModuleAvailable',
+  'integrateActivityInstanceFilter', 'isModuleAvailable', 'translateFilter',
   function($scope, $filter, $rootScope, $location, search, ProcessDefinitionResource, ProcessInstanceResource,
       IncidentResource, Views, Data, Transform, processInstance,   dataDepend, page, breadcrumbTrails,
-      integrateActivityInstanceFilter, isModuleAvailable) {
+      integrateActivityInstanceFilter, isModuleAvailable, translateFilter) {
 
     $scope.hasMigrationPlugin = isModuleAvailable('cockpit.plugin.migration');
     $scope.processInstance = processInstance;
@@ -307,7 +307,7 @@ var Controller = [
     function(processDefinition,   processInstance,   superProcessInstanceCount) {
       var crumbs = [
         {
-          label: 'Processes',
+          label: translateFilter('PROCESS_INSTANCE_PROCESSES'),
           href: '#/processes/'
         }
       ];
@@ -351,7 +351,7 @@ var Controller = [
 
       page.titleSet([
         $scope.processDefinition.name || $scope.processDefinition.id,
-        'Instance View'
+        translateFilter('PROCESS_INSTANCE_INSTANCE_VIEW')
       ].join(' | '));
     });
 
@@ -546,7 +546,8 @@ var Controller = [
 ngModule
     .controller('ProcessInstanceFilterController', [
       '$scope',
-      function($scope) {
+      'translateFilter',
+      function($scope, translateFilter) {
         var processData = $scope.processData.newChild($scope),
             filterData;
 
@@ -581,6 +582,15 @@ ngModule
           processData.set('filter', filterData.filter);
         };
 
+        $scope.getDataWhen = function(value) {
+          return {
+            'null' : translateFilter('PAGES_PROCESS_INSTANCES_NOTHING'),
+            '0': translateFilter('PAGES_PROCESS_INSTANCES_NOTHING'),
+            'one': translateFilter('PAGES_PROCESS_INSTANCES_ONE_SELECT'),
+            'other': translateFilter('PAGES_PROCESS_INSTANCES_OTHER_SELECT', { count: value })
+          };
+        };
+
         $scope.sidebarTab = 'info';
       }]);
 
@@ -599,11 +609,11 @@ var RouteConfig = [
       authentication: 'required',
       resolve: {
         processInstance: [
-          'ResourceResolver', 'ProcessInstanceResource', 'Uri', 'Views', 'Notifications', '$route', '$http', '$location',
-          function(ResourceResolver,   ProcessInstanceResource,   Uri,   Views,   Notifications,   $route,   $http,   $location) {
+          'ResourceResolver', 'ProcessInstanceResource', 'Uri', 'Views', 'Notifications', '$route', '$http', '$location', 'translateFilter',
+          function(ResourceResolver,   ProcessInstanceResource,   Uri,   Views,   Notifications,   $route,   $http,   $location, translateFilter) {
 
             return ResourceResolver.getByRouteParam('id', {
-              name: 'running process instance',
+              name: translateFilter('PROCESS_INSTANCE_RUNNING_PROCESS_INSTANCE'),
 
               resolve: function(id) {
                 return ProcessInstanceResource.get({ id : id });
@@ -618,8 +628,8 @@ var RouteConfig = [
                   var path;
                   var search;
 
-                  var status = 'Unable to display running process instance';
-                  var message = 'Process instance with ID ' + id + ' has been completed. Redirecting to ';
+                  var status = translateFilter('PROCESS_INSTANCE_STATUS_UNABLE_DISPLAY_RUNNING_INSTANCE');
+                  var message = translateFilter('PROCESS_INSTANCE_MESSAGE_1') + ' ' + id + ' ' + translateFilter('PROCESS_INSTANCE_MESSAGE_2') + ' ';
 
                   var historyProvider = Views.getProvider({
                     id: 'history',
@@ -631,12 +641,12 @@ var RouteConfig = [
                     search = $location.search();
                     path = '/process-instance/' + id + '/history';
 
-                    message = message + 'historic process instance view.';
+                    message = message + translateFilter('PROCESS_INSTANCE_MESSAGE_3') + '.';
                   }
                   else {
                     path = '/process-definition/' + result.processDefinitionId;
 
-                    message = message + 'process definition view.';
+                    message = message + translateFilter('PROCESS_INSTANCE_MESSAGE_4') + '.';
                   }
 
                   $location.path(path);
@@ -659,8 +669,8 @@ var RouteConfig = [
                   $location.replace();
 
                   Notifications.addError({
-                    status: 'Failed to display running process instance',
-                    message: 'No running process instance with ID ' + id,
+                    status: translateFilter('PROCESS_INSTANCE_STATUS_FAILED_RUNNING_PROCESS'),
+                    message: translateFilter('PROCESS_INSTANCE_MESSAGE_5') + ' ' + id,
                     http: true,
                     exclusive: [ 'http' ]
                   });
@@ -677,7 +687,7 @@ var ViewConfig = [ 'ViewsProvider', function(ViewsProvider) {
   ViewsProvider.registerDefaultView('cockpit.processInstance.view', {
     id: 'runtime',
     priority: 20,
-    label: 'Runtime',
+    label: 'BREAD_CRUMBS_RUNTIME',
     keepSearchParams: [ 'viewbox' ]
   });
 }];

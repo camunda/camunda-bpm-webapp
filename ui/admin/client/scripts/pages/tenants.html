@@ -4,13 +4,13 @@
   <div class="section-content">
     <header class="row">
       <div class="col-xs-8">
-        <h3>List of tenants</h3>
+        <h3>{{ 'TENANTS_LIST_OF_TENANTS' | translate }}</h3>
       </div>
       <div class="col-xs-4 text-right"
            ng-show="availableOperations.create">
         <a href="#/tenant-create"
            class="btn btn-default">
-          Create new tenant
+          {{ 'TENANTS_CREATE_NEW_TENANT' | translate }}
           <span class="glyphicon glyphicon-plus-sign"></span>
         </a>
       </div>
@@ -18,13 +18,13 @@
 
     <div cam-widget-loader
          loading-state="{{ loadingState }}"
-         text-empty="There are no tenants in the system.">
+         text-empty="{{ 'TENANTS_NO_TENANTS' | translate }}">
       <table class="cam-table">
         <thead>
           <tr>
-            <th class="id">Tenant ID</th>
-            <th class="name">Tenant Name</th>
-            <th class="action">Action</th>
+            <th class="id">{{ 'TENANTS_TENANT_ID' | translate }}</th>
+            <th class="name">{{ 'TENANTS_TENANT_NAME' | translate }}</th>
+            <th class="action">{{ 'TENANTS_ACTION' | translate }}</th>
           </tr>
         </thead>
 
@@ -39,7 +39,7 @@
             </td>
 
             <td class="action">
-              <a ng-href="#/tenants/{{ tenant.id | escape }}">Edit</a>
+              <a ng-href="#/tenants/{{ tenant.id | escape }}">{{ 'TENANTS_EDIT' | translate }}</a>
             </td>
           </tr>
         </tbody>
@@ -49,7 +49,7 @@
     <div ng-show="loadingState === 'EMPTY' && pages.total && (!tenantList || !tenantList.length)"
          class="well">
       <span class="glyphicon glyphicon-info-sign"></span>
-      The current search parameters could not retrieve any tenants. Try to <a ng-click="pageChange(1)">reset page number.</a>
+      {{ 'TENANTS_TENANT_INFO_MESSAGE_1' | translate }} <a ng-click="pageChange(1)">{{ 'TENANTS_TENANT_INFO_MESSAGE_2' | translate }}</a>
     </div>
 
     <pagination ng-if="pages.total > pages.size"

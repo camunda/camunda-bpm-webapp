@@ -15,9 +15,9 @@ var uploadTemplate = require('../../../../../client/scripts/components/variables
 module.exports = function(ngModule) {
   ngModule.controller('VariableInstancesController', [
     '$scope', '$sce', '$http', 'search', 'Uri', 'LocalExecutionVariableResource',
-    'Notifications', '$modal', '$q', 'camAPI', 'createIsSearchQueryChangedFunction',
+    'Notifications', '$modal', '$q', 'camAPI', 'createIsSearchQueryChangedFunction', 'translateFilter',
     function($scope, $sce, $http, search, Uri, LocalExecutionVariableResource,
-      Notifications, $modal, $q, camAPI, createIsSearchQueryChangedFunction) {
+      Notifications, $modal, $q, camAPI, createIsSearchQueryChangedFunction, translateFilter) {
 
         // input: processInstance, processData
 
@@ -40,6 +40,17 @@ module.exports = function(ngModule) {
       variableInstanceData.provide('pages', pages);
 
       $scope.searchConfig = angular.copy(variableInstancesTabSearchConfig);
+      for (var i = 0; i < $scope.searchConfig.types.length; i++) {
+        $scope.searchConfig.types[i].id.value = translateFilter($scope.searchConfig.types[i].id.value);
+        if($scope.searchConfig.types[i].hasOwnProperty('operators')) {
+          for (var j = 0; j < $scope.searchConfig.types[i].operators.length; j++) {
+            $scope.searchConfig.types[i].operators[j].value = translateFilter($scope.searchConfig.types[i].operators[j].value);
+          }
+        }
+      }
+      for (var tooltip in $scope.searchConfig.tooltips) {
+        $scope.searchConfig.tooltips[tooltip] = translateFilter($scope.searchConfig.tooltips[tooltip]);
+      }
       variableInstanceData.provide('searches', angular.copy($scope.searchConfig.searches));
 
       $scope.$watch('searchConfig.searches', function(newValue, oldValue) {
@@ -102,16 +113,16 @@ module.exports = function(ngModule) {
         var callback = function(error) {
           if(error) {
             Notifications.addError({
-              status: 'Variable',
-              message: 'The variable \'' + info.variable.name + '\' could not be deleted successfully.',
+              status: translateFilter('PLUGIN_VARIABLE_INSTANCES_STATUS_VARIABLE'),
+              message: translateFilter('PLUGIN_VARIABLE_INSTANCES_MESSAGES_ERROR_0', { name: info.variable.name }),
               exclusive: true,
               duration: 5000
             });
             promise.reject();
           } else {
             Notifications.addMessage({
-              status: 'Variable',
-              message: 'The variable \'' + info.variable.name + '\' has been deleted successfully.',
+              status: translateFilter('PLUGIN_VARIABLE_INSTANCES_STATUS_VARIABLE'),
+              message: translateFilter('PLUGIN_VARIABLE_INSTANCES_MESSAGES_ADD_0', { name: info.variable.name }),
               duration: 5000
             });
             promise.resolve(info.variable);
@@ -179,8 +190,8 @@ module.exports = function(ngModule) {
         var callback = function(error) {
           if(error) {
             Notifications.addError({
-              status: 'Variable',
-              message: 'The variable \'' + variable.name + '\' could not be changed successfully.',
+              status: translateFilter('PLUGIN_VARIABLE_INSTANCES_STATUS_VARIABLE'),
+              message: translateFilter('PLUGIN_VARIABLE_INSTANCES_MESSAGES_ERROR_1', { name: variable.name }),
               exclusive: true,
               duration: 5000
             });
@@ -188,8 +199,8 @@ module.exports = function(ngModule) {
             promise.reject();
           } else {
             Notifications.addMessage({
-              status: 'Variable',
-              message: 'The variable \'' + variable.name + '\' has been changed successfully.',
+              status: translateFilter('PLUGIN_VARIABLE_INSTANCES_STATUS_VARIABLE'),
+              message: translateFilter('PLUGIN_VARIABLE_INSTANCES_MESSAGES_ADD_1', { name: variable.name}),
               duration: 5000
             });
             angular.extend(variable, newVariable);
@@ -212,6 +223,13 @@ module.exports = function(ngModule) {
         return promise.promise;
       };
 
+      // Variables table header
+      $scope.getHeaderVariable = {
+        'name' : translateFilter('PLUGIN_VARIABLE_NAME'),
+        'value': translateFilter('PLUGIN_VARIABLE_VALUE'),
+        'type' : translateFilter('PLUGIN_VARIABLE_TYPE'),
+        'scope' : translateFilter('PLUGIN_VARIABLE_SCOPE')
+      };
 
       function getBasePath(variable) {
         return 'engine://engine/:engine/execution/' + variable.executionId + '/localVariables/' + variable.name;
@@ -298,7 +316,7 @@ module.exports = function(ngModule) {
 
     ViewsProvider.registerDefaultView('cockpit.processInstance.runtime.tab', {
       id: 'variables-tab',
-      label: 'Variables',
+      label: 'PLUGIN_VARIABLE_INSTANCES_LABEL',
       template: instancesTemplate,
       controller: 'VariableInstancesController',
       priority: 20

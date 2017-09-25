@@ -2,7 +2,7 @@
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-module.exports = ['$scope', '$q', 'Uri', 'camAPI', 'Views', function($scope, $q, Uri, camAPI, Views) {
+module.exports = ['$scope', '$q', 'Uri', 'camAPI', 'Views', 'translateFilter', function($scope, $q, Uri, camAPI, Views, translateFilter) {
 
   // utilities ///////////////////////////////////////////////////
 
@@ -139,7 +139,7 @@ module.exports = ['$scope', '$q', 'Uri', 'camAPI', 'Views', function($scope, $q,
 
           if (err) {
             $scope.loadingState = 'ERROR';
-            $scope.textError = err.message || 'Failed to load definitions.';
+            $scope.textError = err.message || translateFilter('REPOSITORY_DEPLOYMENT_RESOURCE_CTRL_MSN');
             return deferred.reject(err);
           }
 

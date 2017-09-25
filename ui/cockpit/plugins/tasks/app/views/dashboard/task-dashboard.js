@@ -10,8 +10,8 @@ module.exports = ['ViewsProvider', function(ViewsProvider) {
     label : 'Task Dashboard',
     template : template,
     controller : [
-      '$scope', '$q', 'Views', 'camAPI', 'dataDepend', 'search', 'Notifications',
-      function($scope, $q, Views, camAPI, dataDepend, search, Notifications) {
+      '$scope', '$q', 'Views', 'camAPI', 'dataDepend', 'search', 'Notifications', 'translateFilter',
+      function($scope, $q, Views, camAPI, dataDepend, search, Notifications, translateFilter) {
 
         var tasksPluginData = dataDepend.create($scope);
 
@@ -22,21 +22,21 @@ module.exports = ['ViewsProvider', function(ViewsProvider) {
           {
             // assigned to users
             'state' : undefined,
-            'label' : 'assigned to a user',
+            'label' : translateFilter('PLUGIN_TASK_ASSIGNED_TO_USER'),
             'count' : 0,
             'search': 'openAssignedTasks'
           },
           {
             // assigned to groups
             'state' : undefined,
-            'label' : 'assigned to 1 or more groups',
+            'label' : translateFilter('PLUGIN_TASK_ASSIGNED_TO_ONE'),
             'count' : 0,
             'search': 'openGroupTasks'
           },
           {
             // assigned neither to groups nor to users
             'state' : undefined,
-            'label' : 'unassigned',
+            'label' : translateFilter('PLUGIN_TASK_ASSIGNED_UNASSIGNED'),
             'count' : 0,
             'search': 'openUnassignedTasks'
           }
@@ -49,7 +49,7 @@ module.exports = ['ViewsProvider', function(ViewsProvider) {
           var resourceCallback = function(err, res) {
             if (err) {
               Notifications.addError({
-                status: 'Could not fetch the resource for \'' + resourceName + '\'',
+                status: translateFilter('PLUGIN_TASK_ASSIGNED_ERR_COULD_NOT', {err: resourceName}),
                 message: err.toString()
               });
               deferred.reject(err);

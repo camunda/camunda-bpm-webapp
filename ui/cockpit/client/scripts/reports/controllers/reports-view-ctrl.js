@@ -11,12 +11,14 @@ var Controller = [
   'page',
   'dataDepend',
   'Views',
+  'translateFilter',
   function(
   $scope,
   $route,
   page,
   dataDepend,
-  Views
+  Views,
+  translateFilter
 ) {
     $scope.selectedReportId = (($route.current || {}).params || {}).reportType || null;
 
@@ -51,7 +53,7 @@ var Controller = [
       if (reportTypePlugin.length) {
         page.breadcrumbsAdd([
           {
-            label: 'Reports',
+            label: translateFilter('REPORTS_VIEW_BREAD_CRUMB'),
             href: '#/reports'
           },
           {
@@ -59,15 +61,15 @@ var Controller = [
           }
         ]);
 
-        page.titleSet(reportTypePlugin[0].label + ' report');
+        page.titleSet(translateFilter('REPORTS_VIEW_TITLE_SET', { name: reportTypePlugin[0].label }));
       }
     }
     else {
       page.breadcrumbsAdd({
-        label: 'Reports'
+        label: translateFilter('REPORTS_VIEW_BREAD_CRUMB')
       });
 
-      page.titleSet('Reports');
+      page.titleSet(translateFilter('REPORTS_VIEW_BREAD_CRUMB'));
     }
 
 

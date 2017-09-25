@@ -24,13 +24,15 @@ module.exports = [ function() {
       'Views',
       'Notifications',
       'search',
+      'translateFilter',
       function(
         $scope,
         $q,
         $location,
         Views,
         Notifications,
-        search
+        search,
+        translateFilter
       ) {
 
         // utilities ///////////////////////////////////////////////////////////////////
@@ -54,11 +56,11 @@ module.exports = [ function() {
           if (msg) {
 
             if(msg.indexOf('does not exist') === -1) {
-              return 'The deployment resource does not exist anymore';
+              return translateFilter('REPOSITORY_DEPLOYMENT_RESOURCE_DIRECTIVES_RETURN_1');
             }
 
           }
-          return 'Could not load deployment resource';
+          return translateFilter('REPOSITORY_DEPLOYMENT_RESOURCE_DIRECTIVES_RETURN_2');
         };
 
         var clearResource = function() {

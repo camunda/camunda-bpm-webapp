@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var template = fs.readFileSync(__dirname + '/time-to-live.html', 'utf8');
 
-module.exports = ['camAPI', '$window' , 'Notifications', function(camAPI, $window, Notifications) {
+module.exports = ['camAPI', '$window' , 'Notifications', 'translateFilter', function(camAPI, $window, Notifications, translateFilter) {
   return {
     restrict: 'A',
     template: template,
@@ -34,10 +34,10 @@ module.exports = ['camAPI', '$window' , 'Notifications', function(camAPI, $windo
 
       $scope.format = function(property) {
         if (property === 1) {
-          return property + ' day';
+          return property + ' ' + translateFilter('TIME_TO_LIVE_DAY');
         }
 
-        return property + ' days';
+        return property + ' ' + translateFilter('TIME_TO_LIVE_DAYS');
       };
 
       function updateValue(timeToLive) {
@@ -50,7 +50,7 @@ module.exports = ['camAPI', '$window' , 'Notifications', function(camAPI, $windo
           $scope.definition.historyTimeToLive = lastValue;
 
           Notifications.addError({
-            status: 'Failed to update history time to live',
+            status: translateFilter('TIME_TO_LIVE_MESSAGE_ERR'),
             message: error
           });
         })

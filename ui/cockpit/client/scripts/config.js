@@ -13,4 +13,9 @@ window.camCockpitConf = {
   //     'custom-ui': 'custom-ui/scripts'
   //   }
   // }
+		
+  'locales': {
+    'availableLocales': ['es', 'en'],
+    'fallbackLocale': 'en'
+  }
 };

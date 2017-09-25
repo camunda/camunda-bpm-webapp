@@ -17,6 +17,7 @@ var Controller = [
   'Notifications',
   '$location',
   '$modal',
+  'translateFilter',
   function(
     $scope,
     pageService,
@@ -25,7 +26,8 @@ var Controller = [
     camAPI,
     Notifications,
     $location,
-    $modal
+    $modal,
+    translateFilter
   ) {
 
     var AuthorizationResource = camAPI.resource('authorization'),
@@ -37,7 +39,7 @@ var Controller = [
     var refreshBreadcrumbs = function() {
       pageService.breadcrumbsClear();
       pageService.breadcrumbsAdd({
-        label: 'Groups',
+        label: translateFilter('GROUP_EDIT_GROUPS'),
         href: '#/groups/'
       });
     };
@@ -50,7 +52,7 @@ var Controller = [
 
     $scope.$root.showBreadcrumbs = true;
 
-    pageService.titleSet('Group');
+    pageService.titleSet(translateFilter('GROUP_EDIT_GROUP'));
     refreshBreadcrumbs();
 
     $scope.group = null;
@@ -83,7 +85,7 @@ var Controller = [
         $scope.groupName = (res.name ? res.name : res.id);
         $scope.groupCopy = angular.copy(res);
 
-        pageService.titleSet($scope.groupName + ' Group');
+        pageService.titleSet($scope.groupName + ' ' + translateFilter('GROUP_EDIT_GROUP') );
 
         refreshBreadcrumbs();
         pageService.breadcrumbsAdd({
@@ -197,8 +199,8 @@ var Controller = [
       TenantResource.deleteGroupMember({ groupId: $scope.encodedGroupId, id: encodedTenantId }, function() {
         Notifications.addMessage({
           type:'success',
-          status:'Success',
-          message:'Group '+$scope.group.id+' removed from tenant.'
+          status: translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+          message: translateFilter('GROUP_EDIT_GROUP') + ' ' + $scope.group.id + ' ' + translateFilter('GROUP_EDIT_REMOVED_FROM_TENANT') + '.'
         });
         updateGroupTenantView();
       });
@@ -209,15 +211,15 @@ var Controller = [
         if( err === null ) {
           Notifications.addMessage({
             type : 'success',
-            status : 'Success',
-            message : 'Group successfully updated.'
+            status : translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+            message : translateFilter('GROUP_EDIT_UPDATE_SUCCCESS')
           });
           loadGroup();
 
         } else {
           Notifications.addError({
-            status : 'Failed',
-            message : 'Failed to update group'
+            status : translateFilter('NOTIFICATIONS_STATUS_FAILED'),
+            message : translateFilter('GROUP_EDIT_UPDATE_FAILED')
           });
         }
       });
@@ -229,21 +231,21 @@ var Controller = [
       $modal.open({
         template: confirmationTemplate,
         controller: ['$scope', function($dialogScope) {
-          $dialogScope.question = 'Really delete group ' + $scope.group.id + '?';
+          $dialogScope.question =  translateFilter('GROUP_EDIT_DELETE_CONFIRM') + ' ' + $scope.group.id + '?';
         }]
       }).result.then(function() {
         GroupResource.delete({ id: $scope.encodedGroupId }, function(err) {
           if( err === null ) {
             Notifications.addMessage({
               type : 'success',
-              status : 'Success',
-              message : 'Group ' + $scope.group.id + ' successfully deleted.'
+              status : translateFilter('NOTIFICATIONS_STATUS_SUCCESS'),
+              message : translateFilter('GROUP_EDIT_GROUP') + ' ' + $scope.group.id + translateFilter('GROUP_EDIT_DELETE_SUCCCESS') + '.'
             });
             $location.path('/groups');
           } else {
             Notifications.addError({
-              status : 'Failed',
-              message : 'Failed to delete group'
+              status : translateFilter('NOTIFICATIONS_STATUS_FAILED'),
+              message : translateFilter('GROUP_EDIT_DELETE_FAILED')
             });
           }
         });

@@ -3,8 +3,8 @@
 var angular = require('camunda-commons-ui/vendor/angular');
 
 module.exports = [
-  '$scope', '$q', '$location', 'search', 'Uri', 'Notifications', 'camAPI', '$modalInstance', 'member', 'memberId', 'idList',
-  function($scope,   $q,   $location,   search,   Uri,   Notifications,   camAPI,   $modalInstance,   member,   memberId,   idList) {
+  '$scope', '$q', '$location', 'search', 'Uri', 'Notifications', 'camAPI', '$modalInstance', 'member', 'memberId', 'idList', 'translateFilter',
+  function($scope,   $q,   $location,   search,   Uri,   Notifications,   camAPI,   $modalInstance,   member,   memberId,   idList, translateFilter) {
 
     var modalPages = $scope.modalPages = {
       size: 20,
@@ -102,7 +102,7 @@ module.exports = [
           $scope.status = BEFORE_CREATE;
         } else {
           $scope.status = LOADING_FAILED;
-          Notifications.addError({'status': 'Failed', 'message': 'Loading of tenants failed: ' + err.data.message, 'exclusive': ['type']});
+          Notifications.addError({'status': 'Failed', 'message': translateFilter('TENANTS_TENANT_LOAD_FAILED') + ': ' + err.data.message, 'exclusive': ['type']});
         }
       });
 
@@ -168,7 +168,7 @@ module.exports = [
         $scope.status = CREATE_FAILED;
         Notifications.addError({
           'status': 'Failed',
-          'message': 'Creating tenant memberships failed: ' + error.message,
+          'message': translateFilter('TENANTS_TENANT_CREATE_FAILED') + ': ' + error.message,
           'exclusive': ['type']
         });
       });

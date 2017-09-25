@@ -11,11 +11,11 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
 
   ViewsProvider.registerDefaultView('cockpit.decisionDefinition.tab', {
     id: 'decision-instances-table',
-    label: 'Decision Instances',
+    label: 'DECISION_DEFINITION_LABEL',
     template: template,
     controller: [
-      '$scope', '$location', 'search', 'routeUtil', 'camAPI', 'Views', '$rootScope',
-      function($scope,   $location,   search,   routeUtil,   camAPI,   Views,   $rootScope) {
+      '$scope', '$location', 'search', 'routeUtil', 'camAPI', 'Views', '$rootScope', 'translateFilter',
+      function($scope,   $location,   search,   routeUtil,   camAPI,   Views,   $rootScope, translateFilter) {
 
         var processInstancePlugins = Views.getProviders({ component: 'cockpit.processInstance.view' });
 
@@ -60,6 +60,17 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
         };
 
         $scope.decisionSearchConfig = angular.copy(decisionSearchConfig);
+        for (var i = 0; i < $scope.decisionSearchConfig.types.length; i++) {
+          $scope.decisionSearchConfig.types[i].id.value = translateFilter($scope.decisionSearchConfig.types[i].id.value);
+          if($scope.decisionSearchConfig.types[i].hasOwnProperty('operators')) {
+            for (var j = 0; j < $scope.decisionSearchConfig.types[i].operators.length; j++) {
+              $scope.decisionSearchConfig.types[i].operators[j].value = translateFilter($scope.decisionSearchConfig.types[i].operators[j].value);
+            }
+          }
+        }
+        for (var tooltip in $scope.decisionSearchConfig.tooltips) {
+          $scope.decisionSearchConfig.tooltips[tooltip] = translateFilter($scope.decisionSearchConfig.tooltips[tooltip]);
+        }
 
         $scope.$on('$routeChanged', function() {
           pages.current = search().page || 1;

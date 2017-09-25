@@ -6,17 +6,17 @@ var template = fs.readFileSync(__dirname + '/groups.html', 'utf8');
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-var Controller = ['$scope', 'page', '$location', 'search', 'GroupResource', function($scope, pageService, $location, search, GroupResource) {
+var Controller = ['$scope', 'page', '$location', 'search', 'GroupResource', 'translateFilter', function($scope, pageService, $location, search, GroupResource, translateFilter) {
 
   $scope.$root.showBreadcrumbs = true;
 
-  pageService.titleSet('Groups');
+  pageService.titleSet(translateFilter('GROUPS_GROUPS'));
 
   pageService.breadcrumbsClear();
 
   pageService.breadcrumbsAdd([
     {
-      label: 'Groups',
+      label: translateFilter('GROUPS_GROUPS'),
       href: '#/groups'
     }
   ]);

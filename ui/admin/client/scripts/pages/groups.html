@@ -4,13 +4,13 @@
   <div class="section-content">
     <header class="row">
       <div class="col-xs-8">
-        <h3>List of groups</h3>
+        <h3>{{ 'GROUPS_LIST_GROUPS' | translate }}</h3>
       </div>
       <div class="col-xs-4 text-right"
            ng-show="availableOperations.create">
         <a href="#/group-create"
            class="btn btn-default">
-          Create new group
+          {{ 'GROUPS_CREATE_GROUP' | translate }}
           <span class="glyphicon glyphicon-plus-sign"></span>
         </a>
       </div>
@@ -21,10 +21,10 @@
       <table class="cam-table">
         <thead>
           <tr>
-            <th class="group-id">Group ID</th>
-            <th class="group-name">Group Name</th>
-            <th class="group-type">Group Type</th>
-            <th class="action">Action</th>
+            <th class="group-id">{{ 'GROUPS_GROUP_ID' | translate }}</th>
+            <th class="group-name">{{ 'GROUPS_GROUP_NAME' | translate }}</th>
+            <th class="group-type">{{ 'GROUPS_GROUP_TYPE' | translate }}</th>
+            <th class="action">{{ 'GROUPS_ACTION' | translate }}</th>
           </tr>
         </thead>
 
@@ -43,7 +43,7 @@
             </td>
 
             <td class="action">
-              <a href="#/groups/{{group.id | escape}}">Edit</a>
+              <a href="#/groups/{{group.id | escape}}">{{ 'GROUPS_ACTION_EDIT' | translate }}</a>
             </td>
           </tr>
         </tbody>
@@ -53,7 +53,7 @@
     <div ng-show="loadingState === 'EMPTY' && pages.total && (!groupList || !groupList.length)"
          class="well">
       <span class="glyphicon glyphicon-info-sign"></span>
-      The current search parameters could not retrieve any groups. Try to <a ng-click="pageChange(1)">reset page number.</a>
+      {{ 'GROUPS_MESSAGE_SEARCH_1' | translate }} <a ng-click="pageChange(1)">{{ 'GROUPS_MESSAGE_SEARCH_2' | translate }}.</a>
     </div>
 
     <pagination ng-if="pages.total > pages.size"

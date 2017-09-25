@@ -9,37 +9,37 @@ module.exports = [ '$routeProvider', function($routeProvider) {
   $routeProvider.when('/authorization', {
     template: template,
     controller: [
-      '$scope', 'page',      '$routeParams', '$modal', 'AuthorizationResource', 'Notifications', '$location',
-      function($scope,   pageService, $routeParams,   $modal,   AuthorizationResource,   Notifications,   $location) {
+      '$scope', 'page',      '$routeParams', '$modal', 'AuthorizationResource', 'Notifications', '$location', 'translateFilter',
+      function($scope,   pageService, $routeParams,   $modal,   AuthorizationResource,   Notifications,   $location, translateFilter) {
 
         $scope.$root.showBreadcrumbs = true;
 
-        pageService.titleSet('Authorizations');
+        pageService.titleSet(translateFilter('AUTHORIZATION_AUTHORIZATIONS'));
 
         pageService.breadcrumbsClear();
 
         $scope.allPermissionsValue = 2147483647;
 
         $scope.resourceMap = {
-          0: 'Application',
-          1: 'User',
-          2: 'Group',
-          3: 'Group Membership',
-          4: 'Authorization',
-          5: 'Filter',
-          6: 'Process Definition',
-          7: 'Task',
-          8: 'Process Instance',
-          9: 'Deployment',
-          10: 'Decision Definition',
-          11: 'Tenant',
-          12: 'Tenant Membership',
-          13: 'Batch'
+          0: translateFilter('AUTHORIZATION_APPLICATION'),
+          1: translateFilter('AUTHORIZATION_USER'),
+          2: translateFilter('AUTHORIZATION_GROUP'),
+          3: translateFilter('AUTHORIZATION_GROUP_MEMBERSHIP'),
+          4: translateFilter('AUTHORIZATION_AUTHORIZATION'),
+          5: translateFilter('AUTHORIZATION_FILTER'),
+          6: translateFilter('AUTHORIZATION_PROCESS_DEFINITION'),
+          7: translateFilter('AUTHORIZATION_TASK'),
+          8: translateFilter('AUTHORIZATION_PROCESS_INSTANCE'),
+          9: translateFilter('AUTHORIZATION_DEPLOYMENT'),
+          10: translateFilter('AUTHORIZATION_DECISION_DEFINITION'),
+          11: translateFilter('AUTHORIZATION_TENANT'),
+          12: translateFilter('AUTHORIZATION_TENANT_MEMBERSHIP'),
+          13: translateFilter('AUTHORIZATION_BATCH')
         };
 
         pageService.breadcrumbsAdd([
           {
-            label: 'Authorizations',
+            label: translateFilter('AUTHORIZATION_AUTHORIZATIONS'),
             href: '#/authorization'
           }
         ]);
@@ -62,9 +62,9 @@ module.exports = [ '$routeProvider', function($routeProvider) {
         };
 
         $scope.typeMap = {
-          0: 'GLOBAL',
-          1: 'ALLOW',
-          2: 'DENY'
+          0: translateFilter('AUTHORIZATION_GLOBAL'),
+          1: translateFilter('AUTHORIZATION_ALLOW'),
+          2: translateFilter('AUTHORIZATION_DENY')
         };
 
         $scope.getIdentityId = function(auth) {
@@ -188,6 +188,18 @@ module.exports = [ '$routeProvider', function($routeProvider) {
           var path = $location.absUrl().split('?').pop();
           return path === link ? 'active' : '';
         };
+        
+        /*
+         * Custom function for authorization title translation
+         */
+        $scope.selectTitle = function(word) {
+          var lang = localStorage.getItem('lang_cam') || window.navigator.language || navigator.language;
+          if (lang === 'es') {
+            return translateFilter(word) + ' de ' + $scope.title;
+          } else {
+            return $scope.title + ' ' + translateFilter(word);
+          }
+        };
 
         // init ////////////////////////////////////
 
@@ -198,7 +210,7 @@ module.exports = [ '$routeProvider', function($routeProvider) {
           $location.replace();
           $scope.title = $scope.getResource(0);
           $scope.selectedResourceType = '0';
-
+          
         } else {
           $scope.title = $scope.getResource($routeParams.resource);
           $scope.selectedResourceType = $routeParams.resource;

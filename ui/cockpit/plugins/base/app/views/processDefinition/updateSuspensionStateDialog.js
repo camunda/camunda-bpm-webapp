@@ -3,8 +3,8 @@
 var angular = require('angular');
 
 module.exports = [
-  '$scope', '$http', '$filter', 'Uri', 'Notifications', '$modalInstance', 'processDefinition',
-  function($scope,   $http,   $filter,   Uri,   Notifications,   $modalInstance,   processDefinition) {
+  '$scope', '$http', '$filter', 'Uri', 'Notifications', '$modalInstance', 'processDefinition', 'translateFilter',
+  function($scope,   $http,   $filter,   Uri,   Notifications,   $modalInstance,   processDefinition, translateFilter) {
 
     var BEFORE_UPDATE = 'BEFORE_UPDATE',
         PERFORM_UPDATE = 'PERFORM_UDPATE',
@@ -45,14 +45,14 @@ module.exports = [
 
         if ($scope.data.executeImmediately) {
           Notifications.addMessage({
-            status: 'Finished',
-            message: 'Updated the suspension state of the process definition.',
+            status: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_STATUS_FINISHED'),
+            message: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_MESSAGE_1') + '.',
             exclusive: true
           });
         } else {
           Notifications.addMessage({
-            status: 'Finished',
-            message: 'The update of the suspension state of the process definition has been scheduled.',
+            status: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_STATUS_FINISHED'),
+            message: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_MESSAGE_2') + '.',
             exclusive: true
           });
         }
@@ -62,14 +62,14 @@ module.exports = [
 
         if ($scope.data.executeImmediately) {
           Notifications.addError({
-            status: 'Finished',
-            message: 'Could not update the suspension state of the process definition: ' + response.message,
+            status: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_STATUS_FINISHED'),
+            message: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_MESSAGE_3') + ': ' + response.message,
             exclusive: true
           });
         } else {
           Notifications.addMessage({
-            status: 'Finished',
-            message: 'The update of the suspension state of the process definition could not be scheduled: ' + response.message,
+            status: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_STATUS_FINISHED'),
+            message: translateFilter('PLUGIN_UPDATE_SUSPENSION_STATE_MESSAGE_4')+ ': ' + response.message,
             exclusive: true
           });
         }

@@ -11,7 +11,7 @@
 
 <div cam-widget-loader
      loading-state="{{ loadingState }}"
-     text-empty="No process variables">
+     text-empty="{{ 'PLUGIN_VARIABLE_NO_PROCESS_VARIABLES' | translate }}">
   <!-- <div cam-widget-debug debugged="variables"></div> -->
 
   <div cam-widget-variables-table
@@ -22,7 +22,7 @@
        on-download="downloadVariable"
        cam-variables="variables"
        cam-editable="['type', 'value']"
-       cam-headers="{ name: 'Name', value: 'Value', type: 'Type', scope: 'Scope' }"></div>
+       cam-headers="getHeaderVariable"></div>
 
 
   <pagination ng-if="pages.total > pages.size"

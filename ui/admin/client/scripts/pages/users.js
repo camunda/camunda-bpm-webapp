@@ -6,7 +6,7 @@ var template = fs.readFileSync(__dirname + '/users.html', 'utf8');
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-var Controller = ['$scope', '$location', 'search', 'UserResource', 'page', function($scope, $location, search, UserResource, pageService) {
+var Controller = ['$scope', '$location', 'search', 'UserResource', 'page', 'translateFilter', function($scope, $location, search, UserResource, pageService, translateFilter) {
 
   $scope.availableOperations={};
   $scope.loadingState = 'LOADING';
@@ -54,12 +54,12 @@ var Controller = ['$scope', '$location', 'search', 'UserResource', 'page', funct
 
   $scope.$root.showBreadcrumbs = true;
 
-  pageService.titleSet('Users');
+  pageService.titleSet(translateFilter('USERS_USERS'));
 
   pageService.breadcrumbsClear();
 
   pageService.breadcrumbsAdd({
-    label: 'Users',
+    label: translateFilter('USERS_USERS'),
     href: '#/users/'
   });
 }];

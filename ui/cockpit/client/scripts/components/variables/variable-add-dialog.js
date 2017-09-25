@@ -13,6 +13,7 @@ var Controller = [
   'Uri',
   'instance',
   'isProcessInstance',
+  'translateFilter',
   function(
     $http,
     $modalInstance,
@@ -20,11 +21,12 @@ var Controller = [
     Notifications,
     Uri,
     instance,
-    isProcessInstance
+    isProcessInstance,
+    translateFilter
   ) {
 
 
-    $scope.isProcessInstance = isProcessInstance;  
+    $scope.isProcessInstance = isProcessInstance;
 
     $scope.variableTypes = [
       'String',
@@ -83,16 +85,16 @@ var Controller = [
         $scope.status = SUCCESS;
 
         Notifications.addMessage({
-          status: 'Finished',
-          message: 'Added the variable',
+          status: translateFilter('VARIABLE_ADD_MESSAGE_STATUS_FINISHED'),
+          message: translateFilter('VARIABLE_ADD_MESSAGE_MESSAGE_ADD'),
           exclusive: true
         });
       }).error(function(data) {
         $scope.status = FAIL;
 
         Notifications.addError({
-          status: 'Finished',
-          message: 'Could not add the new variable: ' + data.message,
+          status: translateFilter('VARIABLE_ADD_MESSAGE_STATUS_FINISHED'),
+          message: translateFilter('VARIABLE_ADD_MESSAGE_MESSAGE_ERROR') + data.message,
           exclusive: true
         });
       });
@@ -103,4 +105,3 @@ module.exports = {
   template: template,
   controller: Controller
 };
-

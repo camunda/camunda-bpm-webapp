@@ -12,11 +12,11 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
 
   ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
     id: 'process-instances-table',
-    label: 'Process Instances',
+    label: 'PLUGIN_PROCESSS_INSTANCES_LABEL',
     template: template,
     controller: [
-      '$scope', '$location', 'search', 'routeUtil', 'PluginProcessInstanceResource',
-      function($scope,   $location,   search,   routeUtil,   PluginProcessInstanceResource) {
+      '$scope', '$location', 'search', 'routeUtil', 'PluginProcessInstanceResource', 'translateFilter',
+      function($scope,   $location,   search,   routeUtil,   PluginProcessInstanceResource, translateFilter) {
         var processDefinition = $scope.processDefinition;
         var pages = paginationUtils.initializePaginationInController($scope, search, function(newValue, oldValue) {
           if (!angular.equals(newValue, oldValue)) {
@@ -25,6 +25,17 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
         });
 
         $scope.searchConfig = angular.copy(searchConfig);
+        for (var i = 0; i < $scope.searchConfig.types.length; i++) {
+          $scope.searchConfig.types[i].id.value = translateFilter($scope.searchConfig.types[i].id.value);
+          if($scope.searchConfig.types[i].hasOwnProperty('operators')) {
+            for (var j = 0; j < $scope.searchConfig.types[i].operators.length; j++) {
+              $scope.searchConfig.types[i].operators[j].value = translateFilter($scope.searchConfig.types[i].operators[j].value);
+            }
+          }
+        }
+        for (var tooltip in $scope.searchConfig.tooltips) {
+          $scope.searchConfig.tooltips[tooltip] = translateFilter($scope.searchConfig.tooltips[tooltip]);
+        }
 
         $scope.$watch('searchConfig.searches', function(newValue, oldValue) {
           if (!angular.equals(newValue, oldValue)) {

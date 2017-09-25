@@ -59,8 +59,8 @@ module.exports = function(ngModule) {
   }
 
   ngModule.controller('UserTaskController', [
-    '$scope', 'search', 'camAPI', 'TaskResource', 'Notifications', '$modal',
-    function($scope,   search,   camAPI,   TaskResource,   Notifications,   $modal) {
+    '$scope', 'search', 'camAPI', 'TaskResource', 'Notifications', '$modal', 'translateFilter',
+    function($scope,   search,   camAPI,   TaskResource,   Notifications,   $modal, translateFilter) {
 
       // input: processInstance, processData
 
@@ -166,19 +166,19 @@ module.exports = function(ngModule) {
 
             var message;
             if (assignee) {
-              message = 'The assignee of the user task \'' +
-                         userTask.instance.name +
-                         '\' has been set to \'' +
-                         copy.assignee + '\' successfully.';
+              message = translateFilter('PLUGIN_USER_TASKS_MESSAGE_1',{
+                name: userTask.instance.name,
+                assignee: copy.assignee
+              });
             }
             else {
-              message = 'The assignee of the user task \'' +
-                         userTask.instance.name +
-                         '\' has been reset successfully.';
+              message = translateFilter('PLUGIN_USER_TASKS_MESSAGE_2', {
+                name: userTask.instance.name
+              });
             }
 
             Notifications.addMessage({
-              status: 'Assignee',
+              status: translateFilter('PLUGIN_USER_TASKS_STATUS_ASSIGNEE'),
               message: message,
               duration: 5000
             });
@@ -190,19 +190,21 @@ module.exports = function(ngModule) {
           function(error) {
             var message;
             if (userTask.assignee) {
-              message = 'The assignee of the user task \'' +
-                         userTask.instance.name +
-                         '\' could not be set to \'' + userTask.assignee +
-                         '\'. ' + error.data.message;
+              message = translateFilter('PLUGIN_USER_TASKS_MESSAGE_3', {
+                name: userTask.instance.name,
+                assignee: userTask.assignee,
+                error: error.data.message
+              });
             }
             else {
-              message = 'The assignee of the user task \'' +
-                         userTask.instance.name +
-                         '\' could not be reset. ' + error.data.message;
+              message = translateFilter('PLUGIN_USER_TASKS_MESSAGE_4', {
+                name: userTask.instance.name,
+                error: error.data.message
+              });
             }
 
             var err = {
-              status: 'Assignee',
+              status: translateFilter('PLUGIN_USER_TASKS_STATUS_ASSIGNEE'),
               message: message,
               exclusive: true
             };
@@ -371,7 +373,7 @@ module.exports = function(ngModule) {
   var Configuration = function(ViewsProvider) {
     ViewsProvider.registerDefaultView('cockpit.processInstance.runtime.tab', {
       id: 'user-tasks-tab',
-      label: 'User Tasks',
+      label: 'PLUGIN_USER_TASKS_LABEL',
       template: userTasksTemplate,
       controller: 'UserTaskController',
       priority: 5

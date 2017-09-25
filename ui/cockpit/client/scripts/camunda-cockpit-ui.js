@@ -20,6 +20,7 @@ module.exports = function(pluginDependencies) {
   var ngDependencies = [
     'ng',
     'ngResource',
+    'pascalprecht.translate',
     commons.name,
     require('./repository/main').name,
     require('./batches/main').name,
@@ -36,6 +37,15 @@ module.exports = function(pluginDependencies) {
 
   var appNgModule = angular.module(APP_NAME, ngDependencies);
 
+  function getUri(id) {
+    var uri = $('base').attr(id);
+    if (!id) {
+      throw new Error('Uri base for ' + id + ' could not be resolved');
+    }
+
+    return uri;
+  }
+
   var ModuleConfig = [
     '$routeProvider',
     'UriProvider',
@@ -44,15 +54,6 @@ module.exports = function(pluginDependencies) {
       UriProvider
     ) {
       $routeProvider.otherwise({ redirectTo: '/dashboard' });
-
-      function getUri(id) {
-        var uri = $('base').attr(id);
-        if (!id) {
-          throw new Error('Uri base for ' + id + ' could not be resolved');
-        }
-
-        return uri;
-      }
 
       UriProvider.replace(':appName', 'cockpit');
       UriProvider.replace('app://', getUri('href'));
@@ -74,7 +75,25 @@ module.exports = function(pluginDependencies) {
       }]);
     }];
 
+  appNgModule.provider('configuration', require('./../../../common/scripts/services/cam-configuration')(window.camCockpitConf, 'Cockpit'));
+
   appNgModule.config(ModuleConfig);
+
+  require('./../../../common/scripts/services/locales')(appNgModule, getUri('app-root'), 'cockpit');
+
+  appNgModule.controller('camCokpitAppCtrl', [
+    '$scope',
+    'configuration',
+    function($scope, configuration) {
+      $scope.langs = configuration.getAvailableLocales();
+      $scope.langCurrent = localStorage.getItem('lang_cam') || navigator.language
+        || window.navigator.language || configuration.getFallbackLocale();
+      $scope.selectLang = function(langSelect) {
+        localStorage.setItem('lang_cam', langSelect);
+        location.reload();
+      };
+    }
+  ]);
 
   appNgModule.config([
     'camDateFormatProvider',

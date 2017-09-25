@@ -6,7 +6,7 @@ var template = fs.readFileSync(__dirname + '/cam-cockpit-deployments-sorting-cho
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-module.exports = [function() {
+module.exports = ['translateFilter', function(translateFilter) {
 
   return {
 
@@ -28,9 +28,9 @@ module.exports = [function() {
         var deploymentsSortingData = $scope.deploymentsSortingData = $scope.deploymentsData.newChild($scope);
 
         var uniqueProps = $scope.uniqueProps = {
-          id:               'ID',
-          name:             'Name',
-          deploymentTime:   'Deployment Time'
+          id:               translateFilter('REPOSITORY_DEPLOYMENTS_ID'),
+          name:             translateFilter('REPOSITORY_DEPLOYMENTS_NAME'),
+          deploymentTime:   translateFilter('REPOSITORY_DEPLOYMENTS_DEPLOYMENT_TIME')
         };
 
 

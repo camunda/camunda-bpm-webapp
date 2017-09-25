@@ -8,11 +8,12 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
 
   ViewsProvider.registerDefaultView('cockpit.decisionInstance.tab', {
     id: 'decision-input-table',
-    label: 'Outputs',
+    label: 'PLUGIN_OUTPUT_TABLE_LABEL',
     template: template,
     controller: [
       '$scope',
-      function($scope) {
+      'translateFilter',
+      function($scope, translateFilter) {
 
         $scope.variables = $scope.decisionInstance.outputs.map(function(variable) {
           return {
@@ -24,6 +25,13 @@ module.exports = [ 'ViewsProvider', function(ViewsProvider) {
             }
           };
         });
+
+        // Variables table header
+        $scope.getHeaderVariable = {
+          'name' : translateFilter('PLUGIN_OUTPUT_TABLE_LABEL_NAME'),
+          'type': translateFilter('PLUGIN_OUTPUT_TABLE_LABEL_TYPE'),
+          'value' : translateFilter('PLUGIN_OUTPUT_TABLE_LABEL_VALUE')
+        };
       }],
     priority: 10
   });
