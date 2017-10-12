@@ -229,7 +229,7 @@ var angular = require('camunda-commons-ui/vendor/angular');
         var key = elem.key;
         var value = elem.value;
 
-        if (!isQueryVariable(key)) {
+        if (!isQueryVariable(key) && key !== 'sorting') {
 
           // if key == '...Like' -> value = '%' + value + '%'
           value = fixLike(key, value);

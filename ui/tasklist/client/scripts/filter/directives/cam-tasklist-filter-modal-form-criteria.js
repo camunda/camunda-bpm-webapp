@@ -64,12 +64,17 @@ var criteria = require('./cam-tasklist-filter-modal-criteria');
         $scope.query = $scope.filter.query = $scope.filter.query || [];
 
         // a little exception to deal with
+
         $scope.query = $scope.filter.query = $scope.query.filter(function (item) {
           if (item.key === 'includeAssignedTasks') {
             $scope.includeAssignedTasks = $scope.filter.includeAssignedTasks = item.value;
           }
           return item.key !== 'includeAssignedTasks';
         });
+
+        $scope.isQueryParameter = function(queryParam) {
+          return queryParam.key !== 'sorting';
+        };
 
         $scope.canIncludeAssignedTasks = function () {
           for (var q = 0; q < $scope.query.length; q++) {
