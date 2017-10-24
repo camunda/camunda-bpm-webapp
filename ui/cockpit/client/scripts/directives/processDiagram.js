@@ -228,6 +228,7 @@ var Directive = function() {
     restrict: 'EAC',
     scope: {
       processDiagram: '=',
+      key: '@',
       processDiagramOverlay: '=',
       onElementClick: '&',
       selection: '=',
