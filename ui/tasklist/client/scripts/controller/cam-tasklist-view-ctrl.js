@@ -84,7 +84,7 @@ module.exports = [
         }
       }
 
-      if(currentFilter && currentFilter.id !== focused.id) {
+      if(currentFilter && focused && currentFilter.id !== focused.id) {
         var currentPage = getPropertyFromLocation('page');
         if (currentPage) {
           updateSilently({
