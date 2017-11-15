@@ -158,7 +158,7 @@ var angular = require('angular');
         var userTask = editForm.context;
         var copy = taskCopies[userTask.id];
         var defaultParams = {id: userTask.id};
-        var params = {userId : editForm.value};
+        var params = {userId : editForm.value || null};
 
         TaskResource.setAssignee(defaultParams, params).$promise.then(
           // success
