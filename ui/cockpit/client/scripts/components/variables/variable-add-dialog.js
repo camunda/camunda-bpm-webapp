@@ -4,7 +4,6 @@ var angular = require('angular');
 var fs = require('fs');
 
 var template = fs.readFileSync(__dirname + '/variable-add-dialog.html', 'utf8');
-var escapeUrl = require('camunda-bpm-sdk-js').utils.escapeUrl;
 
 var Controller = [
   '$http',
@@ -14,6 +13,7 @@ var Controller = [
   'Uri',
   'instance',
   'isProcessInstance',
+  'camAPI',
   function(
     $http,
     $modalInstance,
@@ -21,11 +21,12 @@ var Controller = [
     Notifications,
     Uri,
     instance,
-    isProcessInstance
+    isProcessInstance,
+    camAPI
   ) {
 
 
-    $scope.isProcessInstance = isProcessInstance;  
+    $scope.isProcessInstance = isProcessInstance;
 
     $scope.variableTypes = [
       'String',
@@ -48,6 +49,9 @@ var Controller = [
     var PERFORM_SAVE = 'PERFORM_SAVE',
         SUCCESS = 'SUCCESS',
         FAIL = 'FAIL';
+
+    var processInstance = camAPI.resource('process-instance');
+    var caseInstance = camAPI.resource('case-instance');
 
     $scope.$on('$routeChangeStart', function() {
       $modalInstance.close($scope.status);
@@ -73,30 +77,29 @@ var Controller = [
 
       $scope.status = PERFORM_SAVE;
 
-      var data = angular.extend({}, newVariable),
-          name = escapeUrl(data.name);
+      var data = angular.extend({}, newVariable);
 
-      delete data.name;
+      var instanceAPI = (isProcessInstance ? processInstance : caseInstance);
+      instanceAPI
+        .setVariable(instance.id, data)
+        .then(function() {
+          $scope.status = SUCCESS;
 
-      $http
-      .put(Uri.appUri('engine://engine/:engine/'+(isProcessInstance ? 'process' : 'case')+'-instance/'+instance.id+'/variables/'+name), data)
-      .success(function() {
-        $scope.status = SUCCESS;
+          Notifications.addMessage({
+            status: 'Finished',
+            message: 'Added the variable',
+            exclusive: true
+          });
+        })
+        .catch(function(data) {
+          $scope.status = FAIL;
 
-        Notifications.addMessage({
-          status: 'Finished',
-          message: 'Added the variable',
-          exclusive: true
+          Notifications.addError({
+            status: 'Finished',
+            message: 'Could not add the new variable: ' + data.message,
+            exclusive: true
+          });
         });
-      }).error(function(data) {
-        $scope.status = FAIL;
-
-        Notifications.addError({
-          status: 'Finished',
-          message: 'Could not add the new variable: ' + data.message,
-          exclusive: true
-        });
-      });
     };
   }];
 
