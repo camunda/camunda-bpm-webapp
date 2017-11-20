@@ -45,12 +45,12 @@
         $scope.processInstance.$delete(function() {
         // success
           $scope.status = CANCEL_SUCCESS;
-          Notifications.addMessage({'status': 'Canceled', 'message': 'The cancellation of the process instance was successful.'});
+          Notifications.addMessage({'status': 'Deleted', 'message': 'The deletion of the process instance was successful.'});
 
         }, function(err) {
         // failure
           $scope.status = CANCEL_FAILED;
-          Notifications.addError({'status': 'Failed', 'message': 'The cancellation of the process instance failed. ' + err.data.message, 'exclusive': ['type']});
+          Notifications.addError({'status': 'Failed', 'message': 'The deletion of the process instance failed. ' + err.data.message, 'exclusive': ['type']});
         });
       };
 
