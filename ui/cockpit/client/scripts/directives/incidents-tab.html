@@ -4,7 +4,9 @@
     <tr>
       <th class="state" ng-if="incidentsContext === 'history'">{{ 'PLUGIN_INCIDENTS_TAB_STATE' | translate }}</th>
       <th class="message">{{ 'PLUGIN_INCIDENTS_TAB_MESSAGE' | translate }}</th>
-      <th class="timestamp">{{ 'PLUGIN_INCIDENTS_TAB_TIMESTAMP' | translate }}</th>
+      <th  ng-if="incidentsContext === 'history'" class="create-time">{{ 'PLUGIN_INCIDENTS_TAB_CREATE_TIME' | translate }}</th>
+      <th  ng-if="incidentsContext === 'history'" class="end-time">{{ 'PLUGIN_INCIDENTS_TAB_END_TIME' | translate }}</th>
+      <th  ng-if="incidentsContext !== 'history'" class="timestamp">{{ 'PLUGIN_INCIDENTS_TAB_TIMESTAMP' | translate }}</th>
       <th class="activity">{{ 'PLUGIN_INCIDENTS_TAB_ACTIVITY' | translate }}</th>
       <th class="cause instance-id uuid">{{ 'PLUGIN_INCIDENTS_TAB_CAUSE_INSTANCE_ID' | translate }}</th>
       <th class="cause-root instance-id uuid">{{ 'PLUGIN_INCIDENTS_TAB_CAUSE_ROOT_INSTANCE_ID' | translate }}</th>
@@ -70,13 +72,15 @@
         {{ incident.incidentTimestamp | camDate }}
       </td>
 
-      <td ng-if="incident.endTime !== undefined"class="end-time">
-        {{ incident.endTime | camDate }}
-      </td>
 
       <td ng-if="incident.createTime !== undefined"class="create-time">
         {{ incident.createTime | camDate }}
       </td>
+
+      <td ng-if="incident.endTime !== undefined"class="end-time">
+        {{ incident.endTime | camDate }}
+      </td>
+
 
 
       <td class="activity">
