@@ -14,12 +14,14 @@ module.exports = [
   'camAPI',
   '$location',
   '$modal',
+  'Notifications',
   function(
   $scope,
   page,
   camAPI,
   $location,
-  $modal
+  $modal,
+  Notifications
 ) {
 
     $scope.$on('$destroy', function() {
@@ -43,6 +45,30 @@ module.exports = [
       deleteModal.instance = $modal.open({
         template: deleteModalTemplate,
         controller: deleteModalCtrl
+      });
+    });
+
+    events.on('batch:delete:failed', function(err) {
+      Notifications.addError({
+        status: 'Finished',
+        message: 'Could not delete batch: ' + err.message,
+        exclusive: true
+      });
+    });
+
+    events.on('job:delete:failed', function(err) {
+      Notifications.addError({
+        status: 'Finished',
+        message: 'Could not delete job: ' + err.message,
+        exclusive: true
+      });
+    });
+
+    events.on('job:retry:failed', function(err) {
+      Notifications.addError({
+        status: 'Finished',
+        message: 'Could not retry job: ' + err.message,
+        exclusive: true
       });
     });
 
