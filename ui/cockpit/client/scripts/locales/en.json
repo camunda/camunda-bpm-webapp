@@ -601,6 +601,7 @@
   "PLUGIN_DECISION_TABLE_NO_DECISION_TABLES_DEPLOYED" : "No decision tables deployed",
   "PLUGIN_DECISION_TABLE_TITLE_DEFINITION" : "{{count}} decision definition deployed",
   "PLUGIN_DECISION_TABLE_TITLE_DEFINITIONS" : "{{count}} decision definitions deployed",
+  "PLUGIN_DECISION_TABLE_NOT_FOUND" : "No decision instances matched by current filter",
 
   "PLUGIN_DRDS_NAME" : "Name",
   "PLUGIN_DRDS_TENANT_ID" : "Tenant ID",
