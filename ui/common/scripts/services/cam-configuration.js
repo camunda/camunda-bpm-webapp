@@ -12,6 +12,16 @@ var defaultConfig = {
   'locales': {
     'availableLocales': ['en'],
     'fallbackLocale': 'en'
+  },
+  'skipCustomListeners': {
+    'default': true,
+    'hidden': false
+  },
+  'historicActivityInstanceMetrics': {
+    'adjustablePeriod': true,
+    'period': {
+      'unit': 'day'
+    }
   }
 };
 
@@ -55,15 +65,13 @@ module.exports = function(config, app) {
     };
 
     this.getActivityInstancePeriod = function() {
-      return config.historicActivityInstanceMetrics &&
-      config.historicActivityInstanceMetrics.period?
+      return config.historicActivityInstanceMetrics.period?
         config.historicActivityInstanceMetrics.period:
         defaultConfig.historicActivityInstanceMetrics.period;
     };
 
     this.getActivityInstanceAdjustable = function() {
-      return  config.historicActivityInstanceMetrics &&
-      config.historicActivityInstanceMetrics.adjustablePeriod?
+      return config.historicActivityInstanceMetrics.adjustablePeriod?
         config.historicActivityInstanceMetrics.adjustablePeriod:
         defaultConfig.historicActivityInstanceMetrics.adjustablePeriod;
     };
