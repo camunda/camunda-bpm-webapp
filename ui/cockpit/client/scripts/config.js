@@ -11,6 +11,12 @@ window.camCockpitConf = {
   //     // if you have a folder called `custom-ui` (in the `cockpit` folder)
   //     // with a file called `scripts.js` in it and defining the `custom-ui` AMD module
   //     'custom-ui': 'custom-ui/scripts'
+  //   },
+  // historicActivityInstanceMetrics: {
+  //   adjustablePeriod: true,
+  //   //select from the default time period: today, week, month, complete
+  //   period: {
+  //     unit: 'week'
   //   }
   // },
   // 'locales': {
