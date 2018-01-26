@@ -50,6 +50,24 @@ module.exports = function(config, app) {
       return config.app && config.app.name ? config.app.name : app;
     };
 
+    this.getSkipCustomListeners = function() {
+      return angular.extend({}, defaultConfig.skipCustomListeners, config.skipCustomListeners);
+    };
+
+    this.getActivityInstancePeriod = function() {
+      return config.historicActivityInstanceMetrics &&
+      config.historicActivityInstanceMetrics.period?
+        config.historicActivityInstanceMetrics.period:
+        defaultConfig.historicActivityInstanceMetrics.period;
+    };
+
+    this.getActivityInstanceAdjustable = function() {
+      return  config.historicActivityInstanceMetrics &&
+      config.historicActivityInstanceMetrics.adjustablePeriod?
+        config.historicActivityInstanceMetrics.adjustablePeriod:
+        defaultConfig.historicActivityInstanceMetrics.adjustablePeriod;
+    };
+
     this.$get = function() {
       return this;
     };
