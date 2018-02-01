@@ -1,5 +1,7 @@
 'use strict';
 
+var angular = require('angular');
+
 var defaultConfig = {
   'dateFormat': {
     'monthName': 'MMMM',
