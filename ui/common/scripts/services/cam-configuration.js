@@ -15,10 +15,6 @@ var defaultConfig = {
     'availableLocales': ['en'],
     'fallbackLocale': 'en'
   },
-  'skipCustomListeners': {
-    'default': true,
-    'hidden': false
-  },
   'historicActivityInstanceMetrics': {
     'adjustablePeriod': true,
     'period': {

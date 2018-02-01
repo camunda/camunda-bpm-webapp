@@ -76,6 +76,7 @@ module.exports = function(pluginDependencies) {
       }]);
     }];
 
+  appNgModule.provider('configuration', require('./../../../common/scripts/services/cam-configuration')(window.camCockpitConf, 'Cockpit'));
   appNgModule.config(ModuleConfig);
 
   appNgModule.config([
