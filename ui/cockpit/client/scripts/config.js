@@ -19,9 +19,6 @@ window.camCockpitConf = {
   //     unit: 'week'
   //   }
   // },
-  // set if a user can change the default or no
-  // userCanChangePeriod: true/false
-  // },
   // 'locales': {
   //   'availableLocales': ['en', 'de'],
   //   'fallbackLocale': 'en'
