@@ -36,7 +36,14 @@ module.exports = [function() {
         function updateSilently(params) {
           search.updateSilently(params);
         }
-        
+
+        function clearSelectedTask() {
+          tasksData.set('taskId', { 'taskId' : null });
+          var searchParams = $location.search() || {};
+          searchParams.task = null;
+          updateSilently(searchParams);
+        }
+
         $scope.expanded = {};
         $scope.toggle = function(delta, $event) {
           $scope.expanded[delta] = !$scope.expanded[delta];
@@ -130,19 +137,24 @@ module.exports = [function() {
           if (taskListQuery) {
 
             var oldQuery = $scope.query;
-
+            var searchParams = ($location.search() || {});
+            var forceDisplayTask = searchParams.forceDisplayTask;
             // parse pagination properties from query
             $scope.query = angular.copy(taskListQuery);
             $scope.pageSize = $scope.query.maxResults;
             // Sachbearbeiter starts counting at '1'
             $scope.pageNum = ($scope.query.firstResult / $scope.pageSize) + 1;
 
-            if (oldQuery.id) {
-              tasksData.set('taskId', { 'taskId' : null });
-              var searchParams = $location.search() || {};
-              searchParams.task = null;
-              updateSilently(searchParams);
+            // only clear the task if the filter changed
+            if(forceDisplayTask) {
+              delete searchParams.forceDisplayTask;
+              return search.updateSilently(searchParams);
             }
+            if (oldQuery.id && oldQuery.id !== taskListQuery.id) {
+              clearSelectedTask();
+            }
+          } else {
+            clearSelectedTask();
           }
         });
 
@@ -170,9 +182,9 @@ module.exports = [function() {
           tasksData.set('taskId', { 'taskId' : taskId });
           $scope.currentTaskId = taskId;
 
-          var searchParams = $location.search() || {};
+          var searchParams = angular.copy(search) || {};
           searchParams.task = taskId;
-          updateSilently(searchParams);
+          search.updateSilently(searchParams);
 
           var el = document.querySelector('[cam-tasks] .tasks-list .task [href*="#/?task=' + taskId + '"]');
           if(el) {
