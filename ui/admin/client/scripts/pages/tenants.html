@@ -22,17 +22,17 @@
          loading-state="loadingState"
          text-empty="{{ 'TENANTS_NO_TENANTS' | translate }}"
          storage-group="'ANT'">
-      <table class="cam-table">
+      <table class="cam-table tenant">
         <thead>
           <tr>
-            <th class="id">
+            <th class="tenant-id">
               <span class="column-label">{{ 'TENANTS_TENANT_ID' | translate }}</span>
               <a ng-click="changeOrder('id')">
               <span class="glyphicon"
                     ng-class="orderClass('id')"></span>
               </a>
             </th>
-            <th class="name">
+            <th class="tenant-name">
               <span class="column-label">{{ 'TENANTS_TENANT_NAME' | translate }}</span>
               <a ng-click="changeOrder('name')">
               <span class="glyphicon"
