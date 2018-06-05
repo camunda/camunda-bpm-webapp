@@ -122,17 +122,18 @@ public class UserAuthenticationResource {
         return forbidden();
       }
 
-      final Authentications authentications = Authentications.getCurrent();
-
       // create new authentication
-      UserAuthentication newAuthentication = new UserAuthentication(username, engineName);
-      newAuthentication.setGroupIds(groupIds);
-      newAuthentication.setTenantIds(tenantIds);
-      newAuthentication.setAuthorizedApps(authorizedApps);
-      authentications.addAuthentication(newAuthentication);
+      UserAuthentication authentication = new UserAuthentication(username, engineName);
+      authentication.setGroupIds(groupIds);
+      authentication.setTenantIds(tenantIds);
+      authentication.setAuthorizedApps(authorizedApps);
+
+      if (request != null) {
+        Authentications.revalidateSession(request, authentication);
+      }
 
       // send reponse including updated cookie
-      return Response.ok(AuthenticationDto.fromAuthentication(newAuthentication)).build();
+      return Response.ok(AuthenticationDto.fromAuthentication(authentication)).build();
     }
   }
 
