@@ -27,6 +27,9 @@ var defaultConfig = {
     'period': {
       'unit': 'day'
     }
+  },
+  'batchOperation': {
+    'mode': 'filter'
   }
 };
 
@@ -99,6 +102,11 @@ module.exports = function(config, app) {
       config.historicActivityInstanceMetrics.adjustablePeriod?
         config.historicActivityInstanceMetrics.adjustablePeriod:
         defaultConfig.historicActivityInstanceMetrics.adjustablePeriod;
+    };
+
+    this.getBatchOperationMode = function() {
+      var param = 'batchOperation';
+      return (config[param] && config[param].mode) || defaultConfig[param].mode;
     };
 
     this.$get = function() {
