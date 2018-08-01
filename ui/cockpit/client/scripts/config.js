@@ -24,7 +24,7 @@ window.camCockpitConf = {
   //   'fallbackLocale': 'en'
   // },
   // 'batchOperation' : {
-  //   // select mode of query for process insatnces or decision instances
+  //   // select mode of query for process instances or decision instances
   //   // possible values: filter, search
   //   'mode': 'filter'
   // }
