@@ -13,8 +13,8 @@ module.exports = [ '$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/:userId', {
     template: template,
     controller: [
-      '$scope', 'page', '$routeParams', 'camAPI', 'Notifications', '$location', '$modal', 'authentication', 'unescape',
-      function($scope,   page,   $routeParams,   camAPI,   Notifications,   $location,   $modal,   authentication, unescape) {
+      '$scope', 'page', '$routeParams', 'camAPI', 'Notifications', '$location', '$modal', 'authentication', 'unescape', 'AuthenticationService', '$http', 'Uri',
+      function($scope,   page,   $routeParams,   camAPI,   Notifications,   $location,   $modal,   authentication, unescape, AuthenticationService, $http, Uri) {
 
         var AuthorizationResource = camAPI.resource('authorization'),
             GroupResource         = camAPI.resource('group'),
@@ -176,14 +176,24 @@ module.exports = [ '$routeProvider', function($routeProvider) {
             }]
           }).result.then(function() {
             UserResource.delete({ id: $scope.decodedUserId }, function() {
-              Notifications.addMessage({
-                type: 'success',
-                status: 'Success',
-                message: 'User '+$scope.user.id+' successfully deleted.'
-              });
-              $location.path('/users');
-            }
-            );
+              if ($scope.authenticatedUser.name !== $scope.user.id) {
+                Notifications.addMessage({
+                  type: 'success',
+                  status: 'Success',
+                  message: 'User '+$scope.user.id+' successfully deleted.'
+                });
+
+                $location.path('/users');
+              } else {
+                $http.get(Uri.appUri('engine://engine/')).then(function(response) {
+                  var engines = response.data;
+
+                  engines.forEach(function(engine) {
+                    AuthenticationService.logout(engine.name);
+                  });
+                });
+              }
+            });
           });
         };
 
