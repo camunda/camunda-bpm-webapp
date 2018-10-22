@@ -128,6 +128,10 @@ public class UserAuthenticationResource {
       authentication.setTenantIds(tenantIds);
       authentication.setAuthorizedApps(authorizedApps);
 
+      if (request != null) {
+        Authentications.revalidateSession(request, authentication);
+      }
+
       // send reponse including updated cookie
       return Response.ok(AuthenticationDto.fromAuthentication(authentication)).build();
     }
