@@ -34,5 +34,11 @@ window.camCockpitConf = {
   //   // select mode of query for process instances or decision instances
   //   // possible values: filter, search
   //   'mode': 'filter'
+  // },
+  // historicProcessInstancesSearch: {
+  //   defaultFilter: {
+  //     lastDays: 5,
+  //     event: 'started'
+  //   }
   // }
 };

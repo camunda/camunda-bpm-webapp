@@ -109,6 +109,10 @@ module.exports = function(config, app) {
       return (config[param] && config[param].mode) || defaultConfig[param].mode;
     };
 
+    this.getHistoricProcessInstancesSearch = function() {
+      return (config['historicProcessInstancesSearch'] || {})['defaultFilter'];
+    };
+
     this.$get = function() {
       return this;
     };
