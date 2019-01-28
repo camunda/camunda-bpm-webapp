@@ -35,8 +35,8 @@ window.camCockpitConf = {
   //   // possible values: filter, search
   //   'mode': 'filter'
   // },
-  // historicProcessInstancesSearch: {
-  //   defaultFilter: {
+  // defaultFilter: {
+  //   historicProcessDefinitionInstancesSearch: {
   //     lastDays: 5,
   //     event: 'started'
   //   }
