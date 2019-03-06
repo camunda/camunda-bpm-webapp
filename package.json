@@ -77,7 +77,7 @@
     "mocha-proshot": "1.0.1",
     "request": "2.53.0",
     "sinon": "1.17.6",
-    "source-map": "0.4.4",
+    "source-map": "0.7.3",
     "watchify": "3.7.0",
     "xunit-file": "0.0.6"
   }
