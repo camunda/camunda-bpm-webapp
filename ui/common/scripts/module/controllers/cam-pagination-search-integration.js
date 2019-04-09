@@ -13,6 +13,11 @@ function CamPaginationSearchIntegrationController($scope, $rootScope, searchWidg
   this.lastSearchQueryString = null;
   this.locationChange = true;
 
+  // reset Page when changing Tabs
+  $scope.$on('$destroy', function() {
+    search('page', null);
+  });
+
   exposeScopeProperties($scope, this, [
     'config',
     'arrayTypes',
