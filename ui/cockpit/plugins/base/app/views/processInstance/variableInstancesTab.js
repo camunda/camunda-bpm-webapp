@@ -14,9 +14,9 @@ var uploadTemplate = require('../../../../../client/scripts/components/variables
 module.exports = function(ngModule) {
   ngModule.controller('VariableInstancesController', [
     '$scope', '$sce', '$http', 'search', 'Uri', 'LocalExecutionVariableResource',
-    'Notifications', '$modal', '$q', 'camAPI', 'fixDate', 'unfixDate', '$translate',
+    'Notifications', '$modal', '$q', 'camAPI', 'fixDate', 'unfixDate', '$translate', 'escapeHtml',
     function($scope, $sce, $http, search, Uri, LocalExecutionVariableResource,
-      Notifications, $modal, $q, camAPI, fixDate, unfixDate, $translate) {
+      Notifications, $modal, $q, camAPI, fixDate, unfixDate, $translate, escapeHtml) {
 
         // input: processInstance, processData
 
@@ -311,7 +311,7 @@ module.exports = function(ngModule) {
                         '" title="' +
                         instance.id +
                         '">' +
-                        instance.name  +
+                        escapeHtml.escape(instance.name)  +
                         '</a>';
                   }
 
