@@ -441,7 +441,7 @@ public class SecurityFilterRulesTest {
   }
 
   private void authenticatedForApp(String engineName, String appName, Runnable codeBlock) {
-    HashSet<String> authorizedApps = new HashSet<>(Arrays.asList(appName));
+    HashSet<String> authorizedApps = new HashSet<String>(Arrays.asList(appName));
 
     UserAuthentication engineAuth = new UserAuthentication(LOGGED_IN_USER.getIdentityId(), engineName);
     engineAuth.setGroupIds(Collections.<String> emptyList());
