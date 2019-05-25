@@ -7,6 +7,7 @@
   <resultMap id="processInstanceMap" type="org.camunda.bpm.cockpit.impl.plugin.base.dto.ProcessInstanceDto">
     <id property="id" column="ID_" jdbcType="VARCHAR" />
     <result property="businessKey" column="BUSINESS_KEY_" jdbcType="VARCHAR" />
+    <result property="definitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP"/>
     <result property="suspensionState" column="SUSPENSION_STATE_" jdbcType="INTEGER"/>
     <collection property="incidents" javaType="java.util.ArrayList" ofType="org.camunda.bpm.cockpit.impl.plugin.base.dto.IncidentStatisticsDto">
@@ -40,6 +41,7 @@
     select distinct
       INSTANCE.ID_,
       INSTANCE.BUSINESS_KEY_,
+      INSTANCE.PROC_DEF_ID_,
       INSTANCE.START_TIME_,
       INSTANCE.SUSPENSION_STATE_,
       INCIDENT.INCIDENT_TYPE_,
@@ -145,6 +147,19 @@
           <if test="processDefinitionId != null">
           and PROC_DEF_ID_ = #{processDefinitionId}
           </if>
+      )
+      </if>
+
+      <!-- processDefinitionKey -->
+      <if test="processDefinitionKey != null">
+      and EXISTS (
+        select
+          ID_
+        from
+          ${prefix}ACT_RE_PROCDEF
+        where
+          KEY_ = #{processDefinitionKey}
+          and RES.PROC_DEF_ID_ = ID_
       )
       </if>
 

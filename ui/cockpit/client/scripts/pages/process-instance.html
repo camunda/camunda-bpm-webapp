@@ -50,7 +50,15 @@
               class="business-key"
               ng-mouseenter="hoverTitle('business-key')"
               ng-mouseleave="hoverTitle()">
-            {{ processInstance.businessKey }}
+            <a ng-href="{{ processInstance.businessUri }}"
+               title="{{ processInstance.businessKey }}"
+               ng-if="processInstance.businessUri">
+              {{ processInstance.businessKey }}
+            </a>
+            <span
+               ng-if="!processInstance.businessUri">
+              {{ processInstance.businessKey }}
+            </span>
           </dd>
           <dt ng-if="!processInstance.businessKey">
             <span uib-tooltip="{{ 'PROCESS_INSTANCE_TOOLTIP_BUSINESS_KEY' | translate }}">{{ 'PROCESS_INSTANCE_BUSINESS_KEY' | translate }}</span>

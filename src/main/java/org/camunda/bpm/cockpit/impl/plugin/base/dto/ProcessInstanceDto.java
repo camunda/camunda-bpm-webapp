@@ -20,11 +20,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState;
+import org.camunda.bpm.engine.rest.util.BusinessUriUtil;
 
 
 public class ProcessInstanceDto {
 
   protected String id;
+  protected String definitionId;
   protected String businessKey;
   protected Date startTime;
   protected List<IncidentStatisticsDto> incidents;
@@ -40,12 +42,29 @@ public class ProcessInstanceDto {
     this.id = id;
   }
 
+  public String getDefinitionId() {
+    return this.definitionId;
+  }
+
+  public void setDefinitionId(final String definitionId) {
+    this.definitionId = definitionId;
+  }
+  
+  
   public String getBusinessKey() {
     return businessKey;
   }
 
   public void setBusinessKey(String businessKey) {
     this.businessKey = businessKey;
+  }
+  
+  public String getBusinessUri() {
+    String result = null;
+    if ((getDefinitionId() != null) && (getBusinessKey() != null)) {
+      result = BusinessUriUtil.getBusinessUri(getDefinitionId(), getBusinessKey());
+    }
+    return result;
   }
 
   public Date getStartTime() {

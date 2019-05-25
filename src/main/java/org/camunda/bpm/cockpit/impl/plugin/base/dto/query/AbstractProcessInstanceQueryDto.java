@@ -51,6 +51,7 @@ public abstract class AbstractProcessInstanceQueryDto<T extends ProcessInstanceD
   }
 
   protected String processDefinitionId;
+  protected String processDefinitionKey;
   protected String parentProcessDefinitionId;
   protected String[] activityIdIn;
   protected String[] activityInstanceIdIn;
@@ -80,6 +81,16 @@ public abstract class AbstractProcessInstanceQueryDto<T extends ProcessInstanceD
   @CamundaQueryParam(value="processDefinitionId")
   public void setProcessDefinitionId(String processDefinitionId) {
     this.processDefinitionId = processDefinitionId;
+  }
+  
+  
+  public String getProcessDefinitionKey() {
+    return processDefinitionKey;
+  }
+
+  @CamundaQueryParam("processDefinitionKey")
+  public void setProcessDefinitionKey(String processDefinitionKey) {
+    this.processDefinitionKey = processDefinitionKey;
   }
 
   public String getParentProcessDefinitionId() {

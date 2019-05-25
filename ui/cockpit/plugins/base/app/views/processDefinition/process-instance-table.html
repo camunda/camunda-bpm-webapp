@@ -46,7 +46,16 @@
         <td class="business-key"
             ng-if="processInstance.businessKey"
             cam-widget-clipboard="processInstance.businessKey">
-          {{ processInstance.businessKey }}
+          <a ng-href="{{ processInstance.businessUri }}"
+             title="{{ processInstance.businessKey }}"
+             ng-if="processInstance.businessUri">
+            {{ processInstance.businessKey }}
+          </a>
+          <span
+             ng-if="!processInstance.businessUri">
+            {{ processInstance.businessKey }}
+          </span>
+          
         </td>
         <td class="business-key"
             ng-if="!processInstance.businessKey"></td>
