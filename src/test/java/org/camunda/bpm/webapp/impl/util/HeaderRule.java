@@ -65,10 +65,18 @@ public class HeaderRule extends ExternalResource {
   }
 
   public void performRequest() {
+    performRequestWithHeader(null, null);
+  }
+
+  public void performRequestWithHeader(String name, String value) {
     try {
       connection = new URL("http://localhost:" + SERVER_PORT + "/").openConnection();
     } catch (IOException e) {
       throw new RuntimeException(e);
+    }
+
+    if (name != null && value != null) {
+      connection.setRequestProperty(name, value);
     }
 
     try {
@@ -80,6 +88,10 @@ public class HeaderRule extends ExternalResource {
 
   public String getHeader(String headerName) {
     return connection.getHeaderField(headerName);
+  }
+
+  public String getCookieHeader() {
+    return connection.getHeaderField("Set-Cookie");
   }
 
   public Throwable getException() {

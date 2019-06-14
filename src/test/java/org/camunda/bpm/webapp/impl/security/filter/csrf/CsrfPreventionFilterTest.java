@@ -16,6 +16,7 @@
  */
 package org.camunda.bpm.webapp.impl.security.filter.csrf;
 
+import org.camunda.bpm.webapp.impl.security.filter.CsrfPreventionCookieConfigurator;
 import org.camunda.bpm.webapp.impl.security.filter.CsrfPreventionFilter;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +24,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockFilterConfig;
@@ -41,13 +44,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
  * @author Nikola Koevski
  */
 @RunWith(Parameterized.class)
 @PowerMockIgnore("javax.security.*")
+@PrepareForTest(CsrfPreventionFilter.class)
 public class CsrfPreventionFilterTest {
 
   protected static final String SERVICE_PATH = "/camunda";
@@ -99,8 +105,21 @@ public class CsrfPreventionFilterTest {
   }
 
   @Before
-  public void setup() throws ServletException {
+  public void setup() throws Exception {
+    createMocks();
     setupFilter();
+  }
+
+  protected void createMocks() throws Exception {
+    CsrfPreventionCookieConfigurator cookieConfigurator = PowerMockito.mock(CsrfPreventionCookieConfigurator.class);
+
+    whenNew(CsrfPreventionCookieConfigurator.class)
+      .withNoArguments()
+      .thenReturn(cookieConfigurator);
+
+    doNothing()
+      .when(cookieConfigurator)
+      .applyCustomConfig(any(HttpServletResponse.class));
   }
 
   protected void setupFilter() throws ServletException {
