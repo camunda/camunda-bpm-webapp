@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.webapp.impl.security.filter.headersec.util;
+package org.camunda.bpm.webapp.impl.util;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -23,13 +23,11 @@ import org.junit.rules.ExternalResource;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Tassilo Weidner
  */
-public class HeaderSecRule extends ExternalResource {
+public class HeaderRule extends ExternalResource {
 
   protected static final int SERVER_PORT = 8085;
 
@@ -53,9 +51,9 @@ public class HeaderSecRule extends ExternalResource {
     }
   }
 
-  public void startServer(String webDescriptor) {
+  public void startServer(String webDescriptor, String scope) {
     webAppContext.setResourceBase("/");
-    webAppContext.setDescriptor("src/test/resources/WEB-INF/headersec/" + webDescriptor);
+    webAppContext.setDescriptor("src/test/resources/WEB-INF/" + scope + "/" + webDescriptor);
 
     server.setHandler(webAppContext);
 

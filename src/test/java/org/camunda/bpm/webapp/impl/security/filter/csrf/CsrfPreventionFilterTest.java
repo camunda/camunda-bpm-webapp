@@ -14,8 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.webapp.impl.security.filter;
+package org.camunda.bpm.webapp.impl.security.filter.csrf;
 
+import org.camunda.bpm.webapp.impl.security.filter.CsrfPreventionFilter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
