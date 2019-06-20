@@ -53,9 +53,8 @@ module.exports = [ '$routeProvider', function($routeProvider) {
           12: $translate.instant('AUTHORIZATION_TENANT_MEMBERSHIP'),
           13: $translate.instant('AUTHORIZATION_BATCH'),
           14: $translate.instant('AUTHORIZATION_DECISION_REQUIREMENTS_DEFINITION'),
-          15: $translate.instant('AUTHORIZATION_REPORT'),
-          16: $translate.instant('AUTHORIZATION_DASHBOARD'),
-          17: $translate.instant('AUTHORIZATION_OPERATION_LOG')
+          17: $translate.instant('AUTHORIZATION_OPERATION_LOG'),
+          18: $translate.instant('AUTHORIZATION_OPTIMIZE')
         };
 
         pageService.breadcrumbsAdd([
@@ -66,24 +65,87 @@ module.exports = [ '$routeProvider', function($routeProvider) {
         ]);
 
         $scope.permissionMap = {
-          0: [ 'ACCESS' ],
-          1: [ 'READ', 'UPDATE', 'CREATE', 'DELETE' ],
-          2: [ 'READ', 'UPDATE', 'CREATE', 'DELETE' ],
-          3: [ 'CREATE', 'DELETE' ],
-          4: [ 'READ', 'UPDATE', 'CREATE', 'DELETE' ],
-          5: [ 'CREATE', 'READ', 'UPDATE', 'DELETE' ],
-          6: [ 'READ', 'UPDATE', 'DELETE', 'SUSPEND', 'CREATE_INSTANCE', 'READ_INSTANCE', 'UPDATE_INSTANCE', 'RETRY_JOB', 'SUSPEND_INSTANCE', 'DELETE_INSTANCE', 'MIGRATE_INSTANCE', 'READ_TASK', 'UPDATE_TASK', 'TASK_ASSIGN', 'TASK_WORK', 'READ_TASK_VARIABLE', 'READ_HISTORY', 'READ_HISTORY_VARIABLE', 'DELETE_HISTORY', 'READ_INSTANCE_VARIABLE', 'UPDATE_INSTANCE_VARIABLE', 'UPDATE_TASK_VARIABLE' ],
-          7: [ 'CREATE', 'READ', 'UPDATE', 'DELETE', 'TASK_ASSIGN', 'TASK_WORK', 'READ_HISTORY', 'UPDATE_VARIABLE', 'READ_VARIABLE' ],
-          8: [ 'CREATE', 'READ', 'UPDATE', 'DELETE', 'RETRY_JOB', 'SUSPEND', 'UPDATE_VARIABLE' ],
-          9: [ 'CREATE', 'READ', 'DELETE' ],
-          10: [ 'READ', 'UPDATE', 'CREATE_INSTANCE', 'READ_HISTORY', 'DELETE_HISTORY' ],
-          11: [ 'READ', 'UPDATE', 'CREATE', 'DELETE' ],
-          12: [ 'CREATE', 'DELETE' ],
-          13: [ 'READ', 'UPDATE', 'CREATE', 'DELETE', 'READ_HISTORY', 'DELETE_HISTORY', 'CREATE_BATCH_MIGRATE_PROCESS_INSTANCES', 'CREATE_BATCH_MODIFY_PROCESS_INSTANCES', 'CREATE_BATCH_RESTART_PROCESS_INSTANCES', 'CREATE_BATCH_DELETE_RUNNING_PROCESS_INSTANCES', 'CREATE_BATCH_DELETE_FINISHED_PROCESS_INSTANCES', 'CREATE_BATCH_DELETE_DECISION_INSTANCES', 'CREATE_BATCH_SET_JOB_RETRIES', 'CREATE_BATCH_SET_REMOVAL_TIME', 'CREATE_BATCH_SET_EXTERNAL_TASK_RETRIES', 'CREATE_BATCH_UPDATE_PROCESS_INSTANCES_SUSPEND' ],
-          14: [ 'READ' ],
-          15: [ 'ALL', 'READ', 'UPDATE', 'CREATE', 'DELETE' ],
-          16: [ 'ALL', 'READ', 'UPDATE', 'CREATE', 'DELETE' ],
-          17: [ 'READ', 'DELETE' ]
+          0: ['ACCESS'],
+          1: ['READ', 'UPDATE', 'CREATE', 'DELETE'],
+          2: ['READ', 'UPDATE', 'CREATE', 'DELETE'],
+          3: ['CREATE', 'DELETE'],
+          4: ['READ', 'UPDATE', 'CREATE', 'DELETE'],
+          5: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
+          6: [
+            'READ',
+            'UPDATE',
+            'DELETE',
+            'SUSPEND',
+            'CREATE_INSTANCE',
+            'READ_INSTANCE',
+            'UPDATE_INSTANCE',
+            'RETRY_JOB',
+            'SUSPEND_INSTANCE',
+            'DELETE_INSTANCE',
+            'MIGRATE_INSTANCE',
+            'READ_TASK',
+            'UPDATE_TASK',
+            'TASK_ASSIGN',
+            'TASK_WORK',
+            'READ_TASK_VARIABLE',
+            'READ_HISTORY',
+            'READ_HISTORY_VARIABLE',
+            'DELETE_HISTORY',
+            'READ_INSTANCE_VARIABLE',
+            'UPDATE_INSTANCE_VARIABLE',
+            'UPDATE_TASK_VARIABLE'
+          ],
+          7: [
+            'CREATE',
+            'READ',
+            'UPDATE',
+            'DELETE',
+            'TASK_ASSIGN',
+            'TASK_WORK',
+            'READ_HISTORY',
+            'UPDATE_VARIABLE',
+            'READ_VARIABLE'
+          ],
+          8: [
+            'CREATE',
+            'READ',
+            'UPDATE',
+            'DELETE',
+            'RETRY_JOB',
+            'SUSPEND',
+            'UPDATE_VARIABLE'
+          ],
+          9: ['CREATE', 'READ', 'DELETE'],
+          10: [
+            'READ',
+            'UPDATE',
+            'CREATE_INSTANCE',
+            'READ_HISTORY',
+            'DELETE_HISTORY'
+          ],
+          11: ['READ', 'UPDATE', 'CREATE', 'DELETE'],
+          12: ['CREATE', 'DELETE'],
+          13: [
+            'READ',
+            'UPDATE',
+            'CREATE',
+            'DELETE',
+            'READ_HISTORY',
+            'DELETE_HISTORY',
+            'CREATE_BATCH_MIGRATE_PROCESS_INSTANCES',
+            'CREATE_BATCH_MODIFY_PROCESS_INSTANCES',
+            'CREATE_BATCH_RESTART_PROCESS_INSTANCES',
+            'CREATE_BATCH_DELETE_RUNNING_PROCESS_INSTANCES',
+            'CREATE_BATCH_DELETE_FINISHED_PROCESS_INSTANCES',
+            'CREATE_BATCH_DELETE_DECISION_INSTANCES',
+            'CREATE_BATCH_SET_JOB_RETRIES',
+            'CREATE_BATCH_SET_REMOVAL_TIME',
+            'CREATE_BATCH_SET_EXTERNAL_TASK_RETRIES',
+            'CREATE_BATCH_UPDATE_PROCESS_INSTANCES_SUSPEND'
+          ],
+          14: ['READ'],
+          17: ['READ', 'DELETE'],
+          18: ['EDIT', 'SHARE']
         };
 
         $scope.typeMap = {
