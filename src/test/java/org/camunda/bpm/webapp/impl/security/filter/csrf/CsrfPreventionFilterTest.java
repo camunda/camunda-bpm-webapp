@@ -205,6 +205,37 @@ public class CsrfPreventionFilterTest {
     }
   }
 
+  @Test
+  public void testNonModifyingRequestTokenGenerationWithRootContextPath() throws IOException, ServletException {
+    // given
+    MockHttpSession session = new MockHttpSession();
+    MockHttpServletRequest nonModifyingRequest = new MockHttpServletRequest();
+    nonModifyingRequest.setMethod("GET");
+    nonModifyingRequest.setSession(session);
+
+    // set root context path in request
+    nonModifyingRequest.setRequestURI("/"  + nonModifyingRequestUrl);
+    nonModifyingRequest.setContextPath("");
+
+    // when
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    applyFilter(nonModifyingRequest, response);
+
+    // then
+    String cookieToken = (String) response.getHeader(CSRF_SET_COOKIE_HEADER_NAME);
+    String headerToken = (String) response.getHeader(CSRF_HEADER_NAME);
+
+    Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+    Assert.assertNotNull(cookieToken);
+    Assert.assertNotNull(headerToken);
+
+    assertThat(cookieToken).matches(CSRF_COOKIE_NAME + "=[A-Z0-9]{32}" + CSRF_PATH_FIELD_NAME + "/");
+
+    Assert.assertEquals("No HTTP Header Token!",false, headerToken.isEmpty());
+    assertThat(cookieToken).contains(headerToken);
+  }
+
   protected MockHttpServletResponse performNonModifyingRequest(String requestUrl, MockHttpSession session) throws IOException, ServletException {
     MockHttpServletResponse response = new MockHttpServletResponse();
 

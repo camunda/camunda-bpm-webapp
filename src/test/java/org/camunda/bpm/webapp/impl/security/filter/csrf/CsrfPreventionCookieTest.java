@@ -18,7 +18,6 @@ package org.camunda.bpm.webapp.impl.security.filter.csrf;
 
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.webapp.impl.util.HeaderRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -41,7 +40,6 @@ public class CsrfPreventionCookieTest {
     assertThat(headerRule.getCookieHeader()).matches("XSRF-TOKEN=[A-Z0-9]{32};Path=/camunda;SameSite=Strict");
   }
 
-  @Ignore("CAM-10494")
   @Test
   public void shouldConfigureRootContextPath() {
     // given
