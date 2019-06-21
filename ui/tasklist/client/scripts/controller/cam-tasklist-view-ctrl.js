@@ -143,41 +143,56 @@ module.exports = [
 
     // Handeling of long-running requests
     // store state of last Request
+    var lastRequest = $q.defer();
+    var lastQuery = {};
     var lastRequestIsPending = false;
-    var lastRequest;
-
-    tasklistData.provide('taskList', [ 'taskListQuery', function(taskListQuery) {
-      if(!lastRequestIsPending) {
-        var deferred = $q.defer();
-        lastRequest = deferred;
-        lastRequestIsPending = true;
-
-        if(!taskListQuery || taskListQuery.id === null) {
-          // no filter selected
-          lastRequestIsPending = false;
-          deferred.resolve({
-            count: 0,
-            _embedded : {}
-          });
-        }
-        else {
-          // filter selected
-          Filter.getTasks(angular.copy(taskListQuery), function(err, res) {
-            lastRequestIsPending = false;
-            if(err) {
-              deferred.reject(err);
-            }
-            else {
-              deferred.resolve(res);
-            }
-          });
-        }
-        return deferred.promise;
+    // trigger reloading of the tasks if the query changes
+    tasklistData.observe('taskListQuery', function(taskListQuery) {
+      if (
+        lastRequestIsPending &&
+        JSON.stringify(taskListQuery) !== JSON.stringify(lastQuery)
+      ) {
+        tasklistData.changed('taskList');
       }
-      else {
-        return lastRequest.promise;
-      }
-    }]);
+    });
+
+
+    tasklistData.provide('taskList', [
+      'taskListQuery',
+      function(taskListQuery) {
+        if (
+          !lastRequestIsPending ||
+          JSON.stringify(taskListQuery) !== JSON.stringify(lastQuery)
+        ) {
+          var deferred = $q.defer();
+          lastRequest = deferred;
+          lastQuery = taskListQuery;
+
+          if (!taskListQuery || taskListQuery.id === null) {
+            // no filter selected
+            deferred.resolve({
+              count: 0,
+              _embedded: {}
+            });
+          } else {
+            // filter selected
+            lastRequestIsPending = true;
+            Filter.getTasks(angular.copy(taskListQuery), function(err, res) {
+              if (err) {
+                deferred.reject(err);
+              } else {
+                deferred.resolve(res);
+              }
+              if(deferred === lastRequest) {
+                lastRequestIsPending = false;
+              }
+            });
+          }
+          return deferred.promise;
+        } else {
+          return lastRequest.promise;
+        }
+      }]);
 
    /**
      * Provide current task id
