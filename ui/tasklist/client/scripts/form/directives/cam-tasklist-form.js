@@ -126,6 +126,12 @@ module.exports = function() {
         }
 
         function parseForm(form) {
+          // Form is already parsed
+          if (form.type) {
+            setAsynchronousFormKey(form.key);
+            return;
+          }
+
           var key = form.key,
               applicationContextPath = form.contextPath;
 
