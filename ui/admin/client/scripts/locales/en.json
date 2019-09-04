@@ -235,7 +235,7 @@
   "USERS_CHANGE_PASSWORD": "Change Password",
   "USERS_TYPE_NEW_PASSWORD": "Type a new password to change the existing account password.",
   "USERS_OLD_PASSWORD": "Old Password*:",
-  "USERS_MY_PASSWORD": "My Password*:",
+  "USERS_MY_PASSWORD": "{{name}}'s Password*:",
   "USERS_NEW_PASSWORD": "New Password*:",
   "USERS_PASSWORD_INVALID": "Password must have at least 8 characters.",
   "USERS_NEW_PASSWORD_REPEAT": "New Password (repeat)*:",
