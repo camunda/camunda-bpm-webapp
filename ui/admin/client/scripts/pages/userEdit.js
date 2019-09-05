@@ -48,6 +48,15 @@ module.exports = [ '$routeProvider', function($routeProvider) {
 
         $scope.decodedUserId = unescape(encodeURIComponent($routeParams.userId));
 
+        $scope.$root.$watch('userFullName', function(name) {
+          if (name) {
+            $scope.currentUserPassword = $translate.instant(
+              'USERS_MY_PASSWORD',
+              {name: $scope.$root.userFullName}
+            );
+          }
+        });
+
         $scope.authenticatedUser = authentication;
 
         // used to display information about the user
