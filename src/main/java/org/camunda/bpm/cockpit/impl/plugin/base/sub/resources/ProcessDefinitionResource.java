@@ -67,6 +67,7 @@ public class ProcessDefinitionResource extends AbstractPluginResource {
         queryParameter.setParentProcessDefinitionId(id);
         injectEngineConfig(queryParameter);
         configureExecutionQuery(queryParameter);
+        queryParameter.disableMaxResultsLimit();
         return getQueryService().executeQuery("selectCalledProcessDefinitions", queryParameter);
       }
     });
