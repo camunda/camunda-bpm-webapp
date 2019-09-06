@@ -22,6 +22,13 @@ import org.camunda.bpm.webapp.impl.security.filter.util.CsrfConstants;
 import javax.servlet.FilterConfig;
 import java.util.Arrays;
 
+/**
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * WARNING: THE WHOLE CONTENT OF THIS FILE LIVES AS A COPY IN
+ * camunda-bpm-spring-boot-starter REPOSITORY:
+ * - org.camunda.bpm.spring.boot.starter.webapp.filter.SpringBootCsrfPreventionFilter
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ */
 public class CsrfPreventionCookieConfigurator {
 
   protected static final String ENABLE_SECURE_PARAM = "enableSecureCookie";
@@ -73,7 +80,7 @@ public class CsrfPreventionCookieConfigurator {
       }
 
     } else { // default
-      this.sameSiteCookieValue = SameSiteOption.STRICT.getValue();
+      this.sameSiteCookieValue = SameSiteOption.LAX.getValue();
 
     }
   }
