@@ -12,6 +12,7 @@
  */
 package org.camunda.bpm.cockpit.plugin.base;
 
+import static junit.framework.TestCase.fail;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.List;
@@ -22,13 +23,17 @@ import org.camunda.bpm.cockpit.impl.plugin.base.dto.ProcessInstanceDto;
 import org.camunda.bpm.cockpit.impl.plugin.base.dto.query.CalledProcessInstanceQueryDto;
 import org.camunda.bpm.cockpit.impl.plugin.base.sub.resources.ProcessInstanceResource;
 import org.camunda.bpm.cockpit.plugin.test.AbstractCockpitPluginTest;
+import org.camunda.bpm.engine.BadUserRequestException;
+import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.ActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,16 +45,31 @@ public class ProcessInstanceResourceTest extends AbstractCockpitPluginTest {
 
   private ProcessInstanceResource resource;
   private ProcessEngine processEngine;
+  protected ProcessEngineConfigurationImpl processEngineConfiguration;
   private RuntimeService runtimeService;
   private RepositoryService repositoryService;
+  protected IdentityService identityService;
 
   @Before
   public void setUp() throws Exception {
     super.before();
 
     processEngine = getProcessEngine();
+    processEngineConfiguration = (ProcessEngineConfigurationImpl) getProcessEngine()
+      .getProcessEngineConfiguration();
     runtimeService = processEngine.getRuntimeService();
     repositoryService = processEngine.getRepositoryService();
+    identityService = processEngine.getIdentityService();
+  }
+
+  @After
+  public void clearAuthentication() {
+    identityService.clearAuthentication();
+  }
+
+  @After
+  public void resetQueryMaxResultsLimit() {
+    processEngineConfiguration.setQueryMaxResultsLimit(Integer.MAX_VALUE);
   }
 
   @Test
@@ -209,6 +229,24 @@ public class ProcessInstanceResourceTest extends AbstractCockpitPluginTest {
 
     assertThat(incidents2.get(0).getIncidentCount()).isEqualTo(1);
     assertThat(incidents2.get(0).getIncidentType()).isEqualTo("failedJob");
+  }
+
+  @Test
+  public void shouldNotThrowExceptionWhenQueryUnbounded() {
+    // given
+    resource = new ProcessInstanceResource(getProcessEngine().getName(), "anId");
+
+    processEngineConfiguration.setQueryMaxResultsLimit(10);
+
+    identityService.setAuthenticatedUserId("foo");
+
+    try {
+      // when
+      resource.queryCalledProcessInstances(new CalledProcessInstanceQueryDto());
+      // then: no exception thrown
+    } catch (BadUserRequestException e) {
+      fail("No exception expected");
+    }
   }
 
 }
