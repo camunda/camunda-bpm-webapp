@@ -198,7 +198,7 @@ public class CsrfPreventionFilterTest {
     Assert.assertNotNull(cookieToken);
     Assert.assertNotNull(headerToken);
 
-    assertThat(cookieToken).matches(CSRF_COOKIE_NAME + "=[A-Z0-9]{32}" + CSRF_PATH_FIELD_NAME + "/;SameSite=Strict");
+    assertThat(cookieToken).matches(CSRF_COOKIE_NAME + "=[A-Z0-9]{32}" + CSRF_PATH_FIELD_NAME + "/;SameSite=Lax");
 
     Assert.assertEquals("No HTTP Header Token!",false, headerToken.isEmpty());
     assertThat(cookieToken).contains(headerToken);
