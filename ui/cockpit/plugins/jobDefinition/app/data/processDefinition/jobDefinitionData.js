@@ -32,7 +32,8 @@ var Controller = [
       'processDefinition',
       function(processDefinition) {
         return JobDefinitionResource.query({
-          processDefinitionId: processDefinition.id
+          processDefinitionId: processDefinition.id,
+          maxResults: 1000
         }).$promise;
       }
     ]);

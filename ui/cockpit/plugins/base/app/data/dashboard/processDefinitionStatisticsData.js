@@ -32,7 +32,8 @@ var Controller = [
 
     processData.provide('processDefinitions', function() {
       return ProcessDefinitionResource.queryStatistics({
-        incidents: true
+        incidents: true,
+        maxResults: 1000
       }).$promise;
     });
 

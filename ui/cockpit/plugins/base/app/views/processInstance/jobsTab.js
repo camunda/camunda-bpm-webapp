@@ -120,7 +120,10 @@ var Configuration = function PluginConfiguration(ViewsProvider) {
             $scope.jobs = res;
 
             jobDefinitionProvider.list(
-              {processInstanceId: processInstance.definitionId},
+              {
+                processInstanceId: processInstance.definitionId,
+                maxResults: 1000
+              },
               function(err, res) {
                 var processDefinitions = res;
                 $scope.jobs = $scope.jobs.map(function(job) {

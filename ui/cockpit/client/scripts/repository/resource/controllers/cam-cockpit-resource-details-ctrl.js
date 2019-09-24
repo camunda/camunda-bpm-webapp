@@ -182,7 +182,8 @@ module.exports = [
             Service.list(
               {
                 deploymentId: deployment.id,
-                resourceName: resource.name
+                resourceName: resource.name,
+                maxResults: 1000
               },
               function(err, res) {
                 if (err) {

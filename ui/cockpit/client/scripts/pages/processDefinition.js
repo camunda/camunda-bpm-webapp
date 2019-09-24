@@ -272,7 +272,8 @@ var Controller = [
         var queryParams = {
           key: definition.key,
           sortBy: 'version',
-          sortOrder: 'desc'
+          sortOrder: 'desc',
+          maxResults: 1000
         };
 
         if (definition.tenantId) {
@@ -307,7 +308,8 @@ var Controller = [
       'processDefinition',
       function(processDefinition) {
         return JobDefinitionResource.query({
-          processDefinitionId: processDefinition.id
+          processDefinitionId: processDefinition.id,
+          maxResults: 1000
         }).$promise;
       }
     ]);

@@ -102,7 +102,8 @@ var Controller = [
         var queryParams = {
           key: decisionDefinition.key,
           sortBy: 'version',
-          sortOrder: 'desc'
+          sortOrder: 'desc',
+          maxResults: 1000
         };
 
         if (decisionDefinition.tenantId) {

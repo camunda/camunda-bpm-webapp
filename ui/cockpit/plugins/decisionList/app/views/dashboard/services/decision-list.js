@@ -32,12 +32,14 @@ module.exports = [
       var decisions = decisionDefinitionService.list({
         latestVersion: true,
         sortBy: 'name',
-        sortOrder: 'asc'
+        sortOrder: 'asc',
+        maxResults: 1000
       });
       var drds = drdService.list({
         latestVersion: true,
         sortBy: 'name',
-        sortOrder: 'asc'
+        sortOrder: 'asc',
+        maxResults: 1000
       });
 
       return $q

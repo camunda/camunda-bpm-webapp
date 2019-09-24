@@ -62,7 +62,8 @@ module.exports = [
         Filter.list(
           {
             itemCount: false,
-            resoureType: 'Task'
+            resoureType: 'Task',
+            maxResults: 100
           },
           function(err, res) {
             if (err) {

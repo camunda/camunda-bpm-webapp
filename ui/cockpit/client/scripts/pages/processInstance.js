@@ -277,8 +277,10 @@ var Controller = [
     processData.provide('incidents', [
       'processInstance',
       function(processInstance) {
-        return IncidentResource.query({processInstanceId: processInstance.id})
-          .$promise;
+        return IncidentResource.query({
+          maxResults: 1000,
+          processInstanceId: processInstance.id
+        }).$promise;
       }
     ]);
 
@@ -322,7 +324,8 @@ var Controller = [
           key: definition.key,
           sortBy: 'version',
           sortOrder: 'desc',
-          latestVersion: true
+          latestVersion: true,
+          maxResults: 1000
         };
 
         if (definition.tenantId) {
@@ -416,7 +419,8 @@ var Controller = [
       'processInstance',
       function(processInstance) {
         return ProcessInstanceResource.query({
-          subProcessInstance: processInstance.id
+          subProcessInstance: processInstance.id,
+          maxResults: 1000
         }).$promise;
       }
     ]);

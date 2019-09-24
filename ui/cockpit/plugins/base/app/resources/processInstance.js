@@ -22,7 +22,9 @@ module.exports = [
   'Uri',
   function($resource, Uri) {
     return $resource(
-      Uri.appUri('plugin://base/:engine/process-instance/:id/:action'),
+      Uri.appUri(
+        'plugin://base/:engine/process-instance/:id/:action?maxResults=1000'
+      ),
       {id: '@id'},
       {
         query: {

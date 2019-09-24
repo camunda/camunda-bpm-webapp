@@ -241,7 +241,8 @@ var Controller = [
           processes: function(next) {
             processDefinitionService.list(
               {
-                latest: true
+                latest: true,
+                maxResults: 1000
               },
               function(err, data) {
                 if (err) {

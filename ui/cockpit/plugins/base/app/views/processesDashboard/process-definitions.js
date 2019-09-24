@@ -119,7 +119,8 @@ module.exports = [
           var listProcessDefinitions = function() {
             processDefinitionService.list(
               {
-                latest: true
+                latest: true,
+                maxResults: 1000
               },
               function(err, data) {
                 // Add label for sorting
