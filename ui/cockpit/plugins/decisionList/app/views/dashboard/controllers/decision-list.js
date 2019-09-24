@@ -28,15 +28,61 @@ module.exports = [
     });
     $scope.isDrdDashboardAvailable = !!$scope.drdDashboard;
 
+    var pages = ($scope.paginationController = {
+      decisionPages: {size: 50, total: 0, current: 1},
+      drdPages: {size: 50, total: 0, current: 1},
+      changeDecisionPage: changeDecisionPage,
+      changeDrdPage: changeDrdPage
+    });
+
+    function changeDrdPage(pages) {
+      $scope.loadingState = 'LOADING';
+
+      $scope.paginationController.drdPages.current = pages.current;
+      decisionList
+        .getDrds({
+          firstResult: (pages.current - 1) * pages.size,
+          maxResults: pages.size
+        })
+        .then(function(data) {
+          $scope.loadingState = 'LOADED';
+
+          $scope.drds = data;
+        });
+    }
+
+    function changeDecisionPage(pages) {
+      $scope.loadingState = 'LOADING';
+
+      $scope.paginationController.decisionPages.current = pages.current;
+      decisionList
+        .getDecisions({
+          firstResult: (pages.current - 1) * pages.size,
+          maxResults: pages.size
+        })
+        .then(function(data) {
+          $scope.loadingState = 'LOADED';
+
+          $scope.decisions = data;
+        });
+    }
+
     decisionList
-      .getDecisionsLists()
+      .getDecisionsLists({
+        firstResult:
+          (pages.decisionPages.current - 1) * pages.decisionPages.size,
+        maxResults: pages.decisionPages.size
+      })
       .then(function(data) {
         $scope.loadingState = 'LOADED';
 
-        $scope.decisionCount = data.decisions.length;
+        $scope.paginationController.decisionPages.total = $scope.decisionCount =
+          data.decisionsCount;
         $scope.decisions = data.decisions;
 
-        $scope.drdsCount = data.drds.length;
+        $scope.paginationController.drdPages.total = $scope.drdsCount =
+          data.drdsCount;
+
         $scope.drds = data.drds;
       })
       .catch(function(err) {
@@ -46,6 +92,8 @@ module.exports = [
         throw err;
       });
 
-    $scope.drdDashboardVars = {read: ['drdsCount', 'drds']};
+    $scope.drdDashboardVars = {
+      read: ['drdsCount', 'drds', 'paginationController']
+    };
   }
 ];

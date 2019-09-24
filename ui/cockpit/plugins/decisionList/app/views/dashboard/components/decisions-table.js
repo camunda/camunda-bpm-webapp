@@ -28,7 +28,8 @@ module.exports = function() {
     scope: {
       decisionCount: '=',
       decisions: '=',
-      isDrdAvailable: '='
+      isDrdAvailable: '=',
+      pagination: '='
     },
     controller: [
       '$scope',

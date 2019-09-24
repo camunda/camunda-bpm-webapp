@@ -43,11 +43,15 @@ module.exports = [
       scope: {
         definition: '=changeVersion',
         type: '@',
-        history: '@?'
+        history: '@?',
+        noRedirect: '@?'
       },
       link: function($scope) {
         $scope.model = {};
-        $scope.model.newVersion = $scope.definition.version;
+        $scope.model.newVersion =
+          typeof $scope.definition.version === 'number'
+            ? $scope.definition.version
+            : 1;
 
         $scope.isValid = false;
         $scope.isValidating = true;
@@ -59,21 +63,27 @@ module.exports = [
         };
 
         $scope.changeLocation = function() {
-          $timeout(function() {
-            var path = '/';
-            if ($scope.type === 'drd') {
-              path += 'decision-requirement/';
-            } else {
-              path += $scope.type + '-definition/';
-            }
+          $scope.isActive = false;
+          $scope.definition.version = parseInt($scope.model.newVersion, 10);
+          angular.element('.definition-version .dropdown-toggle').show();
 
-            path += $scope.newDefinition;
-            if ($scope.history !== undefined) {
-              path += '/history';
-            }
+          if ($scope.noRedirect === undefined) {
+            $timeout(function() {
+              var path = '/';
+              if ($scope.type === 'drd') {
+                path += 'decision-requirement/';
+              } else {
+                path += $scope.type + '-definition/';
+              }
 
-            $location.path(path);
-          });
+              path += $scope.newDefinition;
+              if ($scope.history !== undefined) {
+                path += '/history';
+              }
+
+              $location.path(path);
+            });
+          }
         };
 
         $scope.change = function(form) {

@@ -34,67 +34,80 @@ module.exports = [
           'control',
           'processData',
           'processDiagram',
-          function($scope, control, processData, processDiagram) {
+          'camAPI',
+          function($scope, control, processData, processDiagram, camAPI) {
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
 
             var overlaysNodes = {};
 
-            processData.observe(['jobDefinitions'], function(jobDefinitions) {
-              elementRegistry.forEach(function(shape) {
-                var element =
-                  processDiagram.bpmnElements[shape.businessObject.id];
-                var definitionsForElement = getElementDefinitions(
-                  element,
-                  jobDefinitions
-                );
+            processData.observe('processDefinition', function(
+              processDefinition
+            ) {
+              camAPI
+                .resource('job-definition')
+                .list({
+                  processDefinitionId: processDefinition.id,
+                  suspended: true,
+                  firstResult: 0,
+                  maxResults: 100 // With >100 suspended job definitions, badges will not be displayed
+                })
+                .then(function(jobDefinitions) {
+                  elementRegistry.forEach(function(shape) {
+                    var element =
+                      processDiagram.bpmnElements[shape.businessObject.id];
+                    var definitionsForElement = getElementDefinitions(
+                      element,
+                      jobDefinitions
+                    );
 
-                if (definitionsForElement.length > 0) {
-                  element.isSelectable = true;
-                }
-
-                function isSuspended() {
-                  return definitionsForElement.some(function(definition) {
-                    return definition.suspended;
-                  });
-                }
-
-                $scope.$watch(isSuspended, function(suspended) {
-                  var node = overlaysNodes[element.id];
-
-                  if (!node && suspended) {
-                    node = angular.element(template);
-
-                    overlays.add(element.id, {
-                      position: {
-                        top: 0,
-                        right: 0
-                      },
-                      show: {
-                        minZoom: -Infinity,
-                        maxZoom: +Infinity
-                      },
-                      html: node[0]
-                    });
-
-                    overlaysNodes[element.id] = node;
-                  }
-
-                  if (node) {
-                    if (suspended) {
-                      node.show();
-                      node.tooltip({
-                        container: 'body',
-                        title: 'Suspended Job Definition',
-                        placement: 'top'
-                      });
-                    } else {
-                      node.hide();
+                    if (definitionsForElement.length > 0) {
+                      element.isSelectable = true;
                     }
-                  }
+
+                    function isSuspended() {
+                      return definitionsForElement.some(function(definition) {
+                        return definition.suspended;
+                      });
+                    }
+
+                    $scope.$watch(isSuspended, function(suspended) {
+                      var node = overlaysNodes[element.id];
+
+                      if (!node && suspended) {
+                        node = angular.element(template);
+
+                        overlays.add(element.id, {
+                          position: {
+                            top: 0,
+                            right: 0
+                          },
+                          show: {
+                            minZoom: -Infinity,
+                            maxZoom: +Infinity
+                          },
+                          html: node[0]
+                        });
+
+                        overlaysNodes[element.id] = node;
+                      }
+
+                      if (node) {
+                        if (suspended) {
+                          node.show();
+                          node.tooltip({
+                            container: 'body',
+                            title: 'Suspended Job Definition',
+                            placement: 'top'
+                          });
+                        } else {
+                          node.hide();
+                        }
+                      }
+                    });
+                  });
                 });
-              });
             });
 
             function getElementDefinitions(element, jobDefinitions) {

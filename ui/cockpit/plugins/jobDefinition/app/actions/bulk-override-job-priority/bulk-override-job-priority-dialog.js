@@ -25,34 +25,64 @@ module.exports = [
   'Notifications',
   'JobDefinitionResource',
   '$uibModalInstance',
-  'jobDefinitions',
   '$timeout',
   '$translate',
+  'processData',
+  'camAPI',
   function(
     $scope,
     $q,
     Notifications,
     JobDefinitionResource,
     $modalInstance,
-    jobDefinitions,
     $timeout,
-    $translate
+    $translate,
+    processData,
+    camAPI
   ) {
-    $scope.hasNoJobDefinitions = jobDefinitions.length === 0;
-    if ($scope.hasNoJobDefinitions) {
-      $modalInstance.opened
-        .then(
-          $timeout(function() {
-            Notifications.addError({
-              status: 'Error',
-              message:
-                'This process definition has no job definitions associated with. The job priority cannot be overridden.',
-              exclusive: true
-            });
-          }, 0)
-        )
-        .catch(angular.noop);
-    }
+    var jobDefinitions = [];
+
+    processData.observe('processDefinition', function(processDefinition) {
+      // Load Job Definitions
+      function fetchDefinitions(firstResult) {
+        camAPI
+          .resource('job-definition')
+          .list({
+            processDefinitionId: processDefinition.id,
+            firstResult: firstResult,
+            maxResults: 100
+          })
+          .then(function(res) {
+            jobDefinitions = jobDefinitions.concat(res);
+            summarizePages.total = jobDefinitions.length;
+
+            if (!jobDefinitions.length) {
+              $scope.hasNoJobDefinitions = true;
+
+              $modalInstance.opened
+                .then(
+                  $timeout(function() {
+                    Notifications.addError({
+                      status: 'Error',
+                      message:
+                        'This process definition has no job definitions associated with. The job priority cannot be overridden.',
+                      exclusive: true
+                    });
+                  }, 0)
+                )
+                .catch(angular.noop);
+              return;
+            }
+
+            updateSummarizeTable(1);
+
+            if (res.length === 100) {
+              fetchDefinitions(firstResult + 100);
+            }
+          });
+      }
+      fetchDefinitions(0);
+    });
 
     $scope.status;
     var FINISHED = 'FINISHED',
@@ -64,7 +94,7 @@ module.exports = [
 
     var summarizePages = ($scope.summarizePages = {
       size: 5,
-      total: jobDefinitions.length,
+      total: 0,
       current: 1
     });
 

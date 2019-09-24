@@ -344,24 +344,41 @@ module.exports = [
               return $location.search().tab === 'groups' && groupsSorting;
             },
             function(newValue) {
+              if (newValue)
+                GroupResource.count({
+                  member: $scope.decodedUserId
+                }).then(function(res) {
+                  pages.total = res.count;
+                });
               return newValue && loadGroups();
             }
           );
 
+          var pages = ($scope.pages = {size: 50, total: 0, current: 1});
+
+          $scope.onPaginationChange = function(evt) {
+            $scope.pages.current = evt.current;
+            loadGroups();
+          };
+
           var loadGroups = ($scope.loadGroups = function() {
             $scope.groupLoadingState = 'LOADING';
-            GroupResource.list({member: $scope.decodedUserId}, function(
-              err,
-              res
-            ) {
-              $scope.groupLoadingState = res.length ? 'LOADED' : 'EMPTY';
+            GroupResource.list(
+              {
+                member: $scope.decodedUserId,
+                firstResult: (pages.current - 1) * pages.size,
+                maxResults: pages.size
+              },
+              function(err, res) {
+                $scope.groupLoadingState = res.length ? 'LOADED' : 'EMPTY';
 
-              $scope.groupList = res;
-              $scope.groupIdList = [];
-              angular.forEach($scope.groupList, function(group) {
-                $scope.groupIdList.push(group.id);
-              });
-            });
+                $scope.groupList = res;
+                $scope.groupIdList = [];
+                angular.forEach($scope.groupList, function(group) {
+                  $scope.groupIdList.push(group.id);
+                });
+              }
+            );
           });
 
           $scope.removeGroup = function(groupId) {

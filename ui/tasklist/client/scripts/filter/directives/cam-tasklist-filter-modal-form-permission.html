@@ -87,6 +87,21 @@
         </div>
       </div><!-- repeat auth -->
 
+      <ul uib-pagination
+
+      class="pagination-sm"
+      ng-if="page.total > page.size"
+
+      page="pages.current"
+      ng-model="pages.current"
+      ng-change="onPaginationChange(pages)"
+
+      total-items="pages.total"
+      items-per-page="pages.size"
+
+      max-size="7"
+      boundary-links="true"></ul>
+
       <div class="form-group new-permission"
            ng-if="showNewPermissionFields">
         <div class="col-xs-2 col-xs-offset-2">
