@@ -16,7 +16,11 @@
         }
       },
       getBpmn20Xml: {
-        method: 'GET', params: { action: 'xml' }, cache: true }
+        method: 'GET', params: { action: 'xml' }, cache: true },
+      count: {
+        method: 'GET',
+        params: {action: 'count'}
+      }
     });
   }];
 

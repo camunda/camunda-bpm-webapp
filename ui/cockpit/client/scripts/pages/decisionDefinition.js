@@ -12,9 +12,9 @@ var ngModule = angular.module('cam.cockpit.pages.decisionDefinition', ['dataDepe
 
 var Controller = [
   '$scope', '$rootScope', '$q', 'dataDepend', 'page', 'camAPI',
-  'decisionDefinition', 'Views', 'search', 'isModuleAvailable', '$translate',
+  'decisionDefinition', 'Views', 'search', 'isModuleAvailable', '$translate', 'queryMaxResults',
   function($scope,   $rootScope,   $q,   dataDepend,   page,   camAPI,
-           decisionDefinition,   Views,   search, isModuleAvailable, $translate) {
+           decisionDefinition,   Views,   search, isModuleAvailable, $translate, queryMaxResults) {
 
     $scope.control = {};
 
@@ -51,8 +51,6 @@ var Controller = [
     }]);
 
     decisionData.provide('allDefinitions', [ 'decisionDefinition', function(decisionDefinition) {
-      var deferred = $q.defer();
-
       var queryParams = {
         key: decisionDefinition.key,
         sortBy: 'version',
@@ -65,15 +63,15 @@ var Controller = [
         queryParams.withoutTenantId = true;
       }
 
-      decisionDefinitionService.list(queryParams, function(err, data) {
-        if(!err) {
-          deferred.resolve(data);
-        } else {
-          deferred.reject(err);
+      return queryMaxResults(
+        queryParams,
+        function(params) {
+          return decisionDefinitionService.list(params);
+        },
+        function(params) {
+          return decisionDefinitionService.count(params);
         }
-      });
-
-      return deferred.promise;
+      );
     }]);
 
     // end data definition /////////////////////////

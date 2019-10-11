@@ -26,11 +26,15 @@
 
           <div class="dropdown"
                ng-if="allDefinitions && allDefinitions.length > 1">
-            <a href
-               class="dropdown-toggle">
-              {{ decisionDefinition.version }}
-              <span class="caret"></span>
-            </a>
+            <span>
+              <span change-version="decisionDefinition"
+                    type="decision"></span>
+
+              <a href
+                 class="dropdown-toggle btn btn-xs btn-default">
+                <span class="caret"></span>
+              </a>
+            </span>
 
             <ul class="dropdown-menu">
               <li ng-repeat="definition in allDefinitions">
