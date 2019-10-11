@@ -12,8 +12,8 @@ var camCommons = require('camunda-commons-ui/lib');
 var ngModule = angular.module('cam.cockpit.pages.processDefinition', ['dataDepend', camCommons.name]);
 
 var Controller = [
-  '$location', '$scope', '$rootScope', '$q', '$filter', 'search', 'ProcessDefinitionResource', 'ProcessInstanceResource', 'JobDefinitionResource', 'Views', 'Data', 'Transform', 'Variables', 'dataDepend', 'processDefinition', 'page', '$translate',
-  function($location, $scope,   $rootScope,   $q,   $filter,   search,   ProcessDefinitionResource,   ProcessInstanceResource,   JobDefinitionResource,   Views,   Data,   Transform,   Variables,   dataDepend,   processDefinition,   page, $translate
+  '$location', '$scope', '$rootScope', '$q', '$filter', 'search', 'ProcessDefinitionResource', 'ProcessInstanceResource', 'JobDefinitionResource', 'Views', 'Data', 'Transform', 'Variables', 'dataDepend', 'processDefinition', 'page', '$translate', 'queryMaxResults',
+  function($location, $scope,   $rootScope,   $q,   $filter,   search,   ProcessDefinitionResource, ProcessInstanceResource,   JobDefinitionResource,   Views,   Data,   Transform,   Variables, dataDepend,   processDefinition,   page, $translate, queryMaxResults
   ) {
     var processData = $scope.processData = dataDepend.create($scope);
     var pageData = $scope.pageData = dataDepend.create($scope);
@@ -188,7 +188,15 @@ var Controller = [
         queryParams.withoutTenantId = true;
       }
 
-      return ProcessDefinitionResource.query(queryParams).$promise;
+      return queryMaxResults(
+        queryParams,
+        function(params) {
+          return ProcessDefinitionResource.query(params).$promise;
+        },
+        function(params) {
+          return ProcessDefinitionResource.count(params).$promise;
+        }
+      );
     }]);
 
     // processDiagram /////////////////////

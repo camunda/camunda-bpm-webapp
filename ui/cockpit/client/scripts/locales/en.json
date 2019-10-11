@@ -810,5 +810,6 @@
   "BREAD_CRUMBS_CURRENTLY_SUSPENDED" : "Currently suspended",
   "BREAD_CRUMBS_RUNTIME" : "Runtime",
 
-  "PIE_CHART_NO_DATA" : "No Data"
+  "PIE_CHART_NO_DATA" : "No Data",
+  "DEF_VIEW_CHANGE_VERSION_NOT_UNIQUE": "Selected version is not unique!"
 }
