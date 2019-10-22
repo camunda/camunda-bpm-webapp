@@ -30,7 +30,7 @@
     "bpmn-font": "0.8.0",
     "bpmn-js": "3.4.3",
     "camunda-bpm-sdk-js": "git://github.com/camunda/camunda-bpm-sdk-js#master",
-    "camunda-commons-ui": "git://github.com/camunda/camunda-commons-ui#master",
+    "camunda-commons-ui": "git://github.com/camunda/camunda-commons-ui#pagination",
     "camunda-webapp-translations": "git://github.com/camunda/camunda-webapp-translations#master",
     "cmmn-js": "0.18.1",
     "dmn-js": "6.3.3",
