@@ -54,7 +54,6 @@ module.exports = [ '$routeProvider', function($routeProvider) {
           13: $translate.instant('AUTHORIZATION_BATCH'),
           14: $translate.instant('AUTHORIZATION_DECISION_REQUIREMENTS_DEFINITION'),
           17: $translate.instant('AUTHORIZATION_OPERATION_LOG'),
-          18: $translate.instant('AUTHORIZATION_OPTIMIZE')
         };
 
         pageService.breadcrumbsAdd([
@@ -144,8 +143,7 @@ module.exports = [ '$routeProvider', function($routeProvider) {
             'CREATE_BATCH_UPDATE_PROCESS_INSTANCES_SUSPEND'
           ],
           14: ['READ'],
-          17: ['READ', 'DELETE'],
-          18: ['EDIT', 'SHARE']
+          17: ['READ', 'DELETE']
         };
 
         $scope.typeMap = {
