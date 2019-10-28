@@ -26,7 +26,7 @@
       </thead>
 
       <tbody>
-      <tr ng-repeat="decision in decisions | orderBy:sortObj.sortBy:sortObj.sortReverse">
+      <tr ng-repeat="decision in decisions">
         <td class="name">
           <a href="#/decision-definition/{{ decision.id }}">
             {{ decision.name || decision.key }}

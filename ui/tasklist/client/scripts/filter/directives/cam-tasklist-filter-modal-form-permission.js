@@ -85,6 +85,7 @@ module.exports = [
         };
 
         $scope.onPaginationChange = function onPaginationChange(pages) {
+          $scope.authorizations = [];
           $scope.pages.current = pages.current;
           filterAuthorizationData.changed('authorizations');
         };

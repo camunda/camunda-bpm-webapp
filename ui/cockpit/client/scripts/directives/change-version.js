@@ -18,7 +18,6 @@
 'use strict';
 
 var fs = require('fs');
-var angular = require('angular');
 
 var template = fs.readFileSync(__dirname + '/change-version.html', 'utf8');
 
@@ -46,14 +45,14 @@ module.exports = [
         history: '@?',
         noRedirect: '@?'
       },
-      link: function($scope) {
+      link: function($scope, element) {
         $scope.model = {};
         $scope.model.newVersion =
           typeof $scope.definition.version === 'number'
             ? $scope.definition.version
             : 1;
 
-        $scope.isValid = false;
+        $scope.isValid = true;
         $scope.isValidating = true;
 
         $scope.isActive = false;
@@ -65,7 +64,10 @@ module.exports = [
         $scope.changeLocation = function() {
           $scope.isActive = false;
           $scope.definition.version = parseInt($scope.model.newVersion, 10);
-          angular.element('.definition-version .dropdown-toggle').show();
+          element
+            .parent()
+            .find('.dropdown-toggle')
+            .show();
 
           if ($scope.noRedirect === undefined) {
             $timeout(function() {
@@ -90,7 +92,6 @@ module.exports = [
           $scope.isValid = form.$valid;
 
           if (
-            $scope.model.newVersion == $scope.storedVersion ||
             $scope.model.newVersion < 1 ||
             !/^[0-9]{1,7}$/.test($scope.model.newVersion)
           ) {
@@ -149,9 +150,17 @@ module.exports = [
         };
 
         $scope.open = function() {
+          $scope.model.newVersion =
+            typeof $scope.definition.version === 'number'
+              ? $scope.definition.version
+              : 1;
+
           $scope.storedVersion = $scope.model.newVersion;
           $scope.isActive = true;
-          angular.element('.definition-version .dropdown-toggle').hide();
+          element
+            .parent()
+            .find('.dropdown-toggle')
+            .hide();
         };
 
         $scope.close = function(form) {
@@ -160,7 +169,10 @@ module.exports = [
 
           $scope.model.newVersion = $scope.storedVersion;
           $scope.isActive = false;
-          angular.element('.definition-version .dropdown-toggle').show();
+          element
+            .parent()
+            .find('.dropdown-toggle')
+            .show();
         };
 
         $scope.$watch(
@@ -168,7 +180,10 @@ module.exports = [
           function() {
             $timeout(function() {
               if ($scope.isActive) {
-                angular.element('.change-version input').focus();
+                element
+                  .parent()
+                  .find('input')
+                  .focus();
               }
             });
           },

@@ -133,6 +133,11 @@ var Controller = [
       });
     }
 
+    $scope.$on(
+      '$processDefinition.suspensionState.changed',
+      loadJobDefinitions
+    );
+
     function updateView(filter) {
       $scope.jobDefinitions = null;
 

@@ -42,47 +42,58 @@ module.exports = [
   ) {
     var jobDefinitions = [];
 
-    processData.observe('processDefinition', function(processDefinition) {
-      // Load Job Definitions
-      function fetchDefinitions(firstResult) {
-        camAPI
-          .resource('job-definition')
-          .list({
-            processDefinitionId: processDefinition.id,
-            firstResult: firstResult,
-            maxResults: 100
-          })
-          .then(function(res) {
-            jobDefinitions = jobDefinitions.concat(res);
-            summarizePages.total = jobDefinitions.length;
+    processData.observe([
+      'processDefinition',
+      'bpmnElements',
+      function(processDefinition, bpmnElements) {
+        // Load Job Definitions
+        function fetchDefinitions(firstResult) {
+          camAPI
+            .resource('job-definition')
+            .list({
+              processDefinitionId: processDefinition.id,
+              firstResult: firstResult,
+              maxResults: 2000
+            })
+            .then(function(res) {
+              jobDefinitions = jobDefinitions.concat(
+                res.map(function(jobDef) {
+                  jobDef.activityName =
+                    bpmnElements[jobDef.activityId] &&
+                    bpmnElements[jobDef.activityId].name;
+                  return jobDef;
+                })
+              );
+              summarizePages.total = jobDefinitions.length;
 
-            if (!jobDefinitions.length) {
-              $scope.hasNoJobDefinitions = true;
+              if (!jobDefinitions.length) {
+                $scope.hasNoJobDefinitions = true;
 
-              $modalInstance.opened
-                .then(
-                  $timeout(function() {
-                    Notifications.addError({
-                      status: 'Error',
-                      message:
-                        'This process definition has no job definitions associated with. The job priority cannot be overridden.',
-                      exclusive: true
-                    });
-                  }, 0)
-                )
-                .catch(angular.noop);
-              return;
-            }
+                $modalInstance.opened
+                  .then(
+                    $timeout(function() {
+                      Notifications.addError({
+                        status: 'Error',
+                        message:
+                          'This process definition has no job definitions associated with. The job priority cannot be overridden.',
+                        exclusive: true
+                      });
+                    }, 0)
+                  )
+                  .catch(angular.noop);
+                return;
+              }
 
-            updateSummarizeTable(1);
+              updateSummarizeTable(1);
 
-            if (res.length === 100) {
-              fetchDefinitions(firstResult + 100);
-            }
-          });
+              if (res.length === 2000) {
+                fetchDefinitions(firstResult + 2000);
+              }
+            });
+        }
+        fetchDefinitions(0);
       }
-      fetchDefinitions(0);
-    });
+    ]);
 
     $scope.status;
     var FINISHED = 'FINISHED',

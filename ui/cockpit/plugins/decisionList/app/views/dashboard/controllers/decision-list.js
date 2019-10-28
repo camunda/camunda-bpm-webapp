@@ -17,11 +17,14 @@
 
 'use strict';
 
+var angular = require('angular');
+
 module.exports = [
   '$scope',
   'decisionList',
-  'Views', //'localConf', '$translate',
-  function($scope, decisionList, Views /*, localConf, $translate*/) {
+  'Views',
+  'localConf',
+  function($scope, decisionList, Views, localConf) {
     $scope.loadingState = 'LOADING';
     $scope.drdDashboard = Views.getProvider({
       component: 'cockpit.plugin.drd.dashboard'
@@ -32,18 +35,52 @@ module.exports = [
       decisionPages: {size: 50, total: 0, current: 1},
       drdPages: {size: 50, total: 0, current: 1},
       changeDecisionPage: changeDecisionPage,
-      changeDrdPage: changeDrdPage
+      changeDecisionSorting: changeDecisionSorting,
+      changeDrdPage: changeDrdPage,
+      changeDrdSorting: changeDrdSorting
     });
 
     function changeDrdPage(pages) {
       $scope.loadingState = 'LOADING';
 
       $scope.paginationController.drdPages.current = pages.current;
+    }
+
+    var decisionSorting = localConf.get('sortDecDefTab', {
+      sortBy: 'name',
+      sortOrder: 'asc'
+    });
+    var drdSorting = {};
+
+    function changeDecisionSorting(sorting) {
+      decisionSorting = sorting;
+      updateDecisionPage();
+    }
+
+    function changeDrdSorting(sorting) {
+      drdSorting = sorting;
+      updateDrdPage();
+    }
+
+    function changeDecisionPage(pages) {
+      $scope.loadingState = 'LOADING';
+
+      $scope.paginationController.decisionPages.current = pages.current;
+      updateDecisionPage();
+    }
+
+    function updateDrdPage() {
       decisionList
-        .getDrds({
-          firstResult: (pages.current - 1) * pages.size,
-          maxResults: pages.size
-        })
+        .getDrds(
+          angular.extend(
+            {},
+            {
+              firstResult: (pages.drdPages.current - 1) * pages.drdPages.size,
+              maxResults: pages.drdPages.size
+            },
+            drdSorting
+          )
+        )
         .then(function(data) {
           $scope.loadingState = 'LOADED';
 
@@ -51,15 +88,19 @@ module.exports = [
         });
     }
 
-    function changeDecisionPage(pages) {
-      $scope.loadingState = 'LOADING';
-
-      $scope.paginationController.decisionPages.current = pages.current;
+    function updateDecisionPage() {
       decisionList
-        .getDecisions({
-          firstResult: (pages.current - 1) * pages.size,
-          maxResults: pages.size
-        })
+        .getDecisions(
+          angular.extend(
+            {},
+            {
+              firstResult:
+                (pages.decisionPages.current - 1) * pages.decisionPages.size,
+              maxResults: pages.decisionPages.size
+            },
+            decisionSorting
+          )
+        )
         .then(function(data) {
           $scope.loadingState = 'LOADED';
 
@@ -68,20 +109,24 @@ module.exports = [
     }
 
     decisionList
-      .getDecisionsLists({
-        firstResult:
-          (pages.decisionPages.current - 1) * pages.decisionPages.size,
-        maxResults: pages.decisionPages.size
-      })
+      .getDecisionsLists(
+        angular.extend(
+          {},
+          {
+            firstResult:
+              (pages.decisionPages.current - 1) * pages.decisionPages.size,
+            maxResults: pages.decisionPages.size
+          },
+          decisionSorting
+        )
+      )
       .then(function(data) {
         $scope.loadingState = 'LOADED';
 
-        $scope.paginationController.decisionPages.total = $scope.decisionCount =
-          data.decisionsCount;
+        pages.decisionPages.total = $scope.decisionCount = data.decisionsCount;
         $scope.decisions = data.decisions;
 
-        $scope.paginationController.drdPages.total = $scope.drdsCount =
-          data.drdsCount;
+        pages.drdPages.total = $scope.drdsCount = data.drdsCount;
 
         $scope.drds = data.drds;
       })

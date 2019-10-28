@@ -42,16 +42,27 @@ module.exports = [
 
             var overlaysNodes = {};
 
-            processData.observe('processDefinition', function(
-              processDefinition
-            ) {
+            $scope.$on(
+              '$processDefinition.suspensionState.changed',
+              function() {
+                loadJobDefinitions();
+              }
+            );
+
+            var processDefinition = null;
+
+            var loadJobDefinitions = function(_processDefinition) {
+              processDefinition = _processDefinition || processDefinition;
+
+              if (!processDefinition) return;
+
               camAPI
                 .resource('job-definition')
                 .list({
                   processDefinitionId: processDefinition.id,
                   suspended: true,
                   firstResult: 0,
-                  maxResults: 100 // With >100 suspended job definitions, badges will not be displayed
+                  maxResults: 2000
                 })
                 .then(function(jobDefinitions) {
                   elementRegistry.forEach(function(shape) {
@@ -108,7 +119,9 @@ module.exports = [
                     });
                   });
                 });
-            });
+            };
+
+            processData.observe('processDefinition', loadJobDefinitions);
 
             function getElementDefinitions(element, jobDefinitions) {
               return jobDefinitions.filter(function(definition) {

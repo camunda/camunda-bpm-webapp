@@ -281,7 +281,8 @@ var Controller = [
       function(processInstance) {
         // Unpaginated, will be fixed after CAM-10906 is implemented
         return camAPI.resource('history').incident({
-          processInstanceId: processInstance.id
+          processInstanceId: processInstance.id,
+          maxResults: 2000
         });
       }
     ]);
