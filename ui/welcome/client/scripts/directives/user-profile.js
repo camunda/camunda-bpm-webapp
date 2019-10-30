@@ -56,12 +56,17 @@ module.exports = [
         };
 
         var groupResource = camAPI.resource('group');
-        groupResource.list(function(err, groups) {
-          if (err) {
-            throw err;
+        groupResource.list(
+          {
+            member: $scope.user.id
+          },
+          function(err, groups) {
+            if (err) {
+              throw err;
+            }
+            $scope.user.groups = groups;
           }
-          $scope.user.groups = groups;
-        });
+        );
 
         var userResource = camAPI.resource('user');
         userResource.profile(
