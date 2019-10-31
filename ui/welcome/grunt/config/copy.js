@@ -36,20 +36,21 @@ module.exports = function(config, copyConf) {
   }
 
   copyConf.welcome_index = {
-      options: {
-        process: fileProcessing
-      },
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.welcomeSourceDir %>/scripts/',
-          src: [
-            'index.html',
-            'camunda-welcome-bootstrap.js'
-          ],
-          dest: '<%= pkg.gruntConfig.welcomeBuildTarget %>/'
-        }
-      ]
+    options: {
+      process: fileProcessing
+    },
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.welcomeSourceDir %>/scripts/',
+        src: [
+          'index.html',
+          'camunda-welcome-bootstrap.js',
+          'csrf-token.html'
+        ],
+        dest: '<%= pkg.gruntConfig.welcomeBuildTarget %>/'
+      }
+    ]
   };
 
   copyConf.welcome_assets = {
