@@ -82,7 +82,7 @@
     "lodash": "4.17.14",
     "mkdirp": "0.5.1",
     "mocha": "6.0.2",
-    "mocha-multi": "1.0.1",
+    "mocha-multi": "1.1.3",
     "mocha-proshot": "1.0.1",
     "persistify": "2.0.1",
     "prettier": "1.17.1",
