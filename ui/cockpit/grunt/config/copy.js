@@ -62,8 +62,9 @@ module.exports = function(config, copyConf) {
         cwd: '<%= pkg.gruntConfig.cockpitSourceDir %>/scripts/',
         src: [
           'index.html',
-          'camunda-cockpit-bootstrap.js'
-        ],
+          'camunda-cockpit-bootstrap.js',
+          'csrf-token.html'
+          ],
         dest: '<%= pkg.gruntConfig.cockpitBuildTarget %>/'
       }
     ]
