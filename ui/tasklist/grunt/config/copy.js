@@ -60,19 +60,20 @@ module.exports = function(config, copyConf) {
   }
 
   copyConf.tasklist_index = {
-      options: {
-        process: copyReplace
-      },
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>',
-          src: [
-            'index.html'
-          ],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/',
-        }
-      ]
+    options: {
+      process: copyReplace
+    },
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>',
+        src: [
+          'index.html',
+          'csrf-token.html'
+        ],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/',
+      }
+    ]
   };
 
   copyConf.tasklist_bootstrap = {
