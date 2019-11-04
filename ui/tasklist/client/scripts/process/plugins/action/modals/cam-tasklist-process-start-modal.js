@@ -239,7 +239,8 @@ module.exports = [
         successNotification('PROCESS_START_OK');
         assignNotification({
           assignee: $rootScope.authentication.name,
-          processInstanceId: result.id
+          processInstanceId: result.id,
+          maxResults: 15
         });
       });
       $scope.$close();
