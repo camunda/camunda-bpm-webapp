@@ -260,8 +260,7 @@
                    default-sort-by="id"
                    default-sort-order="asc"
                    sorting-id="admin-sorting-users-groups"
-                   on-sort-change="onGroupsSortingChanged(sorting)"
-                   on-sort-initialized="onGroupsSortingChanged(sorting)">
+                   on-sort-change="onGroupsSortingChanged(sorting)">
               <tr>
                 <th class="group-id"
                     cam-sortable-table-column
@@ -280,7 +279,7 @@
             </thead>
 
             <tbody>
-              <tr ng-repeat="group in groupList | orderBy:groupsSorting.sortBy:groupsSorting.sortReverse">
+              <tr ng-repeat="group in groupList">
                 <td class="group-id">
                   <a href="#/groups/{{group.id | escape}}?tab=group">{{group.id}}</a>
                 </td>
@@ -300,6 +299,7 @@
               </tr>
             </tbody>
           </table>
+          <div cam-pagination="onPaginationChange(pages)" total="pages.total"></div>
         </div>
 
       </form>
@@ -339,7 +339,7 @@
             </thead>
 
             <tbody>
-            <tr ng-repeat="tenant in tenantList | orderBy:tenantsSorting.sortBy:tenantsSorting.sortReverse">
+            <tr ng-repeat="tenant in tenantList">
               <td class="tenant-id">
                 <a href="#/tenants/{{ tenant.id | escape }}?tab=tenant">{{ tenant.id }}</a>
               </td>
@@ -356,8 +356,20 @@
             </tbody>
           </table>
         </div>
-
       </form>
+      <pagination
+          ng-if="tenantPages.total > tenantPages.size"
+          class="pagination-sm"
+
+          page="tenantPages.current"
+          ng-model="tenantPages.current"
+          ng-change="loadTenants()"
+
+          total-items="tenantPages.total"
+          items-per-page="tenantPages.size"
+
+          max-size="7"
+          boundary-links="true"></pagination>
     </div>
   </div>
 </section>
