@@ -36,7 +36,9 @@ var Controller = [
   '$q',
   'camAPI',
   'dataDepend',
-  function($scope, $modal, $q, camAPI, dataDepend) {
+  '$location',
+  'search',
+  function($scope, $modal, $q, camAPI, dataDepend, $location, search) {
     var ProcessDefinition = camAPI.resource('process-definition');
 
     var processData = ($scope.processData = dataDepend.create($scope));
@@ -98,11 +100,18 @@ var Controller = [
       }
     ]);
 
-    $scope.open = function() {
+    var modalResolved = true;
+
+    $scope.open = function(ignoreSearch) {
+      if (!ignoreSearch) {
+        search.updateSilently({processStart: true});
+      }
+
       processData.set(
         'processDefinitionQuery',
         angular.copy(DEFAULT_PROCESS_DEFINITION_QUERY)
       );
+      modalResolved = false;
       var modalInstance = $modal.open({
         size: 'lg',
         controller: 'camProcessStartModalCtrl',
@@ -116,16 +125,30 @@ var Controller = [
 
       modalInstance.result.then(
         function() {
+          search.updateSilently({processStart: null, processTenant: null});
+          modalResolved = true;
           $scope.$root.$broadcast('refresh');
           document.querySelector('.start-process-action a').focus();
         },
         function() {
+          search.updateSilently({processStart: null, processTenant: null});
+          modalResolved = true;
           document.querySelector('.start-process-action a').focus();
         }
       );
     };
 
+    //open if deep-linked
+    var openFromUri = function() {
+      if (modalResolved && $location.search()['processStart']) {
+        $scope.open(true);
+      }
+    };
+
+    $scope.$on('$locationChangeSuccess', openFromUri);
     $scope.$on('shortcut:startProcess', $scope.open);
+
+    openFromUri();
   }
 ];
 

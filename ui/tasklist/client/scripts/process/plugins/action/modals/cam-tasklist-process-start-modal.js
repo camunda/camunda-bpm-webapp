@@ -28,6 +28,9 @@ module.exports = [
   'Notifications',
   'processData',
   'assignNotification',
+  '$location',
+  'search',
+  'camAPI',
   function(
     $rootScope,
     $scope,
@@ -36,7 +39,10 @@ module.exports = [
     debounce,
     Notifications,
     processData,
-    assignNotification
+    assignNotification,
+    $location,
+    search,
+    camAPI
   ) {
     function errorNotification(src, err) {
       $translate(src)
@@ -62,10 +68,6 @@ module.exports = [
     }
 
     // setup ////////////////////////////////////////////////////////////////////////
-
-    $scope.$on('$locationChangeSuccess', function() {
-      $scope.$dismiss();
-    });
 
     var processStartData = processData.newChild($scope);
 
@@ -180,10 +182,44 @@ module.exports = [
         deploymentId: deploymentId
       };
 
+      var searchData = {processStart: processDefinitionKey};
+      if (processDefinition.tenantId) {
+        searchData.processTenant = processDefinition.tenantId;
+      }
+
+      search.updateSilently(searchData);
+
       processStartData.set('currentProcessDefinitionId', {
         id: processDefinitionId
       });
     };
+
+    var processToStart = $location.search()['processStart'];
+    if (processToStart && typeof processToStart === 'string') {
+      var processQuery = {
+        key: processToStart,
+        latest: true,
+        active: true,
+        startableInTasklist: true,
+        startablePermissionCheck: true,
+        maxResults: 1
+      };
+
+      var tenantId = $location.search()['processTenant'];
+      if (tenantId) {
+        processQuery.tenantIdIn = tenantId;
+      }
+
+      camAPI
+        .resource('process-definition')
+        .list(processQuery, function(err, res) {
+          if (err || res.items.length === 0) {
+            return err;
+          }
+
+          $scope.selectProcessDefinition(res.items[0]);
+        });
+    }
 
     // start a process view /////////////////////////////////////////////////////////////////
 
