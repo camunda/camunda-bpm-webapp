@@ -12,6 +12,7 @@ module.exports = [
   'processDefinition',
   'fixDate',
   '$translate',
+  '$rootScope',
   function(
     $scope,
     $http,
@@ -21,7 +22,8 @@ module.exports = [
     $modalInstance,
     processDefinition,
     fixDate,
-    $translate
+    $translate,
+    $rootScope
   ) {
     var BEFORE_UPDATE = 'BEFORE_UPDATE',
       PERFORM_UPDATE = 'PERFORM_UDPATE',
@@ -69,6 +71,11 @@ module.exports = [
           $scope.status = UPDATE_SUCCESS;
 
           if ($scope.data.executeImmediately) {
+            $rootScope.$broadcast(
+              '$processDefinition.suspensionState.changed',
+              processDefinition
+            );
+
             Notifications.addMessage({
               status: $translate.instant(
                 'PLUGIN_UPDATE_SUSPENSION_STATE_STATUS_FINISHED'
