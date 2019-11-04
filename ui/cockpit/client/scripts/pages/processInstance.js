@@ -35,6 +35,7 @@ var Controller = [
   'integrateActivityInstanceFilter',
   'isModuleAvailable',
   '$translate',
+  'camAPI',
   function(
     $scope,
     $filter,
@@ -53,7 +54,8 @@ var Controller = [
     breadcrumbTrails,
     integrateActivityInstanceFilter,
     isModuleAvailable,
-    $translate
+    $translate,
+    camAPI
   ) {
     $scope.hasMigrationPlugin = isModuleAvailable('cockpit.plugin.migration');
     $scope.processInstance = processInstance;
@@ -260,8 +262,12 @@ var Controller = [
     processData.provide('incidents', [
       'processInstance',
       function(processInstance) {
-        return IncidentResource.query({processInstanceId: processInstance.id})
-          .$promise;
+        // Unpaginated, will be fixed after CAM-10906 is implemented
+        return camAPI.resource('history').incident({
+          processInstanceId: processInstance.id,
+          open: true,
+          maxResults: 2000
+        });
       }
     ]);
 
@@ -305,7 +311,8 @@ var Controller = [
           key: definition.key,
           sortBy: 'version',
           sortOrder: 'desc',
-          latestVersion: true
+          latestVersion: true,
+          maxResults: 1
         };
 
         if (definition.tenantId) {
@@ -313,8 +320,7 @@ var Controller = [
         } else {
           queryParams.withoutTenantId = true;
         }
-
-        return ProcessDefinitionResource.query(queryParams).$promise;
+        return camAPI.resource('process-definition').list(queryParams);
       }
     ]);
 
@@ -335,7 +341,7 @@ var Controller = [
     $scope.latestProcessDefinition = processData.observe(
       'latestDefinition',
       function(processDefinition) {
-        $scope.latestProcessDefinition = processDefinition[0];
+        $scope.latestProcessDefinition = processDefinition.items[0];
       }
     );
 
@@ -398,17 +404,20 @@ var Controller = [
     processData.provide('superProcessInstance', [
       'processInstance',
       function(processInstance) {
-        return ProcessInstanceResource.query({
-          subProcessInstance: processInstance.id
-        }).$promise;
+        return ProcessInstanceResource.query(
+          {maxResults: 1},
+          {subProcessInstance: processInstance.id}
+        ).$promise;
       }
     ]);
 
     function fetchSuperProcessInstance(processInstance, done) {
-      ProcessInstanceResource.query({
-        subProcessInstance: processInstance.id
-      }).$promise.then(function(response) {
-        // var superInstance = response.data[0];
+      ProcessInstanceResource.query(
+        {maxResults: 1},
+        {
+          subProcessInstance: processInstance.id
+        }
+      ).$promise.then(function(response) {
         var superInstance = response[0];
 
         done(null, superInstance);

@@ -18,7 +18,6 @@
 'use strict';
 
 var fs = require('fs');
-var angular = require('angular');
 
 var template = fs.readFileSync(__dirname + '/change-version.html', 'utf8');
 
@@ -45,13 +44,17 @@ module.exports = [
       scope: {
         definition: '=changeVersion',
         type: '@',
-        history: '@?'
+        history: '@?',
+        noRedirect: '@?'
       },
-      link: function($scope) {
+      link: function($scope, element) {
         $scope.model = {};
-        $scope.model.newVersion = $scope.definition.version;
+        $scope.model.newVersion =
+          typeof $scope.definition.version === 'number'
+            ? $scope.definition.version
+            : 1;
 
-        $scope.isValid = false;
+        $scope.isValid = true;
         $scope.isValidating = true;
 
         $scope.isActive = false;
@@ -61,21 +64,30 @@ module.exports = [
         };
 
         $scope.changeLocation = function() {
-          $timeout(function() {
-            var path = '/';
-            if ($scope.type === 'drd') {
-              path += 'decision-requirement/';
-            } else {
-              path += $scope.type + '-definition/';
-            }
+          $scope.isActive = false;
+          $scope.definition.version = parseInt($scope.model.newVersion, 10);
+          element
+            .parent()
+            .find('.dropdown-toggle')
+            .show();
 
-            path += $scope.newDefinition;
-            if ($scope.history !== undefined) {
-              path += '/history';
-            }
+          if ($scope.noRedirect === undefined) {
+            $timeout(function() {
+              var path = '/';
+              if ($scope.type === 'drd') {
+                path += 'decision-requirement/';
+              } else {
+                path += $scope.type + '-definition/';
+              }
 
-            $location.path(path);
-          });
+              path += $scope.newDefinition;
+              if ($scope.history !== undefined) {
+                path += '/history';
+              }
+
+              $location.path(path);
+            });
+          }
         };
 
         var change = angular.noop;
@@ -85,7 +97,6 @@ module.exports = [
             $scope.isValid = form.$valid;
 
             if (
-              $scope.model.newVersion == $scope.storedVersion ||
               $scope.model.newVersion < 1 ||
               !/^[0-9]{1,7}$/.test($scope.model.newVersion)
             ) {
@@ -108,38 +119,54 @@ module.exports = [
                 queryParams.withoutTenantId = true;
               }
 
-              var definitions;
-              if ($scope.type === 'process') {
-                definitions = ProcessDefinitionResource.query(queryParams)
-                  .$promise;
-              } else if ($scope.type === 'drd') {
-                definitions = camAPI.resource('drd').list(queryParams);
-              } else {
-                definitions = camAPI
-                  .resource($scope.type + '-definition')
-                  .list(queryParams);
-              }
+              if ($scope.isValid) {
+                var definition = $scope.definition;
 
-              definitions.then(function(data) {
-                if (data.length > 1) {
-                  $scope.isValid = false;
-                  $scope.isValidating = false;
+                var queryParams = {
+                  key: definition.key,
+                  version: $scope.model.newVersion,
+                  maxResults: 2
+                };
 
-                  Notifications.addError({
-                    status: $translate.instant('NOTIFICATIONS_STATUS_FAILED'),
-                    message: $translate.instant(
-                      'DEF_VIEW_CHANGE_VERSION_NOT_UNIQUE'
-                    )
-                  });
+                if (definition.tenantId) {
+                  queryParams.tenantIdIn = [definition.tenantId];
                 } else {
-                  $scope.isValid = data.length === 1;
-                  $scope.isValidating = false;
-
-                  if ($scope.isValid) {
-                    $scope.newDefinition = data[0].id;
-                  }
+                  queryParams.withoutTenantId = true;
                 }
-              });
+
+                var definitions;
+                if ($scope.type === 'process') {
+                  definitions = ProcessDefinitionResource.query(queryParams)
+                    .$promise;
+                } else if ($scope.type === 'drd') {
+                  definitions = camAPI.resource('drd').list(queryParams);
+                } else {
+                  definitions = camAPI
+                    .resource($scope.type + '-definition')
+                    .list(queryParams);
+                }
+
+                definitions.then(function(data) {
+                  if (data.length > 1) {
+                    $scope.isValid = false;
+                    $scope.isValidating = false;
+
+                    Notifications.addError({
+                      status: $translate.instant('NOTIFICATIONS_STATUS_FAILED'),
+                      message: $translate.instant(
+                        'DEF_VIEW_CHANGE_VERSION_NOT_UNIQUE'
+                      )
+                    });
+                  } else {
+                    $scope.isValid = data.length === 1;
+                    $scope.isValidating = false;
+
+                    if ($scope.isValid) {
+                      $scope.newDefinition = data[0].id;
+                    }
+                  }
+                });
+              }
             }
           };
         };
@@ -147,9 +174,19 @@ module.exports = [
         var debounce = null;
 
         $scope.open = function() {
+          $scope.model.newVersion =
+            typeof $scope.definition.version === 'number'
+              ? $scope.definition.version
+              : 1;
+
           $scope.storedVersion = $scope.model.newVersion;
           $scope.isActive = true;
           angular.element('.definition-version .dropdown-toggle').hide();
+
+          element
+            .parent()
+            .find('.dropdown-toggle')
+            .hide();
 
           debounce = $interval(function() {
             change();
@@ -163,7 +200,10 @@ module.exports = [
 
           $scope.model.newVersion = $scope.storedVersion;
           $scope.isActive = false;
-          angular.element('.definition-version .dropdown-toggle').show();
+          element
+            .parent()
+            .find('.dropdown-toggle')
+            .show();
         };
 
         $scope.$watch(
@@ -171,7 +211,10 @@ module.exports = [
           function() {
             $timeout(function() {
               if ($scope.isActive) {
-                angular.element('.change-version input').focus();
+                element
+                  .parent()
+                  .find('input')
+                  .focus();
               }
             });
           },
