@@ -18,7 +18,7 @@
       </thead>
 
       <tbody>
-      <tr ng-repeat="decision in decisions | orderBy:sortObj.sortBy:sortObj.sortReverse">
+      <tr ng-repeat="decision in decisions">
         <td class="name">
           <a href="#/decision-definition/{{ decision.id }}">
             {{ decision.name || decision.key }}
@@ -36,5 +36,17 @@
       </tbody>
     </table>
 
+    <pagination ng-if="paginationController.decisionPages.total > paginationController.decisionPages.size"
+      class="pagination-sm"
+
+      page="paginationController.decisionPages.current"
+      ng-model="paginationController.decisionPages.current"
+      ng-change="paginationController.changeDecisionPage(paginationController.decisionPages)"
+
+      total-items="paginationController.decisionPages.total"
+      items-per-page="paginationController.decisionPages.size"
+
+      max-size="7"
+      boundary-links="true"></pagination>
   </div>
 </section>

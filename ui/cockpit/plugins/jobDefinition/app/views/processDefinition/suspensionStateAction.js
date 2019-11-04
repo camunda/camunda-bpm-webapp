@@ -18,10 +18,8 @@ var Configuration = function PluginConfiguration(ViewsProvider) {
     template: actionTemplate,
     controller: [
       '$scope',
-      '$rootScope',
-      'search',
       '$modal',
-      function($scope, $rootScope, search, $modal) {
+      function($scope, $modal) {
         $scope.openSuspensionStateDialog = function(jobDefinition) {
           var dialog = $modal.open({
             resolve: {
@@ -38,10 +36,6 @@ var Configuration = function PluginConfiguration(ViewsProvider) {
             if (result.status === 'SUCCESS') {
               if (result.executeImmediately) {
                 jobDefinition.suspended = result.suspended;
-                $rootScope.$broadcast(
-                  '$jobDefinition.suspensionState.changed',
-                  $scope.jobDefinition
-                );
               }
 
               $scope.processData.set(
@@ -49,6 +43,8 @@ var Configuration = function PluginConfiguration(ViewsProvider) {
                 angular.extend({}, $scope.filter)
               );
             }
+
+            $scope.processData.set('filter', angular.extend({}, $scope.filter));
           });
         };
       }
