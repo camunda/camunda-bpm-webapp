@@ -1,23 +1,24 @@
 {
   "rules": {
     "space-before-blocks": [ 2, "always"],
-    "indent-legacy": [ 2, 2, { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } } ],
     "space-before-function-paren": [ 2, "never" ],
-    "quotes": [ 2, "single" ],
     "semi": [ 2, "always" ],
-    "no-console": 1,
     "no-self-assign": 0,
+    "no-console": 1,
     "no-useless-escape": "off"
   },
   "env": {
     "node": true,
-    "browser": true
+    "browser": true,
+    "es6": true
   },
   "extends": [
     "eslint:recommended",
-    "plugin:camunda-licensed/apache"
+    "plugin:camunda-licensed/apache",
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "globals": {
@@ -28,6 +29,8 @@
     "beforeEach": true,
     "afterEach": true,
     "before": true,
-    "after": true
+    "after": true,
+    "xdescribe": true,
+    "xit": true
   }
 }

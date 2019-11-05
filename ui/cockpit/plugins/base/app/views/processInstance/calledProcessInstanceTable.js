@@ -21,13 +21,18 @@ var fs = require('fs');
 var searchWidgetUtils = require('../../../../../../common/scripts/util/search-widget-utils');
 var angular = require('angular');
 
-var template = fs.readFileSync(__dirname + '/called-process-instance-table.html', 'utf8');
+var template = fs.readFileSync(
+  __dirname + '/called-process-instance-table.html',
+  'utf8'
+);
 
 module.exports = function(ngModule) {
   ngModule.controller('CalledProcessInstanceController', [
-    '$scope', 'PluginProcessInstanceResource', '$translate',  'localConf',
-    function($scope,   PluginProcessInstanceResource, $translate, localConf) {
-
+    '$scope',
+    'PluginProcessInstanceResource',
+    '$translate',
+    'localConf',
+    function($scope, PluginProcessInstanceResource, $translate, localConf) {
       // input: processInstance, processData
 
       var calledProcessInstanceData = $scope.processData.newChild($scope);
@@ -35,14 +40,40 @@ module.exports = function(ngModule) {
       // var processInstance = $scope.processInstance;
 
       $scope.headColumns = [
-        { class: 'state', request: 'incidents', sortable: true, content: 'State' },
-        { class: 'called-process-instance', request: 'id', sortable: true, content: $translate.instant('PLUGIN_CALLED_PROCESS_PROCESS_INSTANCE')},
-        { class: 'process-definition', request: 'processDefinitionLabel', sortable: true, content: $translate.instant('PLUGIN_CALLED_PROCESS_PROCESS_DEFINITION')},
-        { class: 'activity', request: 'instance.name', sortable: true, content: $translate.instant('PLUGIN_CALLED_PROCESS_ACTIVITY')}
+        {
+          class: 'state',
+          request: 'incidents',
+          sortable: true,
+          content: 'State'
+        },
+        {
+          class: 'called-process-instance',
+          request: 'id',
+          sortable: true,
+          content: $translate.instant('PLUGIN_CALLED_PROCESS_PROCESS_INSTANCE')
+        },
+        {
+          class: 'process-definition',
+          request: 'processDefinitionLabel',
+          sortable: true,
+          content: $translate.instant(
+            'PLUGIN_CALLED_PROCESS_PROCESS_DEFINITION'
+          )
+        },
+        {
+          class: 'activity',
+          request: 'instance.name',
+          sortable: true,
+          content: $translate.instant('PLUGIN_CALLED_PROCESS_ACTIVITY')
+        }
       ];
 
       // Default sorting
-      $scope.sortObj   = loadLocal({ sortBy: 'processDefinitionLabel', sortOrder: 'asc', sortReverse: false});
+      $scope.sortObj = loadLocal({
+        sortBy: 'processDefinitionLabel',
+        sortOrder: 'asc',
+        sortReverse: false
+      });
 
       $scope.onSortChange = function(sortObj) {
         sortObj = sortObj || $scope.sortObj;
@@ -50,12 +81,10 @@ module.exports = function(ngModule) {
         sortObj.sortReverse = sortObj.sortOrder !== 'asc';
         saveLocal(sortObj);
         $scope.sortObj = sortObj;
-
       };
 
       function saveLocal(sortObj) {
         localConf.set('sortCalledProcessInstTab', sortObj);
-
       }
       function loadLocal(defaultValue) {
         return localConf.get('sortCalledProcessInstTab', defaultValue);
@@ -63,11 +92,17 @@ module.exports = function(ngModule) {
 
       var filter = null;
 
-      $scope.getSearchQueryForSearchType = searchWidgetUtils.getSearchQueryForSearchType.bind(null, 'activityInstanceIdIn');
+      $scope.getSearchQueryForSearchType = searchWidgetUtils.getSearchQueryForSearchType.bind(
+        null,
+        'activityInstanceIdIn'
+      );
 
-      calledProcessInstanceData.observe([ 'filter', 'instanceIdToInstanceMap' ], function(newFilter, instanceIdToInstanceMap) {
-        updateView(newFilter, instanceIdToInstanceMap);
-      });
+      calledProcessInstanceData.observe(
+        ['filter', 'instanceIdToInstanceMap'],
+        function(newFilter, instanceIdToInstanceMap) {
+          updateView(newFilter, instanceIdToInstanceMap);
+        }
+      );
 
       function updateView(newFilter, instanceIdToInstanceMap) {
         filter = angular.copy(newFilter);
@@ -83,24 +118,30 @@ module.exports = function(ngModule) {
         $scope.calledProcessInstances = null;
 
         $scope.loadingState = 'LOADING';
-        PluginProcessInstanceResource
-          .processInstances({
+        PluginProcessInstanceResource.processInstances(
+          {
             id: $scope.processInstance.id
-          }, filter)
+          },
+          filter
+        )
           .$promise.then(function(response) {
-
             // angular.forEach(response.data, function (calledInstance) {
             angular.forEach(response, function(calledInstance) {
-              var instance = instanceIdToInstanceMap[calledInstance.callActivityInstanceId];
+              var instance =
+                instanceIdToInstanceMap[calledInstance.callActivityInstanceId];
               calledInstance.instance = instance;
-              calledInstance.processDefinitionLabel = calledInstance.processDefinitionName || calledInstance.processDefinitionKey;
+              calledInstance.processDefinitionLabel =
+                calledInstance.processDefinitionName ||
+                calledInstance.processDefinitionKey;
             });
 
             $scope.loadingState = response.length ? 'LOADED' : 'EMPTY';
             $scope.calledProcessInstances = response;
-          }).catch(angular.noop);
+          })
+          .catch(angular.noop);
       }
-    }]);
+    }
+  ]);
 
   var Configuration = function PluginConfiguration(ViewsProvider) {
     ViewsProvider.registerDefaultView('cockpit.processInstance.runtime.tab', {
