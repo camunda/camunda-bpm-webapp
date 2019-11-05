@@ -85,8 +85,8 @@ var Controller = [
       }
 
       var page = $scope.pages.current,
-          count = $scope.pages.size,
-          firstResult = (page - 1) * count;
+        count = $scope.pages.size,
+        firstResult = (page - 1) * count;
 
       var queryParams = {
         firstResult: firstResult,
