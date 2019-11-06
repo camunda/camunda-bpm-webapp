@@ -36,18 +36,17 @@
       </tbody>
     </table>
 
-    <ul uib-pagination ng-if="pagination.decisionPages.total > pagination.decisionPages.size"
+    <pagination ng-if="paginationController.decisionPages.total > paginationController.decisionPages.size"
       class="pagination-sm"
 
-      page="pagination.decisionPages.current"
-      ng-model="pagination.decisionPages.current"
-      ng-change="pagination.changeDecisionPage(pagination.decisionPages)"
+      page="paginationController.decisionPages.current"
+      ng-model="paginationController.decisionPages.current"
+      ng-change="paginationController.changeDecisionPage(paginationController.decisionPages)"
 
-      total-items="pagination.decisionPages.total"
-      items-per-page="pagination.decisionPages.size"
+      total-items="paginationController.decisionPages.total"
+      items-per-page="paginationController.decisionPages.size"
 
       max-size="7"
-      boundary-links="true"></ul>
-
+      boundary-links="true"></pagination>
   </div>
 </section>

@@ -48,6 +48,7 @@ module.exports = [
                   maxResults: 2000
                 })
                 .then(function(jobDefinitions) {
+                  jobDefinitions = jobDefinitions.items;
                   elementRegistry.forEach(function(shape) {
                     var element =
                       processDiagram.bpmnElements[shape.businessObject.id];

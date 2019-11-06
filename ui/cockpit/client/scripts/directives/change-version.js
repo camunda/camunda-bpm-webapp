@@ -19,6 +19,8 @@
 
 var fs = require('fs');
 
+var angular = require('angular');
+
 var template = fs.readFileSync(__dirname + '/change-version.html', 'utf8');
 
 module.exports = [
@@ -119,54 +121,38 @@ module.exports = [
                 queryParams.withoutTenantId = true;
               }
 
-              if ($scope.isValid) {
-                var definition = $scope.definition;
-
-                var queryParams = {
-                  key: definition.key,
-                  version: $scope.model.newVersion,
-                  maxResults: 2
-                };
-
-                if (definition.tenantId) {
-                  queryParams.tenantIdIn = [definition.tenantId];
-                } else {
-                  queryParams.withoutTenantId = true;
-                }
-
-                var definitions;
-                if ($scope.type === 'process') {
-                  definitions = ProcessDefinitionResource.query(queryParams)
-                    .$promise;
-                } else if ($scope.type === 'drd') {
-                  definitions = camAPI.resource('drd').list(queryParams);
-                } else {
-                  definitions = camAPI
-                    .resource($scope.type + '-definition')
-                    .list(queryParams);
-                }
-
-                definitions.then(function(data) {
-                  if (data.length > 1) {
-                    $scope.isValid = false;
-                    $scope.isValidating = false;
-
-                    Notifications.addError({
-                      status: $translate.instant('NOTIFICATIONS_STATUS_FAILED'),
-                      message: $translate.instant(
-                        'DEF_VIEW_CHANGE_VERSION_NOT_UNIQUE'
-                      )
-                    });
-                  } else {
-                    $scope.isValid = data.length === 1;
-                    $scope.isValidating = false;
-
-                    if ($scope.isValid) {
-                      $scope.newDefinition = data[0].id;
-                    }
-                  }
-                });
+              var definitions;
+              if ($scope.type === 'process') {
+                definitions = ProcessDefinitionResource.query(queryParams)
+                  .$promise;
+              } else if ($scope.type === 'drd') {
+                definitions = camAPI.resource('drd').list(queryParams);
+              } else {
+                definitions = camAPI
+                  .resource($scope.type + '-definition')
+                  .list(queryParams);
               }
+
+              definitions.then(function(data) {
+                if (data.length > 1) {
+                  $scope.isValid = false;
+                  $scope.isValidating = false;
+
+                  Notifications.addError({
+                    status: $translate.instant('NOTIFICATIONS_STATUS_FAILED'),
+                    message: $translate.instant(
+                      'DEF_VIEW_CHANGE_VERSION_NOT_UNIQUE'
+                    )
+                  });
+                } else {
+                  $scope.isValid = data.length === 1;
+                  $scope.isValidating = false;
+
+                  if ($scope.isValid) {
+                    $scope.newDefinition = data[0].id;
+                  }
+                }
+              });
             }
           };
         };
@@ -181,7 +167,6 @@ module.exports = [
 
           $scope.storedVersion = $scope.model.newVersion;
           $scope.isActive = true;
-          angular.element('.definition-version .dropdown-toggle').hide();
 
           element
             .parent()

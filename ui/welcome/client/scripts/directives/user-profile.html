@@ -29,7 +29,7 @@
             ng-class="'group-' + group.id + ' type-' + group.type.toLowerCase()">{{ group.name }}</li>
       </ul>
 
-      <ul uib-pagination
+      <pagination
         class="pagination-sm"
 
         page="groupPages.current"
@@ -41,7 +41,7 @@
         items-per-page="groupPages.size"
 
         max-size="7"
-        boundary-links="false"></ul>
+        boundary-links="false"></pagination>
   </div>
 
   <form name="userProfile"
