@@ -1,22 +1,18 @@
-  'use strict';
+'use strict';
 
-  module.exports = [
-    '$scope',
-    'taskMetaData',
-    'groupsChanged',
-    function(
-    $scope,
-    taskMetaData,
-    groupsChanged
-  ) {
+module.exports = [
+  '$scope',
+  'taskMetaData',
+  'groupsChanged',
+  function($scope, taskMetaData, groupsChanged) {
     // setup //////////////////////////////////////////////
 
-      $scope.taskGroupsData = taskMetaData.newChild($scope);
+    $scope.taskGroupsData = taskMetaData.newChild($scope);
 
-      $scope.groupsChanged = groupsChanged || function() {};
+    $scope.groupsChanged = groupsChanged || function() {};
 
-      $scope.$on('$locationChangeSuccess', function() {
-        $scope.$dismiss();
-      });
-
-    }];
+    $scope.$on('$locationChangeSuccess', function() {
+      $scope.$dismiss();
+    });
+  }
+];

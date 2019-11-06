@@ -6,7 +6,6 @@ var InputsTab = require('./tabs/inputs-tab');
 var OutputsTab = require('./tabs/outputs-tab');
 var InformationPage = require('./../sidebar-information');
 
-
 module.exports = new DecisionDefinitionPage();
 module.exports.table = new TablePage();
 module.exports.inputsTab = new InputsTab();

@@ -3,8 +3,7 @@
 var Page = require('./dashboard-view');
 
 module.exports = Page.extend({
-
-  createTaskDialog: function () {
+  createTaskDialog: function() {
     return element(by.css('.modal .modal-content'));
   },
 
@@ -15,8 +14,7 @@ module.exports = Page.extend({
   },
 
   closeButton: function() {
-    return this.createTaskDialog()
-      .element(by.css('[ng-click="$dismiss()"]'));
+    return this.createTaskDialog().element(by.css('[ng-click="$dismiss()"]'));
   },
 
   closeCreateDialog: function() {
@@ -26,8 +24,7 @@ module.exports = Page.extend({
   },
 
   saveButton: function() {
-    return this.createTaskDialog()
-      .element(by.css('[ng-click="save()"]'));
+    return this.createTaskDialog().element(by.css('[ng-click="save()"]'));
   },
 
   saveTask: function() {
@@ -37,32 +34,34 @@ module.exports = Page.extend({
   },
 
   taskNameField: function() {
-      return this.createTaskDialog().element(by.css('input[name="taskName"]'));
+    return this.createTaskDialog().element(by.css('input[name="taskName"]'));
   },
 
   taskAssigneeField: function() {
-      return this.createTaskDialog().element(by.css('input[name="taskAssignee"]'));
+    return this.createTaskDialog().element(
+      by.css('input[name="taskAssignee"]')
+    );
   },
 
   taskTenantIdField: function() {
-    return this.createTaskDialog().element(by.css('select[name="taskTenantId"]'));
+    return this.createTaskDialog().element(
+      by.css('select[name="taskTenantId"]')
+    );
   },
 
   taskNameInput: function(inputValue) {
-      var inputField = this.taskNameField();
+    var inputField = this.taskNameField();
 
-      if (arguments.length !== 0)
-        inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
-      return inputField;
+    return inputField;
   },
 
   taskAssigneeInput: function(inputValue) {
-      var inputField = this.taskAssigneeField();
+    var inputField = this.taskAssigneeField();
 
-      if (arguments.length !== 0)
-        inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
-      return inputField;
+    return inputField;
   }
 });

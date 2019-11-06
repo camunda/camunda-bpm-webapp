@@ -1,30 +1,54 @@
-  'use strict';
+'use strict';
 
-  module.exports = [
-    '$scope', '$http', '$filter', 'Uri', 'Notifications', '$modalInstance', 'processInstance', '$translate',
-    function($scope,   $http,   $filter,   Uri,   Notifications,   $modalInstance,   processInstance, $translate) {
+module.exports = [
+  '$scope',
+  '$http',
+  '$filter',
+  'Uri',
+  'Notifications',
+  '$modalInstance',
+  'processInstance',
+  '$translate',
+  function(
+    $scope,
+    $http,
+    $filter,
+    Uri,
+    Notifications,
+    $modalInstance,
+    processInstance,
+    $translate
+  ) {
+    var BEFORE_UPDATE = 'BEFORE_UPDATE',
+      PERFORM_UPDATE = 'PERFORM_UDPATE',
+      UPDATE_SUCCESS = 'SUCCESS',
+      UPDATE_FAILED = 'FAIL';
 
-      var BEFORE_UPDATE = 'BEFORE_UPDATE',
-          PERFORM_UPDATE = 'PERFORM_UDPATE',
-          UPDATE_SUCCESS = 'SUCCESS',
-          UPDATE_FAILED = 'FAIL';
+    $scope.processInstance = processInstance;
 
-      $scope.processInstance = processInstance;
+    $scope.status = BEFORE_UPDATE;
 
-      $scope.status = BEFORE_UPDATE;
+    $scope.$on('$routeChangeStart', function() {
+      $modalInstance.close($scope.status);
+    });
 
-      $scope.$on('$routeChangeStart', function() {
-        $modalInstance.close($scope.status);
-      });
+    $scope.updateSuspensionState = function() {
+      $scope.status = PERFORM_UPDATE;
 
-      $scope.updateSuspensionState = function() {
-        $scope.status = PERFORM_UPDATE;
+      var data = {};
 
-        var data = {};
+      data.suspended = !processInstance.suspended;
 
-        data.suspended = !processInstance.suspended;
-
-        $http.put(Uri.appUri('engine://engine/:engine/process-instance/' + processInstance.id + '/suspended/'), data).success(function() {
+      $http
+        .put(
+          Uri.appUri(
+            'engine://engine/:engine/process-instance/' +
+              processInstance.id +
+              '/suspended/'
+          ),
+          data
+        )
+        .success(function() {
           $scope.status = UPDATE_SUCCESS;
 
           Notifications.addMessage({
@@ -32,25 +56,27 @@
             message: $translate.instant('PLUGIN_UPDATE_DIALOG_MESSAGES_1'),
             exclusive: true
           });
-
-        }).error(function(data) {
+        })
+        .error(function(data) {
           $scope.status = UPDATE_FAILED;
 
           Notifications.addError({
             status: $translate.instant('PLUGIN_UPDATE_DIALOG_STATUS_FINISHED'),
-            message: $translate.instant('PLUGIN_UPDATE_DIALOG_ERROR_1', { message: data.message }),
+            message: $translate.instant('PLUGIN_UPDATE_DIALOG_ERROR_1', {
+              message: data.message
+            }),
             exclusive: true
           });
         });
-      };
+    };
 
-      $scope.close = function(status) {
-        var response = {};
+    $scope.close = function(status) {
+      var response = {};
 
-        response.status = status;
-        response.suspended = !processInstance.suspended;
+      response.status = status;
+      response.suspended = !processInstance.suspended;
 
-        $modalInstance.close(response);
-      };
-
-    }];
+      $modalInstance.close(response);
+    };
+  }
+];

@@ -1,27 +1,22 @@
 'use strict';
 
 var angular = require('camunda-commons-ui/vendor/angular'),
-
   /* controller */
-    camTasklistListCtrl = require('./controller/cam-tasklist-list-ctrl'),
-
+  camTasklistListCtrl = require('./controller/cam-tasklist-list-ctrl'),
   /* directives */
-    camTasklistTasks = require('./directives/cam-tasklist-tasks'),
-
+  camTasklistTasks = require('./directives/cam-tasklist-tasks'),
   /* plugins */
-    camTasklistSearchPlugin = require('./plugins/cam-tasklist-search-plugin');
+  camTasklistSearchPlugin = require('./plugins/cam-tasklist-search-plugin');
 
-var ngModule = angular.module('cam.tasklist.tasklist', [
-  'ui.bootstrap'
-]);
+var ngModule = angular.module('cam.tasklist.tasklist', ['ui.bootstrap']);
 
-  /* controller */
+/* controller */
 ngModule.controller('camListCtrl', camTasklistListCtrl);
 
-  /* directives */
+/* directives */
 ngModule.directive('camTasks', camTasklistTasks);
 
-  /* plugins */
+/* plugins */
 ngModule.config(camTasklistSearchPlugin);
 
 module.exports = ngModule;

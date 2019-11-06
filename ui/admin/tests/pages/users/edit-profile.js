@@ -5,18 +5,16 @@ var Page = require('./edit-base');
 var formElement = element(by.css('form[name="editProfileForm"]'));
 
 module.exports = Page.extend({
-
   url: '/camunda/app/admin/default/#/users/:user?tab=profile',
 
   subHeader: function() {
     return formElement.element(by.css('.h4')).getText();
   },
 
-	firstNameInput: function(inputValue) {
+  firstNameInput: function(inputValue) {
     var inputField = element(by.model('profile.firstName'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
@@ -24,8 +22,7 @@ module.exports = Page.extend({
   lastNameInput: function(inputValue) {
     var inputField = element(by.model('profile.lastName'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
@@ -33,14 +30,13 @@ module.exports = Page.extend({
   emailInput: function(inputValue) {
     var inputField = element(by.model('profile.email'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
 
   updateProfileButton: function() {
-  	return formElement.element(by.css('[ng-click="updateProfile()"]'));
+    return formElement.element(by.css('[ng-click="updateProfile()"]'));
   },
 
   changeUserProfile: function(firstName, lastName) {
@@ -50,5 +46,4 @@ module.exports = Page.extend({
     this.lastNameInput(lastName);
     this.updateProfileButton().click();
   }
-
 });

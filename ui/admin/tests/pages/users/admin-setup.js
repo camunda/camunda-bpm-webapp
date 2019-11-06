@@ -3,7 +3,6 @@
 var Base = require('./new-base');
 
 module.exports = Base.extend({
-
   url: '/camunda/app/admin/default/setup/#/setup',
 
   createNewAdminButton: function() {
@@ -13,5 +12,4 @@ module.exports = Base.extend({
   statusMessage: function() {
     return element(by.css('.alert')).getText();
   }
-
 });

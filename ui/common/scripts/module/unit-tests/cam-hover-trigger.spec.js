@@ -49,7 +49,9 @@ describe('cam-common cam-hover-trigger', function() {
     });
 
     it('should hover given title', function() {
-      expect(HoverArea.hoverTitle.calledWith($attr.camHoverTrigger)).to.eql(true);
+      expect(HoverArea.hoverTitle.calledWith($attr.camHoverTrigger)).to.eql(
+        true
+      );
     });
   });
 
@@ -74,7 +76,7 @@ describe('cam-common cam-hover-trigger', function() {
     var i;
     var call;
 
-    for(i = 0; i < len; i++) {
+    for (i = 0; i < len; i++) {
       call = $element.on.getCall(i);
 
       if (call.args[0] === event) {

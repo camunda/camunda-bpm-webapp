@@ -24,16 +24,13 @@ module.exports = {
 function getSearchQueryForSearchType(searchType, values) {
   values = [].concat(values); //convert single id to list of ids or in case of array do nothing
 
-  var value = JSON.stringify(
-    createSearchesForActivityIds(searchType, values)
-  );
+  var value = JSON.stringify(createSearchesForActivityIds(searchType, values));
 
-  return encodeQuery('searchQuery='+value);
+  return encodeQuery('searchQuery=' + value);
 }
 
 function encodeQuery(query) {
-  return encodeURI(query)
-    .replace(/#/g, '%23');
+  return encodeURI(query).replace(/#/g, '%23');
 }
 
 /**
@@ -58,37 +55,31 @@ function prepareObjectForComparing(obj, whiteList) {
     return obj;
   }
 
-  return stripUndefinedFromObject(
-    stripProperties(obj, whiteList)
-  );
+  return stripUndefinedFromObject(stripProperties(obj, whiteList));
 }
 
 function stripProperties(obj, whiteList) {
-  return Object
-    .keys(obj)
-    .reduce(function(newObj, key) {
-      var value = obj[key];
+  return Object.keys(obj).reduce(function(newObj, key) {
+    var value = obj[key];
 
-      if (includes(whiteList, key)) {
-        newObj[key] = value;
-      }
+    if (includes(whiteList, key)) {
+      newObj[key] = value;
+    }
 
-      return newObj;
-    }, {});
+    return newObj;
+  }, {});
 }
 
 function stripUndefinedFromObject(obj) {
-  return Object
-    .keys(obj)
-    .reduce(function(newObj, key) {
-      var value = obj[key];
+  return Object.keys(obj).reduce(function(newObj, key) {
+    var value = obj[key];
 
-      if (value != null) {
-        newObj[key] = value;
-      }
+    if (value != null) {
+      newObj[key] = value;
+    }
 
-      return newObj;
-    }, {});
+    return newObj;
+  }, {});
 }
 
 /**
@@ -126,7 +117,9 @@ function updateSearchValuesForTypeInCtrlMode(searches, searchType, values) {
   var newSearches = removeDoubledSearches(searches, values, searchType);
   var newValues = removeDoubleValues(values, searches, searchType);
 
-  return newSearches.concat(createSearchesForActivityIds(searchType, newValues));
+  return newSearches.concat(
+    createSearchesForActivityIds(searchType, newValues)
+  );
 }
 
 function removeDoubledSearches(searches, values, searchType) {
@@ -156,9 +149,14 @@ function removeDoubleValues(values, searches, searchType) {
  * @param searchType type of activity search pill
  * @param selectedActivityIds list of ids for selected activities
  */
-function replaceActivitiesInSearchQuery(searches, searchType, selectedActivityIds) {
-  return removeActivitySearches(searchType, searches)
-    .concat(createSearchesForActivityIds(searchType, selectedActivityIds));
+function replaceActivitiesInSearchQuery(
+  searches,
+  searchType,
+  selectedActivityIds
+) {
+  return removeActivitySearches(searchType, searches).concat(
+    createSearchesForActivityIds(searchType, selectedActivityIds)
+  );
 }
 
 function removeActivitySearches(searchType, searches) {
@@ -168,9 +166,7 @@ function removeActivitySearches(searchType, searches) {
 }
 
 function createSearchesForActivityIds(searchType, activityIds) {
-  return activityIds.map(
-    createActivitySearch.bind(null, searchType)
-  );
+  return activityIds.map(createActivitySearch.bind(null, searchType));
 }
 
 function createActivitySearch(searchType, value) {
@@ -193,7 +189,9 @@ function createActivitySearch(searchType, value) {
 function createSearchQueryForSearchWidget(searches, arrayTypes, variableTypes) {
   searches = angular.isArray(searches) ? searches : [];
   arrayTypes = angular.isArray(arrayTypes) ? arrayTypes : [];
-  variableTypes = angular.isArray(variableTypes) ? variableTypes : ['variables'];
+  variableTypes = angular.isArray(variableTypes)
+    ? variableTypes
+    : ['variables'];
 
   //all variable types are also array types
   arrayTypes = arrayTypes.concat(variableTypes);
@@ -258,9 +256,12 @@ function sanitizeValue(value, operator, search) {
   var specialWildCardCharExp = /(\\%)|(\\_)/g;
   // Regex for '_' and '%' special characters
   var wildCardExp = /(\%)|(\_)/;
-  if(operator.toLowerCase() === 'like' && !wildCardExp.test(value.replace(specialWildCardCharExp, ''))) {
-    return '%'+value+'%';
-  } else if(search.allowDates && simpleDateExp.test(value)) {
+  if (
+    operator.toLowerCase() === 'like' &&
+    !wildCardExp.test(value.replace(specialWildCardCharExp, ''))
+  ) {
+    return '%' + value + '%';
+  } else if (search.allowDates && simpleDateExp.test(value)) {
     return moment(value).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
   }
   return value;
@@ -280,7 +281,7 @@ function parseValue(value) {
   if (value === 'NULL') {
     return null;
   }
-  if(value.indexOf('\'') === 0 && value.lastIndexOf('\'') === value.length - 1) {
+  if (value.indexOf("'") === 0 && value.lastIndexOf("'") === value.length - 1) {
     return value.substr(1, value.length - 2);
   }
   return value;

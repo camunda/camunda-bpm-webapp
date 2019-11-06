@@ -1,25 +1,26 @@
 'use strict';
 
 var factory = require('../../../common/tests/setup-factory.js'),
-    readResource = factory.readResource,
-    combine = factory.combine,
-    operation = factory.operation;
-
+  readResource = factory.readResource,
+  combine = factory.combine,
+  operation = factory.operation;
 
 module.exports = {
+  setup1: combine(
+    operation('deployment', 'create', [
+      {
+        deploymentName: 'suspension-process',
+        files: [
+          {
+            name: 'suspension-process.bpmn',
+            content: readResource('suspension-process.bpmn')
+          }
+        ]
+      }
+    ]),
 
-  setup1:
-
-    combine(
-      operation('deployment', 'create', [{
-        deploymentName:  'suspension-process',
-        files:           [{
-          name: 'suspension-process.bpmn',
-          content: readResource('suspension-process.bpmn')
-        }]
-      }]),
-
-      operation('process-definition', 'start', [{
+    operation('process-definition', 'start', [
+      {
         key: 'suspension-process',
         businessKey: 'Instance1'
       },
@@ -30,6 +31,7 @@ module.exports = {
       {
         key: 'suspension-process',
         businessKey: 'myBusinessKey'
-      }])
-
-)};
+      }
+    ])
+  )
+};

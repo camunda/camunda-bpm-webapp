@@ -2,7 +2,10 @@
 var fs = require('fs');
 var $ = require('jquery');
 
-var template = fs.readFileSync(__dirname + '/../modals/cam-tasklist-filter-modal.html', 'utf8');
+var template = fs.readFileSync(
+  __dirname + '/../modals/cam-tasklist-filter-modal.html',
+  'utf8'
+);
 
 module.exports = [
   '$scope',
@@ -10,15 +13,10 @@ module.exports = [
   '$q',
   'camAPI',
   '$timeout',
-  function(
-    $scope,
-    $modal,
-    $q,
-    camAPI,
-    $timeout
-  ) {
-
-    var filtersData = $scope.filtersData = $scope.tasklistData.newChild($scope);
+  function($scope, $modal, $q, camAPI, $timeout) {
+    var filtersData = ($scope.filtersData = $scope.tasklistData.newChild(
+      $scope
+    ));
 
     var Filter = camAPI.resource('filter');
 
@@ -30,32 +28,31 @@ module.exports = [
       var deferred = $q.defer();
 
       Filter.authorizations(function(err, res) {
-        if(err) {
+        if (err) {
           deferred.reject(err);
-        }
-        else {
+        } else {
           deferred.resolve(res);
         }
-
       });
 
       return deferred.promise;
-
     });
 
-    filtersData.provide('userCanCreateFilter', ['filterAuthorizations', function(filterAuthorizations) {
-      filterAuthorizations = filterAuthorizations || {};
-      var links = filterAuthorizations.links || [];
+    filtersData.provide('userCanCreateFilter', [
+      'filterAuthorizations',
+      function(filterAuthorizations) {
+        filterAuthorizations = filterAuthorizations || {};
+        var links = filterAuthorizations.links || [];
 
-      for (var i = 0, link; (link = links[i]); i++) {
-        if (link.rel === 'create') {
-          return true;
+        for (var i = 0, link; (link = links[i]); i++) {
+          if (link.rel === 'create') {
+            return true;
+          }
         }
+
+        return false;
       }
-
-      return false;
-
-    }]);
+    ]);
 
     // observe ////////////////////////////////////////////////////////////////////////////////
 
@@ -74,10 +71,12 @@ module.exports = [
     // open modal /////////////////////////////////////////////////////////////////////////////
 
     var focusFilter = function(filter) {
-      if(filter) {
+      if (filter) {
         doAfterFilterUpdate.push(function() {
           $timeout(function() {
-            var element = $('.task-filters .content div.item.active .actions a')[0];
+            var element = $(
+              '.task-filters .content div.item.active .actions a'
+            )[0];
             element && element.focus();
           });
         });
@@ -93,24 +92,31 @@ module.exports = [
     $scope.openModal = function($event, filter) {
       $event.stopPropagation();
 
-      $modal.open({
-        windowClass: 'filter-modal',
-        size: 'lg',
-        controller: 'camFilterModalCtrl',
-        template: template,
-        resolve: {
-          'filter': function() { return filter; },
-          'filtersData': function() { return filtersData; }
-        }
-
-      }).result.then(function() {
-        filtersData.changed('filters');
-        focusFilter(filter);
-      }, function() {
-        filtersData.changed('filters');
-        focusFilter(filter);
-      });
-
+      $modal
+        .open({
+          windowClass: 'filter-modal',
+          size: 'lg',
+          controller: 'camFilterModalCtrl',
+          template: template,
+          resolve: {
+            filter: function() {
+              return filter;
+            },
+            filtersData: function() {
+              return filtersData;
+            }
+          }
+        })
+        .result.then(
+          function() {
+            filtersData.changed('filters');
+            focusFilter(filter);
+          },
+          function() {
+            filtersData.changed('filters');
+            focusFilter(filter);
+          }
+        );
     };
-
-  }];
+  }
+];

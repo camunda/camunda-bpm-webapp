@@ -5,7 +5,6 @@ var Page = require('./edit-base');
 var formElement = element(by.css('form[name="updateTenantMemberships"]'));
 
 module.exports = Page.extend({
-
   url: '/camunda/app/admin/default/#/users/:user?tab=tenants',
 
   subHeader: function() {
@@ -17,7 +16,10 @@ module.exports = Page.extend({
   },
 
   tenantId: function(idx) {
-    return this.tenantList().get(idx).element(by.binding('{{ tenant.id }}')).getText();
+    return this.tenantList()
+      .get(idx)
+      .element(by.binding('{{ tenant.id }}'))
+      .getText();
   },
 
   openAddTenantModal: function() {
@@ -31,6 +33,9 @@ module.exports = Page.extend({
   },
 
   removeTenant: function(idx) {
-    this.tenantList().get(idx).element(by.css('[ng-click="removeTenant(tenant.id)"]')).click();
+    this.tenantList()
+      .get(idx)
+      .element(by.css('[ng-click="removeTenant(tenant.id)"]'))
+      .click();
   }
 });

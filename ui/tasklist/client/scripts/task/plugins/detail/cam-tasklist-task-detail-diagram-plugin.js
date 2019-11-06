@@ -1,18 +1,16 @@
 'use strict';
 var fs = require('fs');
 
-var template = fs.readFileSync(__dirname + '/cam-tasklist-task-detail-diagram-plugin.html', 'utf8');
+var template = fs.readFileSync(
+  __dirname + '/cam-tasklist-task-detail-diagram-plugin.html',
+  'utf8'
+);
 
 var Controller = [
   '$scope',
   '$q',
   'camAPI',
-  function(
-    $scope,
-    $q,
-    camAPI
-  ) {
-
+  function($scope, $q, camAPI) {
     // setup ///////////////////////////////////////////////////////////
 
     var ProcessDefinition = camAPI.resource('process-definition');
@@ -21,33 +19,43 @@ var Controller = [
 
     // provider ////////////////////////////////////////////////////////
 
-    diagramData.provide('xml', ['processDefinition', 'caseDefinition', function(processDefinition, caseDefinition) {
-      if (!processDefinition && !caseDefinition) {
-        return $q.when(null);
-      }
+    diagramData.provide('xml', [
+      'processDefinition',
+      'caseDefinition',
+      function(processDefinition, caseDefinition) {
+        if (!processDefinition && !caseDefinition) {
+          return $q.when(null);
+        }
 
-      if (processDefinition) {
-        return getDefinition($q, ProcessDefinition, processDefinition)
-          .then(function(xml) {
-            return xml.bpmn20Xml;
-          });
-      }
+        if (processDefinition) {
+          return getDefinition($q, ProcessDefinition, processDefinition).then(
+            function(xml) {
+              return xml.bpmn20Xml;
+            }
+          );
+        }
 
-      return getDefinition($q, CaseDefinition, caseDefinition)
-        .then(function(xml) {
+        return getDefinition($q, CaseDefinition, caseDefinition).then(function(
+          xml
+        ) {
           return xml.cmmnXml;
         });
-    }]);
+      }
+    ]);
 
-    diagramData.provide('diagram',
-      ['xml', 'task', 'caseDefinition', 'processDefinition', function(xml, task, caseDefinition, processDefinition) {
+    diagramData.provide('diagram', [
+      'xml',
+      'task',
+      'caseDefinition',
+      'processDefinition',
+      function(xml, task, caseDefinition, processDefinition) {
         return {
           xml: xml,
           task: task,
           definition: processDefinition || caseDefinition
         };
-      }]
-    );
+      }
+    ]);
 
     // observer /////////////////////////////////////////////////////////
 
@@ -68,16 +76,16 @@ var Controller = [
     $scope.highlightTask = function() {
       $scope.control.highlight($scope.diagram.task.taskDefinitionKey);
     };
-  }];
+  }
+];
 
 function getDefinition($q, DefinitionApi, definition) {
   var deferred = $q.defer();
 
   DefinitionApi.xml(definition, function(err, res) {
-    if(err) {
+    if (err) {
       deferred.reject(err);
-    }
-    else {
+    } else {
       deferred.resolve(res);
     }
   });
@@ -86,7 +94,6 @@ function getDefinition($q, DefinitionApi, definition) {
 }
 
 var Configuration = function PluginConfiguration(ViewsProvider) {
-
   ViewsProvider.registerDefaultView('tasklist.task.detail', {
     id: 'task-detail-diagram',
     label: 'DIAGRAM',
