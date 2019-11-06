@@ -1,27 +1,28 @@
 'use strict';
 var fs = require('fs');
 
-var template = fs.readFileSync(__dirname + '/cam-tasklist-variables.html', 'utf8');
-var modalTemplate = fs.readFileSync(__dirname + '/../modals/cam-tasklist-variables-detail-modal.html', 'utf8');
+var template = fs.readFileSync(
+  __dirname + '/cam-tasklist-variables.html',
+  'utf8'
+);
+var modalTemplate = fs.readFileSync(
+  __dirname + '/../modals/cam-tasklist-variables-detail-modal.html',
+  'utf8'
+);
 
 var angular = require('camunda-commons-ui/vendor/angular');
 
-  // AngularJS DI
+// AngularJS DI
 module.exports = [
   '$modal',
   '$window',
   'Uri',
-  function(
-    $modal,
-    $window,
-    Uri
-  ) {
-
+  function($modal, $window, Uri) {
     return {
       template: template,
 
       scope: {
-        variables:        '=',
+        variables: '=',
         filterProperties: '='
       },
 
@@ -40,7 +41,9 @@ module.exports = [
             windowClass: 'variable-modal-detail',
 
             resolve: {
-              details: function() { return variable; }
+              details: function() {
+                return variable;
+              }
             },
 
             controller: 'camTasklistVariablesDetailsModalCtrl'
@@ -50,8 +53,8 @@ module.exports = [
         scope.download = function(variable, $event) {
           $event.preventDefault();
           $event.stopPropagation();
-          var link = variable._links.self.href +'/data';
-          link = Uri.appUri('engine://engine/:engine'+ link);
+          var link = variable._links.self.href + '/data';
+          link = Uri.appUri('engine://engine/:engine' + link);
           $window.open(link, 'download');
         };
 
@@ -64,8 +67,13 @@ module.exports = [
             scope.variablesByName[variable.name] = variable;
           });
 
-          scope.shownVariablesCount = Object.keys(scope.filterProperties.showUndefinedVariable ? scope.variableDefinitions : scope.variablesByName).length;
+          scope.shownVariablesCount = Object.keys(
+            scope.filterProperties.showUndefinedVariable
+              ? scope.variableDefinitions
+              : scope.variablesByName
+          ).length;
         }
       }
     };
-  }];
+  }
+];

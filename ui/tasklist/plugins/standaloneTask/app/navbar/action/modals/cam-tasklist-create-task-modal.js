@@ -7,13 +7,7 @@ module.exports = [
   '$translate',
   'Notifications',
   'camAPI',
-  function(
-    $scope,
-    $translate,
-    Notifications,
-    camAPI
-  ) {
-
+  function($scope, $translate, Notifications, camAPI) {
     var NEW_TASK = {
       name: null,
       assignee: null,
@@ -25,12 +19,12 @@ module.exports = [
     var Task = camAPI.resource('task');
     var Tenant = camAPI.resource('tenant');
 
-    var task = $scope.task = angular.copy(NEW_TASK);
+    var task = ($scope.task = angular.copy(NEW_TASK));
 
     function getTenants() {
       var queryParams = {
-        userMember : $scope.authentication.name,
-        includingGroupsOfUser : true
+        userMember: $scope.authentication.name,
+        includingGroupsOfUser: true
       };
 
       Tenant.list(queryParams, function(err, res) {
@@ -55,9 +49,9 @@ module.exports = [
       $scope.$dismiss();
     });
 
-    var isValid = $scope.isValid = function() {
+    var isValid = ($scope.isValid = function() {
       return _form && _form.$valid;
-    };
+    });
 
     $scope.save = function() {
       if (!isValid()) {
@@ -69,16 +63,15 @@ module.exports = [
           $translate('TASK_SAVE_ERROR').then(function(translated) {
             Notifications.addError({
               status: translated,
-              message: (err ? err.message : ''),
+              message: err ? err.message : '',
               exclusive: true,
               scope: $scope
             });
           });
-        }
-        else {
+        } else {
           $scope.$close();
         }
       });
     };
-
-  }];
+  }
+];

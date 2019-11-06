@@ -5,13 +5,13 @@ module.exports = function() {
     restrict: 'A',
     require: 'ngModel',
     link: function(scope, element, attrs, model) {
-
       var pattern = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(|\.[0-9]{0,4})$/;
 
       var dateParser = function(value) {
-
         var isValidPattern = pattern.test(value);
-        var isValidValue = isValidPattern ? !isNaN(new Date(value).getTime()) : true;
+        var isValidValue = isValidPattern
+          ? !isNaN(new Date(value).getTime())
+          : true;
         model.$setValidity('datePattern', isValidPattern);
         model.$setValidity('dateValue', isValidValue);
         return value;
@@ -20,9 +20,8 @@ module.exports = function() {
       model.$parsers.push(dateParser);
 
       var dateFormatter = function(value) {
-
-          // if the value is not set,
-          // then ignore it!
+        // if the value is not set,
+        // then ignore it!
         if (!value) {
           return;
         }
@@ -34,13 +33,13 @@ module.exports = function() {
         model.$setValidity('dateValue', isValidValue);
 
         if (!isValid) {
-            // if the value is invalid, then
-            // set $pristine to false and set $dirty to true,
-            // that means the user has interacted with the controller.
+          // if the value is invalid, then
+          // set $pristine to false and set $dirty to true,
+          // that means the user has interacted with the controller.
           model.$pristine = false;
           model.$dirty = true;
 
-            // add 'ng-dirty' as class to the element
+          // add 'ng-dirty' as class to the element
           element.addClass('ng-dirty');
         }
 

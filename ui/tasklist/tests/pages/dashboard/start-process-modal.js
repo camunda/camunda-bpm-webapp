@@ -3,8 +3,7 @@
 var Page = require('./dashboard-view');
 
 module.exports = Page.extend({
-
-  startProcessDialog: function () {
+  startProcessDialog: function() {
     return element(by.css('.modal .modal-content'));
   },
 
@@ -26,13 +25,11 @@ module.exports = Page.extend({
   },
 
   backButton: function() {
-    return this.startProcessDialog()
-      .element(by.css('[ng-click="back()"]'));
+    return this.startProcessDialog().element(by.css('[ng-click="back()"]'));
   },
 
   closeButton: function() {
-    return this.startProcessDialog()
-      .element(by.css('[ng-click="$dismiss()"]'));
+    return this.startProcessDialog().element(by.css('[ng-click="$dismiss()"]'));
   },
 
   closeStartDialog: function() {
@@ -42,8 +39,9 @@ module.exports = Page.extend({
   },
 
   startButton: function() {
-    return this.startProcessDialog()
-      .element(by.css('[ng-click="startProcessInstance()"]'));
+    return this.startProcessDialog().element(
+      by.css('[ng-click="startProcessInstance()"]')
+    );
   },
 
   startProcess: function() {
@@ -53,23 +51,27 @@ module.exports = Page.extend({
   },
 
   searchProcessInput: function(inputValue) {
-    var inputField = this.startProcessDialog().
-                      element(by.css('.modal-header input'));
+    var inputField = this.startProcessDialog().element(
+      by.css('.modal-header input')
+    );
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
 
   processList: function() {
-    return this.startProcessDialog()
-      .all(by.repeater('processDefinition in processDefinitions'));
+    return this.startProcessDialog().all(
+      by.repeater('processDefinition in processDefinitions')
+    );
   },
 
   selectProcessByIndex: function(idx) {
-    var clickElement = this.processList().get(idx)
-                        .element(by.css('[ng-click="selectProcessDefinition(processDefinition)"]'));
+    var clickElement = this.processList()
+      .get(idx)
+      .element(
+        by.css('[ng-click="selectProcessDefinition(processDefinition)"]')
+      );
     this.waitForElementToBeVisible(clickElement, 8000);
 
     var elementToWaitFor = element(by.css('[ng-click="addVariable()"]'));
@@ -81,19 +83,22 @@ module.exports = Page.extend({
   selectProcessByName: function(name) {
     var that = this;
 
-    this.findElementIndexInRepeater('processDefinition in processDefinitions', by.css('[class="ng-binding"]'), name)
-        .then(function(idx) {
-          that.selectProcessByIndex(idx);
-        });
+    this.findElementIndexInRepeater(
+      'processDefinition in processDefinitions',
+      by.css('[class="ng-binding"]'),
+      name
+    ).then(function(idx) {
+      that.selectProcessByIndex(idx);
+    });
   },
 
   processListInfoText: function() {
-    return this.startProcessDialog()
-      .element(by.css('.glyphicon-info-sign'));
+    return this.startProcessDialog().element(by.css('.glyphicon-info-sign'));
   },
-  
-  processTenantIdField: function(idx) {
-    return this.processList().get(idx).element(by.css('.tenant-id'));
-  }
 
+  processTenantIdField: function(idx) {
+    return this.processList()
+      .get(idx)
+      .element(by.css('.tenant-id'));
+  }
 });

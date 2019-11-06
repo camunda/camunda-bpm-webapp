@@ -3,7 +3,10 @@
 var angular = require('angular');
 var jobSuspension = require('./jobSuspension');
 
-var ngModule = angular.module('cockpit.plugin.jobDefinition.views.diagramPlugins', []);
+var ngModule = angular.module(
+  'cockpit.plugin.jobDefinition.views.diagramPlugins',
+  []
+);
 
 ngModule.config(jobSuspension);
 

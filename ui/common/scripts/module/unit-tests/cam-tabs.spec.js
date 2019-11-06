@@ -32,7 +32,7 @@ describe('cam-common CamTabsController', function() {
 
     providers = [
       {
-        id:'a',
+        id: 'a',
         priority: 1
       },
       {
@@ -131,7 +131,7 @@ describe('cam-common CamTabsController', function() {
     });
 
     it('should not update selected tab when not changed', function() {
-      var selected =  {
+      var selected = {
         id: 'b',
         extra: 's'
       };
@@ -149,7 +149,7 @@ describe('cam-common CamTabsController', function() {
     });
 
     it('should select default when params do not have tab', function() {
-      var selected =  {
+      var selected = {
         id: 'c',
         extra: 's'
       };
@@ -184,10 +184,12 @@ describe('cam-common CamTabsController', function() {
     });
 
     it('should update search with new tab and not change other params', function() {
-      expect(search.updateSilently.calledWith({
-        a: 1,
-        tab: provider.id
-      }));
+      expect(
+        search.updateSilently.calledWith({
+          a: 1,
+          tab: provider.id
+        })
+      );
     });
   });
 

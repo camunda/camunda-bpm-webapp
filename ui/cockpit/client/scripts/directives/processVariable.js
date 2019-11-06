@@ -1,12 +1,11 @@
-  'use strict';
+'use strict';
 
-  module.exports = ['Variables', function(Variables) {
-
+module.exports = [
+  'Variables',
+  function(Variables) {
     return {
-
       require: 'ngModel',
       link: function(scope, element, attrs, ngModel) {
-
         function parseText(text) {
           var variable;
 
@@ -24,5 +23,5 @@
         ngModel.$formatters.push(Variables.toString);
       }
     };
-
-  }];
+  }
+];

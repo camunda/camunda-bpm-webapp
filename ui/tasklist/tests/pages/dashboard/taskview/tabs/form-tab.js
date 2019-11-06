@@ -3,7 +3,6 @@
 var Tab = require('./tab');
 
 module.exports = Tab.extend({
-
   tabIndex: 0,
 
   formFormElement: function() {
@@ -11,13 +10,13 @@ module.exports = Tab.extend({
   },
 
   genericAddVariableButton: function() {
-    return this.formFormElement()
-      .element(by.css('[ng-click="addVariable()"]'));
+    return this.formFormElement().element(by.css('[ng-click="addVariable()"]'));
   },
 
   genericLoadVariablesButton: function() {
-    return this.formFormElement()
-      .element(by.css('[ng-click="loadVariables()"]'));
+    return this.formFormElement().element(
+      by.css('[ng-click="loadVariables()"]')
+    );
   },
 
   genericLoadVariables: function() {
@@ -25,8 +24,6 @@ module.exports = Tab.extend({
   },
 
   completeButton: function() {
-    return this.formFormElement()
-      .element(by.css('[ng-click="complete()"]'));
+    return this.formFormElement().element(by.css('[ng-click="complete()"]'));
   }
-
 });

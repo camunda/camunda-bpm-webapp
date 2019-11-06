@@ -3,7 +3,6 @@
 var Base = require('./../base');
 
 module.exports = Base.extend({
-
   url: '/camunda/app/cockpit/default/#/decision-instance/:decision',
 
   pageHeader: function() {
@@ -22,5 +21,4 @@ module.exports = Base.extend({
   gotoProcessInstance: function() {
     return this.gotoProcessInstanceButton().click();
   }
-
 });

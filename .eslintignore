@@ -1,0 +1,4 @@
+src/libs
+src/test
+grunt/
+Gruntfile.js

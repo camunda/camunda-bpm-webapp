@@ -3,7 +3,6 @@
 var Page = require('../repository-view');
 
 module.exports = Page.extend({
-
   formElement: function() {
     return element(by.css('.drd-definitions.cam-table tbody'));
   },
@@ -18,6 +17,5 @@ module.exports = Page.extend({
 
   version: function(idx) {
     return this.formElement().element(by.css('.version'));
-  },
-
+  }
 });

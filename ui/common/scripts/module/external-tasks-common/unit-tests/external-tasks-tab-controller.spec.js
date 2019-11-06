@@ -36,10 +36,12 @@ describe('cam-common.external-tasks ExternalTasksTabController', function() {
       id: 'p-instance-id-01'
     };
 
-    onLoad = sinon.stub().returns($q.when({
-      count,
-      list: tasks
-    }));
+    onLoad = sinon.stub().returns(
+      $q.when({
+        count,
+        list: tasks
+      })
+    );
     $scope.onLoad = onLoad;
 
     count = 20;
@@ -204,10 +206,12 @@ describe('cam-common.external-tasks ExternalTasksTabController', function() {
     });
 
     it('should pass pages and activityIds to onLoad', function() {
-      expect(onLoad.calledWith({
-        pages: pages,
-        activityIds: activityIds
-      })).to.eql(true);
+      expect(
+        onLoad.calledWith({
+          pages: pages,
+          activityIds: activityIds
+        })
+      ).to.eql(true);
     });
   });
 });
