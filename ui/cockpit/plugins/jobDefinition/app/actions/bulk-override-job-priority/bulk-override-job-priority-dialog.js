@@ -8,7 +8,7 @@ module.exports = [
   'Notifications',
   'JobDefinitionResource',
   '$modalInstance',
-  '$uibModalInstance',
+  '$modalInstance',
   '$timeout',
   '$translate',
   'processData',

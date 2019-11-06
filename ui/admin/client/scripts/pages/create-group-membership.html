@@ -59,7 +59,7 @@
   </p>
 
 
-  <ul uib-pagination
+  <pagination
       ng-if="pages.total > pages.size && status === 'beforeCreate'"
       class="pagination-sm"
 
@@ -71,7 +71,7 @@
       items-per-page="pages.size"
 
       max-size="7"
-      boundary-links="true"></ul>
+      boundary-links="true"></pagination>
 
 
   <p ng-show="status === 'SUCCESS'">

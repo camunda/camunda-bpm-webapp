@@ -138,7 +138,7 @@ var Controller = [
         maxResults: $scope.pages.size,
         firstResult: ($scope.pages.current - 1) * $scope.pages.size
       }).then(function(res) {
-        jobDefinitions = res;
+        jobDefinitions = res.items;
 
         updateTaskNames();
         updateView({});

@@ -150,7 +150,7 @@
             </tbody>
           </table>
 
-          <ul uib-pagination ng-if="groupTenantPages.total > groupTenantPages.size"
+          <pagination ng-if="groupTenantPages.total > groupTenantPages.size"
             class="pagination-sm"
 
             ng-model="groupTenantPages.current"
@@ -160,7 +160,7 @@
             items-per-page="groupTenantPages.size"
             max-size="7"
 
-            boundary-links="true"></ul>
+            boundary-links="true"></pagination>
 
         </div>
 

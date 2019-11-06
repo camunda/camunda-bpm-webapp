@@ -18,7 +18,7 @@ var Configuration = function PluginConfiguration(ViewsProvider) {
     template: actionTemplate,
     controller: [
       '$scope',
-      '$uibModal',
+      '$modal',
       function($scope, $modal) {
         $scope.openSuspensionStateDialog = function(jobDefinition) {
           var dialog = $modal.open({

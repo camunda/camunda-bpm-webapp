@@ -12,7 +12,7 @@ module.exports = function() {
       decisionCount: '=',
       decisions: '=',
       isDrdAvailable: '=',
-      pagination: '='
+      paginationController: '='
     },
     controller: [
       '$scope',
@@ -38,7 +38,7 @@ module.exports = function() {
           sortObj = sortObj || $scope.sortObj;
           $scope.sortObj = sortObj;
 
-          $scope.pagination.changeDecisionSorting(sortObj);
+          $scope.paginationController.changeDecisionSorting(sortObj);
         };
 
         function loadLocal(defaultValue) {
