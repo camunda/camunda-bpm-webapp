@@ -32,12 +32,14 @@ describe('cam-common upload', function() {
       requests.push(xhr);
     };
 
-    files = [{
-      file: {
-        name: 't.txt'
-      },
-      content: 'content-of-a-file'
-    }];
+    files = [
+      {
+        file: {
+          name: 't.txt'
+        },
+        content: 'content-of-a-file'
+      }
+    ];
 
     fields = {
       someField: 'some-value'
@@ -59,7 +61,9 @@ describe('cam-common upload', function() {
   it('should send fields', function() {
     upload(url, files, fields);
 
-    expect(requests[0].requestBody).to.contain('name="someField"\r\n\r\n' + fields.someField);
+    expect(requests[0].requestBody).to.contain(
+      'name="someField"\r\n\r\n' + fields.someField
+    );
   });
 
   it('should return promise with parsed response', function(done) {

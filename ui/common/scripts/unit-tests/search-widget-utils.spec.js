@@ -13,7 +13,10 @@ describe('common/utils searchWidgetUtils', function() {
   describe('getSearchQueryForSearchType', function() {
     it('should provide query for values', function() {
       var values = ['a00a12', 'bb0023'];
-      var query = searchWidgetUtils.getSearchQueryForSearchType(searchType, values);
+      var query = searchWidgetUtils.getSearchQueryForSearchType(
+        searchType,
+        values
+      );
 
       expect(query).to.contain(values[0]);
       expect(query).to.contain(values[1]);
@@ -52,7 +55,10 @@ describe('common/utils searchWidgetUtils', function() {
 
     it('should return true when at least one of white-listed properties changed', function() {
       expect(
-        searchWidgetUtils.shouldUpdateFilter(newFilter, currentFilter, ['a', 'b'])
+        searchWidgetUtils.shouldUpdateFilter(newFilter, currentFilter, [
+          'a',
+          'b'
+        ])
       ).to.eql(true);
     });
 
@@ -66,7 +72,10 @@ describe('common/utils searchWidgetUtils', function() {
       newFilter.x = undefined;
 
       expect(
-        searchWidgetUtils.shouldUpdateFilter(newFilter, currentFilter, ['x', 'b'])
+        searchWidgetUtils.shouldUpdateFilter(newFilter, currentFilter, [
+          'x',
+          'b'
+        ])
       ).to.eql(false);
     });
   });
@@ -86,11 +95,15 @@ describe('common/utils searchWidgetUtils', function() {
     });
 
     it('should extract values from given params', function() {
-      expect(searchWidgetUtils.getActivityIdsFromUrlParams(searchType, params)).to.eql(['x']);
+      expect(
+        searchWidgetUtils.getActivityIdsFromUrlParams(searchType, params)
+      ).to.eql(['x']);
     });
 
     it('should by default use empty list for searches', function() {
-      expect(searchWidgetUtils.getActivityIdsFromUrlParams(searchType, {})).to.eql([]);
+      expect(
+        searchWidgetUtils.getActivityIdsFromUrlParams(searchType, {})
+      ).to.eql([]);
     });
   });
 
@@ -112,7 +125,11 @@ describe('common/utils searchWidgetUtils', function() {
         }
       ];
 
-      newSearches = searchWidgetUtils.updateSearchValuesForTypeInCtrlMode(searches, searchType, values);
+      newSearches = searchWidgetUtils.updateSearchValuesForTypeInCtrlMode(
+        searches,
+        searchType,
+        values
+      );
     });
 
     it('should add new values and remove repeating ones', function() {
@@ -146,7 +163,11 @@ describe('common/utils searchWidgetUtils', function() {
         }
       ];
 
-      newSearches = searchWidgetUtils.replaceActivitiesInSearchQuery(searches, searchType, values);
+      newSearches = searchWidgetUtils.replaceActivitiesInSearchQuery(
+        searches,
+        searchType,
+        values
+      );
     });
 
     it('should replace values of given type', function() {
@@ -195,7 +216,11 @@ describe('common/utils searchWidgetUtils', function() {
       arrayTypes = ['arr1'];
       variableTypes = ['var1'];
 
-      query = searchWidgetUtils.createSearchQueryForSearchWidget(searches, arrayTypes, variableTypes);
+      query = searchWidgetUtils.createSearchQueryForSearchWidget(
+        searches,
+        arrayTypes,
+        variableTypes
+      );
     });
 
     it('should contain simple query properties with eq operator', function() {

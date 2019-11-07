@@ -1,6 +1,6 @@
 'use strict';
 
-var $ = window.jQuery = window.$ = require('jquery');
+var $ = (window.jQuery = window.$ = require('jquery'));
 
 var commons = require('camunda-commons-ui/lib');
 var sdk = require('camunda-commons-ui/vendor/camunda-bpm-sdk-angular');
@@ -11,13 +11,13 @@ var dataDepend = require('angular-data-depend');
 var camCommon = require('../../../common/scripts/module');
 var lodash = require('camunda-commons-ui/vendor/lodash');
 
-  /**
-   * @namespace cam
-   */
+/**
+ * @namespace cam
+ */
 
-  /**
-   * @module cam.tasklist
-   */
+/**
+ * @module cam.tasklist
+ */
 
 function bootstrapApp() {
   $(document).ready(function() {
@@ -37,7 +37,6 @@ function bootstrapApp() {
 }
 
 module.exports = function(pluginDependencies) {
-
   var ngDeps = [
     commons.name,
     'pascalprecht.translate',
@@ -51,15 +50,17 @@ module.exports = function(pluginDependencies) {
     require('./filter/index').name,
     require('./api/index').name,
     require('./shortcuts/plugins/index').name
-  ].concat(pluginDependencies.map(function(el) {
-    return el.ngModuleName;
-  }));
+  ].concat(
+    pluginDependencies.map(function(el) {
+      return el.ngModuleName;
+    })
+  );
 
   function parseUriConfig() {
     var $baseTag = $('base');
     var config = {};
     var names = ['href', 'app-root', 'admin-api', 'tasklist-api', 'engine-api'];
-    for(var i = 0; i < names.length; i++) {
+    for (var i = 0; i < names.length; i++) {
       config[names[i]] = $baseTag.attr(names[i]);
     }
     return config;
@@ -69,22 +70,39 @@ module.exports = function(pluginDependencies) {
 
   var tasklistApp = angular.module('cam.tasklist', ngDeps);
 
-  tasklistApp.factory('assignNotification', require('./services/cam-tasklist-assign-notification'));
-  tasklistApp.provider('configuration', require('./../../../common/scripts/services/cam-configuration')(window.camTasklistConf, 'Tasklist'));
+  tasklistApp.factory(
+    'assignNotification',
+    require('./services/cam-tasklist-assign-notification')
+  );
+  tasklistApp.provider(
+    'configuration',
+    require('./../../../common/scripts/services/cam-configuration')(
+      window.camTasklistConf,
+      'Tasklist'
+    )
+  );
 
-  require('./../../../common/scripts/services/locales')(tasklistApp, uriConfig['app-root'], 'tasklist');
+  require('./../../../common/scripts/services/locales')(
+    tasklistApp,
+    uriConfig['app-root'],
+    'tasklist'
+  );
   require('./config/uris')(tasklistApp, uriConfig);
-
 
   tasklistApp.config(require('./config/routes'));
   tasklistApp.config(require('./config/date'));
   tasklistApp.config(require('./config/tooltip'));
 
-  tasklistApp.controller('camTasklistAppCtrl', require('./controller/cam-tasklist-app-ctrl'));
-  tasklistApp.controller('camTasklistViewCtrl', require('./controller/cam-tasklist-view-ctrl'));
+  tasklistApp.controller(
+    'camTasklistAppCtrl',
+    require('./controller/cam-tasklist-app-ctrl')
+  );
+  tasklistApp.controller(
+    'camTasklistViewCtrl',
+    require('./controller/cam-tasklist-view-ctrl')
+  );
 
   bootstrapApp();
-
 };
 
 module.exports.exposePackages = function(container) {
@@ -97,7 +115,7 @@ module.exports.exposePackages = function(container) {
   container['lodash'] = lodash;
 };
 
-  /* live-reload
+/* live-reload
   // loads livereload client library (without breaking other scripts execution)
   $('body').append('<script src="//' + location.hostname + ':LIVERELOAD_PORT/livereload.js?snipver=1"></script>');
   /* */

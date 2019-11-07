@@ -1,7 +1,8 @@
-  'use strict';
+'use strict';
 
-  var VariablesFactory = [ '$translate', function($translate) {
-
+var VariablesFactory = [
+  '$translate',
+  function($translate) {
     // variable specific stuff //////////////
 
     function reverse(hash) {
@@ -27,10 +28,10 @@
     var OPS = {
       eq: '=',
       neq: '!=',
-      gt : '>',
-      gteq : '>=',
-      lt : '<',
-      lteq : '<=',
+      gt: '>',
+      gteq: '>=',
+      lt: '<',
+      lteq: '<=',
       like: ' like '
     };
 
@@ -40,7 +41,9 @@
       return OPS[op];
     }
 
-    var PATTERN = new RegExp('^(\\w+)\\s*(' + keys(SYM_TO_OPS).join('|') + ')\\s*([^!=<>]+)$');
+    var PATTERN = new RegExp(
+      '^(\\w+)\\s*(' + keys(SYM_TO_OPS).join('|') + ')\\s*([^!=<>]+)$'
+    );
 
     /**
      * Tries to guess the type of the input string
@@ -51,13 +54,12 @@
      * @return value {string|boolean|number} the interpolated value
      */
     function typed(value) {
-
       // is a string ( "asdf" )
       if (/^".*"\s*$/.test(value)) {
         return value.substring(1, value.length - 1);
       }
 
-      if ((parseFloat(value) + '') === value) {
+      if (parseFloat(value) + '' === value) {
         return parseFloat(value);
       }
 
@@ -65,11 +67,12 @@
         return value === 'true';
       }
 
-      throw new Error( $translate.instant('VARIABLE_ERROR_INFER_TYPE', {value: value}));
+      throw new Error(
+        $translate.instant('VARIABLE_ERROR_INFER_TYPE', {value: value})
+      );
     }
 
     function typedString(value) {
-
       if (!value) {
         return value;
       }
@@ -86,27 +89,28 @@
         return value;
       }
 
-
-      throw new Error($translate.instant('VARIABLE_ERROR_INFER_TYPE', {value: value}));
+      throw new Error(
+        $translate.instant('VARIABLE_ERROR_INFER_TYPE', {value: value})
+      );
     }
 
     /**
      * Public API of Variables utility
      */
     return {
-
       /**
        * Parse a string into a variableFilter { name: ..., operator: ..., value: ... }
        * @param  {string} str the string to parse
        * @return {object}     the parsed variableFilter object
        */
       parse: function(str) {
-
         var match = PATTERN.exec(str),
-            value;
+          value;
 
         if (!match) {
-          throw new Error($translate.instant('VARIABLE_ERROR_VARIABLE_SYNTAX', {message: str}));
+          throw new Error(
+            $translate.instant('VARIABLE_ERROR_VARIABLE_SYNTAX', {message: str})
+          );
         }
 
         value = typed(match[3]);
@@ -123,10 +127,15 @@
           return '';
         }
 
-        return variable.name + operatorName(variable.operator) + typedString(variable.value);
+        return (
+          variable.name +
+          operatorName(variable.operator) +
+          typedString(variable.value)
+        );
       },
 
       operators: keys(SYM_TO_OPS)
     };
-  }];
-  module.exports = VariablesFactory;
+  }
+];
+module.exports = VariablesFactory;

@@ -1,12 +1,11 @@
-  'use strict';
+'use strict';
 
-  module.exports = [
-    '$tooltipProvider',
-    function(
-    $tooltipProvider
-  ) {
-      $tooltipProvider.options({
-        appendToBody: true,
-        popupDelay: 500
-      });
-    }];
+module.exports = [
+  '$tooltipProvider',
+  function($tooltipProvider) {
+    $tooltipProvider.options({
+      appendToBody: true,
+      popupDelay: 500
+    });
+  }
+];

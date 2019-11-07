@@ -12,20 +12,14 @@ var Controller = [
   'dataDepend',
   'Views',
   '$translate',
-  function(
-  $scope,
-  $route,
-  page,
-  dataDepend,
-  Views,
-  $translate
-) {
-    $scope.selectedReportId = (($route.current || {}).params || {}).reportType || null;
+  function($scope, $route, page, dataDepend, Views, $translate) {
+    $scope.selectedReportId =
+      (($route.current || {}).params || {}).reportType || null;
 
-  // utilities ///////////////////////////////////////////////////////////////////
+    // utilities ///////////////////////////////////////////////////////////////////
 
     function getPluginProviders(options) {
-      var _options = extend({}, options || {}, { component: 'cockpit.report' });
+      var _options = extend({}, options || {}, {component: 'cockpit.report'});
       return Views.getProviders(_options);
     }
 
@@ -35,18 +29,18 @@ var Controller = [
       }
 
       if ($scope.selectedReportId) {
-        return (getPluginProviders({ id: $scope.selectedReportId }) || [])[0];
+        return (getPluginProviders({id: $scope.selectedReportId}) || [])[0];
       }
     };
 
-  // breadcrumb //////////////////////////////////////////////////////////////
+    // breadcrumb //////////////////////////////////////////////////////////////
 
     $scope.$root.showBreadcrumbs = true;
 
     page.breadcrumbsClear();
 
     if ($scope.selectedReportId) {
-      var reportTypePlugin = getPluginProviders({ id: $scope.selectedReportId });
+      var reportTypePlugin = getPluginProviders({id: $scope.selectedReportId});
 
       $scope.pluginLabel = reportTypePlugin[0].label;
 
@@ -61,10 +55,13 @@ var Controller = [
           }
         ]);
 
-        page.titleSet($translate.instant('REPORTS_VIEW_TITLE_SET', { name: $translate.instant(reportTypePlugin[0].label) }));
+        page.titleSet(
+          $translate.instant('REPORTS_VIEW_TITLE_SET', {
+            name: $translate.instant(reportTypePlugin[0].label)
+          })
+        );
       }
-    }
-    else {
+    } else {
       page.breadcrumbsAdd({
         label: $translate.instant('REPORTS_VIEW_BREAD_CRUMB')
       });
@@ -72,11 +69,9 @@ var Controller = [
       page.titleSet($translate.instant('REPORTS_VIEW_BREAD_CRUMB'));
     }
 
+    // provide data ///////////////////////////////////////////////////////////
 
-
-  // provide data ///////////////////////////////////////////////////////////
-
-    var reportData = $scope.reportData = dataDepend.create($scope);
+    var reportData = ($scope.reportData = dataDepend.create($scope));
 
     var plugins = getPluginProviders();
     var plugin = getDefaultReport(plugins);
@@ -91,16 +86,21 @@ var Controller = [
       reportData.set('plugin', _plugin);
     });
 
-    $scope.reportTitle = (($scope.getPluginProviders() || [])[0] || {}).label || null;
-  }];
+    $scope.reportTitle =
+      (($scope.getPluginProviders() || [])[0] || {}).label || null;
+  }
+];
 
-var RouteConfig = [ '$routeProvider', function($routeProvider) {
-  $routeProvider.when('/reports/:reportType?', {
-    template: template,
-    controller: Controller,
-    authentication: 'required',
-    reloadOnSearch: false
-  });
-}];
+var RouteConfig = [
+  '$routeProvider',
+  function($routeProvider) {
+    $routeProvider.when('/reports/:reportType?', {
+      template: template,
+      controller: Controller,
+      authentication: 'required',
+      reloadOnSearch: false
+    });
+  }
+];
 
 module.exports = RouteConfig;

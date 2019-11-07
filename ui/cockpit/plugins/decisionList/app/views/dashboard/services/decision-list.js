@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = [
-  '$q', 'camAPI',
+  '$q',
+  'camAPI',
   function($q, camAPI) {
     var decisionDefinitionService = camAPI.resource('decision-definition');
     var drdService = camAPI.resource('drd');
@@ -28,7 +29,10 @@ module.exports = [
           drds: drds
         })
         .then(function(results) {
-          results.decisions = connectDrdsToDecisionDefinitions(results.drds, results.decisions);
+          results.decisions = connectDrdsToDecisionDefinitions(
+            results.drds,
+            results.decisions
+          );
 
           return results;
         });
@@ -37,7 +41,10 @@ module.exports = [
     function connectDrdsToDecisionDefinitions(drds, decisions) {
       return decisions.map(function(decision) {
         if (decision.decisionRequirementsDefinitionId) {
-          decision.drd = findDrdById(drds, decision.decisionRequirementsDefinitionId);
+          decision.drd = findDrdById(
+            drds,
+            decision.decisionRequirementsDefinitionId
+          );
         }
 
         return decision;

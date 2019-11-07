@@ -3,7 +3,6 @@
 var Page = require('./../base');
 
 module.exports = Page.extend({
-
   url: '/camunda/app/admin/default/#/tenants/:tenant?tab=tenant',
 
   updateTenantButton: function() {
@@ -13,8 +12,7 @@ module.exports = Page.extend({
   tenantNameInput: function(inputValue) {
     var inputField = element(by.model('tenant.name'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
@@ -33,12 +31,8 @@ module.exports = Page.extend({
   },
 
   selectUserNavbarItem: function(navbarItem) {
-    var index = [
-      'Information',
-      'Groups',
-      'Users'
-    ];
-    
+    var index = ['Information', 'Groups', 'Users'];
+
     var item;
     var itemIndex = index.indexOf(navbarItem) + 1;
 
@@ -51,5 +45,4 @@ module.exports = Page.extend({
     item.click();
     return item;
   }
-
 });

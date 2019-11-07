@@ -2,11 +2,14 @@
 
 var Page = require('./edit-base');
 
-var changePasswordFormElement = element(by.css('form[name="updateCredentialsForm"]'));
-var deleteUserFormElement = element(by.css('[ng-if="availableOperations.delete"]'));
+var changePasswordFormElement = element(
+  by.css('form[name="updateCredentialsForm"]')
+);
+var deleteUserFormElement = element(
+  by.css('[ng-if="availableOperations.delete"]')
+);
 
 module.exports = Page.extend({
-
   url: '/camunda/app/admin/default/#/users/:user?tab=account',
 
   subHeaderChangePassword: function() {
@@ -20,8 +23,7 @@ module.exports = Page.extend({
   myPasswordInput: function(inputValue) {
     var inputField = element(by.model('credentials.authenticatedUserPassword'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
@@ -29,8 +31,7 @@ module.exports = Page.extend({
   newPasswordInput: function(inputValue) {
     var inputField = element(by.model('credentials.password'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
@@ -38,14 +39,15 @@ module.exports = Page.extend({
   newPasswordRepeatInput: function(inputValue) {
     var inputField = element(by.model('credentials.password2'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
 
   changePasswordButton: function() {
-    return changePasswordFormElement.element(by.css('[ng-click="updateCredentials()"]'));
+    return changePasswordFormElement.element(
+      by.css('[ng-click="updateCredentials()"]')
+    );
   },
 
   changePassword: function(myPassword, newPassword, newPasswordRepeat) {
@@ -68,5 +70,4 @@ module.exports = Page.extend({
     element(by.css('.modal-footer [ng-click="$close()"]')).click();
     browser.sleep(100);
   }
-
 });

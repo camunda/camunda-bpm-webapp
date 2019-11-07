@@ -1,6 +1,6 @@
 'use strict';
 
-var $ = window.jQuery = window.$ = require('jquery');
+var $ = (window.jQuery = window.$ = require('jquery'));
 require('camunda-commons-ui/vendor/bootstrap');
 
 var commons = require('camunda-commons-ui/lib');
@@ -18,7 +18,6 @@ var APP_NAME = 'cam.cockpit';
 var angular = require('camunda-commons-ui/vendor/angular');
 
 module.exports = function(pluginDependencies) {
-
   var ngDependencies = [
     'ng',
     'ngResource',
@@ -33,9 +32,11 @@ module.exports = function(pluginDependencies) {
     require('./resources/main').name,
     require('./services/main').name,
     require('./navigation/main').name
-  ].concat(pluginDependencies.map(function(el) {
-    return el.ngModuleName;
-  }));
+  ].concat(
+    pluginDependencies.map(function(el) {
+      return el.ngModuleName;
+    })
+  );
 
   var appNgModule = angular.module(APP_NAME, ngDependencies);
 
@@ -51,42 +52,54 @@ module.exports = function(pluginDependencies) {
   var ModuleConfig = [
     '$routeProvider',
     'UriProvider',
-    function(
-      $routeProvider,
-      UriProvider
-    ) {
-      $routeProvider.otherwise({ redirectTo: '/dashboard' });
+    function($routeProvider, UriProvider) {
+      $routeProvider.otherwise({redirectTo: '/dashboard'});
 
       UriProvider.replace(':appName', 'cockpit');
       UriProvider.replace('app://', getUri('href'));
       UriProvider.replace('adminbase://', getUri('app-root') + '/app/admin/');
       UriProvider.replace('cockpit://', getUri('cockpit-api'));
-      UriProvider.replace('admin://', getUri('admin-api') || (getUri('cockpit-api') + '../admin/'));
+      UriProvider.replace(
+        'admin://',
+        getUri('admin-api') || getUri('cockpit-api') + '../admin/'
+      );
       UriProvider.replace('plugin://', getUri('cockpit-api') + 'plugin/');
       UriProvider.replace('engine://', getUri('engine-api'));
 
-      UriProvider.replace(':engine', [ '$window', function($window) {
-        var uri = $window.location.href;
+      UriProvider.replace(':engine', [
+        '$window',
+        function($window) {
+          var uri = $window.location.href;
 
-        var match = uri.match(/\/app\/cockpit\/([\w-]+)(|\/)/);
-        if (match) {
-          return match[1];
-        } else {
-          throw new Error('no process engine selected');
+          var match = uri.match(/\/app\/cockpit\/([\w-]+)(|\/)/);
+          if (match) {
+            return match[1];
+          } else {
+            throw new Error('no process engine selected');
+          }
         }
-      }]);
-    }];
+      ]);
+    }
+  ];
 
-  appNgModule.provider('configuration', require('./../../../common/scripts/services/cam-configuration')(window.camCockpitConf, 'Cockpit'));
+  appNgModule.provider(
+    'configuration',
+    require('./../../../common/scripts/services/cam-configuration')(
+      window.camCockpitConf,
+      'Cockpit'
+    )
+  );
   appNgModule.config(ModuleConfig);
 
-  require('./../../../common/scripts/services/locales')(appNgModule, getUri('app-root'), 'cockpit');
+  require('./../../../common/scripts/services/locales')(
+    appNgModule,
+    getUri('app-root'),
+    'cockpit'
+  );
 
   appNgModule.config([
     'camDateFormatProvider',
-    function(
-      camDateFormatProvider
-    ) {
+    function(camDateFormatProvider) {
       var formats = {
         monthName: 'MMMM',
         day: 'DD',
@@ -99,31 +112,41 @@ module.exports = function(pluginDependencies) {
       for (var f in formats) {
         camDateFormatProvider.setDateFormat(formats[f], f);
       }
-    }]);
+    }
+  ]);
 
-
-  if (typeof window.camCockpitConf !== 'undefined' && window.camCockpitConf.polyfills) {
+  if (
+    typeof window.camCockpitConf !== 'undefined' &&
+    window.camCockpitConf.polyfills
+  ) {
     var polyfills = window.camCockpitConf.polyfills;
 
     if (polyfills.indexOf('placeholder') > -1) {
       var load = window.requirejs;
       var appRoot = $('head base').attr('app-root');
 
-      load([
-        appRoot + '/app/cockpit/scripts/placeholders.utils.js',
-        appRoot + '/app/cockpit/scripts/placeholders.main.js'
-      ], function() {
-        load([
-          appRoot + '/app/cockpit/scripts/placeholders.jquery.js'
-        ], function() {});
-      });
+      load(
+        [
+          appRoot + '/app/cockpit/scripts/placeholders.utils.js',
+          appRoot + '/app/cockpit/scripts/placeholders.main.js'
+        ],
+        function() {
+          load(
+            [appRoot + '/app/cockpit/scripts/placeholders.jquery.js'],
+            function() {}
+          );
+        }
+      );
     }
   }
 
-  angular.bootstrap(document.documentElement, [ appNgModule.name, 'cam.cockpit.custom' ]);
+  angular.bootstrap(document.documentElement, [
+    appNgModule.name,
+    'cam.cockpit.custom'
+  ]);
 
   if (top !== window) {
-    window.parent.postMessage({ type: 'loadamd' }, '*');
+    window.parent.postMessage({type: 'loadamd'}, '*');
   }
 };
 
@@ -138,7 +161,6 @@ module.exports.exposePackages = function(container) {
   container['cam-common'] = camCommon;
   container['lodash'] = lodash;
 };
-
 
 /* live-reload
 // loads livereload client library (without breaking other scripts execution)

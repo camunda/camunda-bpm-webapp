@@ -4,60 +4,80 @@ var fs = require('fs');
 
 var template = fs.readFileSync(__dirname + '/userCreate.html', 'utf8');
 
-var Controller = ['$scope', 'page', 'UserResource', 'Notifications', '$location', '$translate', function($scope, page, UserResource, Notifications, $location, $translate) {
+var Controller = [
+  '$scope',
+  'page',
+  'UserResource',
+  'Notifications',
+  '$location',
+  '$translate',
+  function($scope, page, UserResource, Notifications, $location, $translate) {
+    $scope.$root.showBreadcrumbs = true;
 
-  $scope.$root.showBreadcrumbs = true;
+    page.titleSet($translate.instant('USERS_CREATE_USER'));
 
-  page.titleSet($translate.instant('USERS_CREATE_USER'));
+    page.breadcrumbsClear();
 
-  page.breadcrumbsClear();
-
-  page.breadcrumbsAdd([
-    {
-      label: $translate.instant('USERS_USERS'),
-      href: '#/users/'
-    },
-    {
-      label: $translate.instant('USERS_CREATE'),
-      href: '#/users-create'
-    }
-  ]);
+    page.breadcrumbsAdd([
+      {
+        label: $translate.instant('USERS_USERS'),
+        href: '#/users/'
+      },
+      {
+        label: $translate.instant('USERS_CREATE'),
+        href: '#/users-create'
+      }
+    ]);
 
     // data model for user profile
-  $scope.profile = {
-    id : '',
-    firstName : '',
-    lastName : '',
-    email : ''
-  };
-
-    // data model for credentials
-  $scope.credentials = {
-    password : '',
-    password2 : ''
-  };
-
-  $scope.createUser = function() {
-    var user = {
-      profile : $scope.profile,
-      credentials : { password : $scope.credentials.password }
+    $scope.profile = {
+      id: '',
+      firstName: '',
+      lastName: '',
+      email: ''
     };
 
-    UserResource.createUser(user).$promise.then(function() {
-      Notifications.addMessage({ type: 'success', status: $translate.instant('NOTIFICATIONS_STATUS_SUCCESS'), message: $translate.instant('USERS_CREATE_SUCCESS', {user: user.profile.id})});
-      $location.path('/users');
-    },
-      function() {
-        Notifications.addError({ status: $translate.instant('NOTIFICATIONS_STATUS_FAILED'), message: $translate.instant('USERS_CREATE_FAILED') });
-      });
-  };
+    // data model for credentials
+    $scope.credentials = {
+      password: '',
+      password2: ''
+    };
 
-}];
+    $scope.createUser = function() {
+      var user = {
+        profile: $scope.profile,
+        credentials: {password: $scope.credentials.password}
+      };
 
-module.exports = [ '$routeProvider', function($routeProvider) {
-  $routeProvider.when('/user-create', {
-    template: template,
-    controller: Controller,
-    authentication: 'required'
-  });
-}];
+      UserResource.createUser(user).$promise.then(
+        function() {
+          Notifications.addMessage({
+            type: 'success',
+            status: $translate.instant('NOTIFICATIONS_STATUS_SUCCESS'),
+            message: $translate.instant('USERS_CREATE_SUCCESS', {
+              user: user.profile.id
+            })
+          });
+          $location.path('/users');
+        },
+        function() {
+          Notifications.addError({
+            status: $translate.instant('NOTIFICATIONS_STATUS_FAILED'),
+            message: $translate.instant('USERS_CREATE_FAILED')
+          });
+        }
+      );
+    };
+  }
+];
+
+module.exports = [
+  '$routeProvider',
+  function($routeProvider) {
+    $routeProvider.when('/user-create', {
+      template: template,
+      controller: Controller,
+      authentication: 'required'
+    });
+  }
+];

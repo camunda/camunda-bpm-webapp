@@ -3,7 +3,6 @@
 var Page = require('./../base');
 
 module.exports = Page.extend({
-
   url: '/camunda/app/admin/default/#/groups/:group?tab=group',
 
   updateGroupButton: function() {
@@ -13,8 +12,7 @@ module.exports = Page.extend({
   groupNameInput: function(inputValue) {
     var inputField = element(by.model('group.name'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
@@ -22,8 +20,7 @@ module.exports = Page.extend({
   groupTypeInput: function(inputValue) {
     var inputField = element(by.model('group.type'));
 
-    if (arguments.length !== 0)
-      inputField.sendKeys(inputValue);
+    if (arguments.length !== 0) inputField.sendKeys(inputValue);
 
     return inputField;
   },
@@ -42,23 +39,17 @@ module.exports = Page.extend({
   },
 
   selectUserNavbarItem: function(navbarItem) {
-    var index = [
-      'Group',
-      'Tenants',
-      'Users'
-    ];
+    var index = ['Group', 'Tenants', 'Users'];
     var item;
     var itemIndex = index.indexOf(navbarItem) + 1;
 
     if (itemIndex) {
       item = element(by.css('aside ul li:nth-child(' + itemIndex + ')'));
-    }
-    else {
+    } else {
       item = element(by.css('aside ul li:nth-child(1)'));
     }
 
     item.click();
     return item;
   }
-
 });

@@ -3,7 +3,6 @@
 var Page = require('./../base');
 
 module.exports = Page.extend({
-
   url: '/camunda/app/cockpit/default/#/reports',
 
   reportsType: function() {
@@ -19,11 +18,14 @@ module.exports = Page.extend({
   },
 
   getReportsTypeOption: function(type) {
-    return this.getReportsTypeSelection().element(by.cssContainingText('option', type));
+    return this.getReportsTypeSelection().element(
+      by.cssContainingText('option', type)
+    );
   },
 
   getSelectedReportsTypeOption: function() {
-    return this.getReportsTypeSelection().element(by.css('[selected="selected"]'));
+    return this.getReportsTypeSelection().element(
+      by.css('[selected="selected"]')
+    );
   }
-
 });
