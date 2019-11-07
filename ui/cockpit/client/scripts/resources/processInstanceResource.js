@@ -1,11 +1,13 @@
-  'use strict';
+'use strict';
 
-  module.exports = [
-    '$resource',
-    'Uri',
-    function($resource, Uri) {
-
-      return $resource(Uri.appUri('engine://engine/:engine/process-instance/:id/:action'), { id: '@id' }, {
+module.exports = [
+  '$resource',
+  'Uri',
+  function($resource, Uri) {
+    return $resource(
+      Uri.appUri('engine://engine/:engine/process-instance/:id/:action'),
+      {id: '@id'},
+      {
         query: {
           method: 'POST',
           isArray: true
@@ -14,7 +16,7 @@
         count: {
           method: 'POST',
           isArray: false,
-          params: { id: 'count' }
+          params: {id: 'count'}
         },
 
         activityInstances: {
@@ -24,5 +26,7 @@
             action: 'activity-instances'
           }
         }
-      });
-    }];
+      }
+    );
+  }
+];

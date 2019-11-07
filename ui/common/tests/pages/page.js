@@ -11,7 +11,7 @@ function injectParams(url, params) {
   return u;
 }
 
-function Page() { }
+function Page() {}
 
 Page.extend = function(data) {
   function SubPage() {}
@@ -30,16 +30,24 @@ Page.extend = function(data) {
 /*prototype functionality*/
 Page.prototype.navigateTo = function(params) {
   browser.get(injectParams(this.url, params));
-  browser.driver.manage().window().maximize();
+  browser.driver
+    .manage()
+    .window()
+    .maximize();
 };
 
 Page.prototype.isActive = function(params) {
-  expect(browser.getCurrentUrl()).to.eventually.eql('http://localhost:8080' + injectParams(this.url, params));
+  expect(browser.getCurrentUrl()).to.eventually.eql(
+    'http://localhost:8080' + injectParams(this.url, params)
+  );
 };
 
 Page.prototype.navigateToWebapp = function(appName) {
   browser.get('camunda/app/' + appName.toLowerCase() + '/');
-  browser.driver.manage().window().maximize();
+  browser.driver
+    .manage()
+    .window()
+    .maximize();
 
   expect(this.navbarBrand().getText()).to.eventually.eql('Camunda ' + appName);
 };
@@ -79,7 +87,10 @@ Page.prototype.notifications = function() {
 
 Page.prototype.notification = function(item) {
   item = item || 0;
-  return this.notifications().get(item).element(by.css('.message')).getText();
+  return this.notifications()
+    .get(item)
+    .element(by.css('.message'))
+    .getText();
 };
 
 Page.prototype.logout = function() {
@@ -91,14 +102,18 @@ Page.prototype.loggedInUser = function() {
   return element(by.css('[cam-widget-header] .account')).getText();
 };
 
-Page.prototype.findElementIndexInRepeater = function(repeaterName, elementSelector, elementName) {
+Page.prototype.findElementIndexInRepeater = function(
+  repeaterName,
+  elementSelector,
+  elementName
+) {
   var deferred = protractor.promise.defer();
 
   element.all(by.repeater(repeaterName)).then(function(arr) {
     var count = arr.length;
 
     function noElementFound() {
-      count --;
+      count--;
       if (count === 0) {
         deferred.reject('element not found in repeater: ' + repeaterName);
       }
@@ -106,56 +121,52 @@ Page.prototype.findElementIndexInRepeater = function(repeaterName, elementSelect
 
     for (var i = 0; i < arr.length; i++) {
       (function(boundI) {
-        arr[boundI].element(elementSelector).getText().then(function(nameText) {
-
-          if (nameText === elementName) {
-            deferred.fulfill(boundI);
-          } else {
-            noElementFound();
-          }
-        });
+        arr[boundI]
+          .element(elementSelector)
+          .getText()
+          .then(function(nameText) {
+            if (nameText === elementName) {
+              deferred.fulfill(boundI);
+            } else {
+              noElementFound();
+            }
+          });
       })(i);
     }
   });
   return deferred;
 };
 
-
-
-Page.prototype.headerWidget = function () {
+Page.prototype.headerWidget = function() {
   return element(by.css('[cam-widget-header]'));
 };
 
-Page.prototype.hamburgerButton = function () {
+Page.prototype.hamburgerButton = function() {
   return this.headerWidget().element(by.css('.navbar-toggle'));
 };
 
-
-Page.prototype.accountDropdown = function () {
+Page.prototype.accountDropdown = function() {
   return this.headerWidget().element(by.css('.account.dropdown'));
 };
 
-Page.prototype.accountDropdownButton = function () {
+Page.prototype.accountDropdownButton = function() {
   return this.accountDropdown().element(by.css('.dropdown-toggle'));
 };
 
-
-Page.prototype.engineSelectDropdown = function () {
+Page.prototype.engineSelectDropdown = function() {
   return this.headerWidget().element(by.css('.engine-select.dropdown'));
 };
 
-Page.prototype.engineSelectDropdownButton = function () {
+Page.prototype.engineSelectDropdownButton = function() {
   return this.engineSelectDropdown().element(by.css('.dropdown-toggle'));
 };
 
-
-Page.prototype.appSwitchDropdown = function () {
+Page.prototype.appSwitchDropdown = function() {
   return this.headerWidget().element(by.css('.app-switch.dropdown'));
 };
 
-Page.prototype.appSwitchDropdownButton = function () {
+Page.prototype.appSwitchDropdownButton = function() {
   return this.appSwitchDropdown().element(by.css('.dropdown-toggle'));
 };
-
 
 module.exports = Page;

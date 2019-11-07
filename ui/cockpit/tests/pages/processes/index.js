@@ -6,10 +6,9 @@ var DeployedProcessesPreviewsPage = require('./deployed-processes-previews');
 var AuthenticationPage = require('../../../../common/tests/pages/authentication');
 
 var Page = Base.extend({
-
   url: '/camunda/app/cockpit/default/#/processes',
 
-  pluginList: function () {
+  pluginList: function() {
     return element.all(by.css('.dashboard'));
   }
 });

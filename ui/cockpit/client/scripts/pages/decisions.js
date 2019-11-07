@@ -9,12 +9,7 @@ var Controller = [
   'Views',
   'page',
   '$translate',
-  function(
-  $scope,
-  Views,
-  page,
-  $translate
-) {
+  function($scope, Views, page, $translate) {
     var $rootScope = $scope.$root;
 
     $rootScope.showBreadcrumbs = true;
@@ -27,17 +22,23 @@ var Controller = [
 
     page.titleSet($translate.instant('DECISION_INSTANCE_DECISIONS'));
 
-  // INITIALIZE PLUGINS
-    $scope.plugins = Views.getProviders({ component: 'cockpit.decisions.dashboard' });
-  }];
+    // INITIALIZE PLUGINS
+    $scope.plugins = Views.getProviders({
+      component: 'cockpit.decisions.dashboard'
+    });
+  }
+];
 
-var RouteConfig = [ '$routeProvider', function($routeProvider) {
-  $routeProvider.when('/decisions', {
-    template: template,
-    controller: Controller,
-    authentication: 'required',
-    reloadOnSearch: false
-  });
-}];
+var RouteConfig = [
+  '$routeProvider',
+  function($routeProvider) {
+    $routeProvider.when('/decisions', {
+      template: template,
+      controller: Controller,
+      authentication: 'required',
+      reloadOnSearch: false
+    });
+  }
+];
 
 module.exports = RouteConfig;

@@ -25,7 +25,7 @@ module.exports = [
       $translate(src).then(function(translated) {
         Notifications.addError({
           status: translated,
-          message: (err ? err.message : ''),
+          message: err ? err.message : '',
           scope: $scope
         });
       });
@@ -49,25 +49,25 @@ module.exports = [
     var processStartData = processData.newChild($scope);
 
     // initially always reset the current selected process definition id to null
-    processStartData.set('currentProcessDefinitionId', { id: null });
+    processStartData.set('currentProcessDefinitionId', {id: null});
 
-    var DEFAULT_OPTIONS = $scope.options = {
-      hideCompleteButton : true,
+    var DEFAULT_OPTIONS = ($scope.options = {
+      hideCompleteButton: true,
       hideLoadVariablesButton: true,
-      autoFocus : true,
-      disableForm : false,
+      autoFocus: true,
+      disableForm: false,
       disableAddVariableButton: false
-    };
+    });
 
     $scope.PROCESS_TO_START_SELECTED = false;
 
     var query = null;
 
-    var page = $scope.page = {
+    var page = ($scope.page = {
       total: 0,
       current: 1,
       searchValue: null
-    };
+    });
 
     $scope.triggerOnStart = function() {};
 
@@ -77,47 +77,50 @@ module.exports = [
       query = angular.copy(_query);
 
       page.size = _query.maxResults;
-      page.current = (_query.firstResult / page.size) + 1;
+      page.current = _query.firstResult / page.size + 1;
     });
 
-    $scope.startFormState = processStartData.observe('startForm', function(startForm) {
+    $scope.startFormState = processStartData.observe('startForm', function(
+      startForm
+    ) {
       $scope.startForm = angular.copy(startForm);
     });
 
-    $scope.processDefinitionState = processStartData.observe('processDefinitions', function(processDefinitions) {
+    $scope.processDefinitionState = processStartData.observe(
+      'processDefinitions',
+      function(processDefinitions) {
+        page.total = processDefinitions.count;
 
-      page.total = processDefinitions.count;
+        $scope.processDefinitions = processDefinitions.items.sort(function(
+          a,
+          b
+        ) {
+          // order by process definition name / key and secondary by tenant id
+          var aName = (a.name || a.key).toLowerCase();
+          var bName = (b.name || b.key).toLowerCase();
 
-      $scope.processDefinitions = processDefinitions.items.sort(function(a, b) {
-        // order by process definition name / key and secondary by tenant id
-        var aName = (a.name || a.key).toLowerCase();
-        var bName = (b.name || b.key).toLowerCase();
+          var aTenantId = a.tenantId ? a.tenantId.toLowerCase() : '';
+          var bTenantId = b.tenantId ? b.tenantId.toLowerCase() : '';
 
-        var aTenantId = a.tenantId ? a.tenantId.toLowerCase() : '';
-        var bTenantId = b.tenantId ? b.tenantId.toLowerCase() : '';
-
-        if (aName < bName)
-          return -1;
-        else if (aName > bName)
-          return 1;
-        else if (aTenantId < bTenantId)
-          return -1;
-        else if (aTenantId > bTenantId)
-          return 1;
-        else
-          return 0;
-      });
-
-      if(page.total > 0) {
-        $timeout(function() {
-          var element = document.querySelectorAll('div.modal-content ul.processes a')[0];
-          if(element) {
-            element.focus();
-          }
+          if (aName < bName) return -1;
+          else if (aName > bName) return 1;
+          else if (aTenantId < bTenantId) return -1;
+          else if (aTenantId > bTenantId) return 1;
+          else return 0;
         });
-      }
 
-    });
+        if (page.total > 0) {
+          $timeout(function() {
+            var element = document.querySelectorAll(
+              'div.modal-content ul.processes a'
+            )[0];
+            if (element) {
+              element.focus();
+            }
+          });
+        }
+      }
+    );
 
     // select process definition view //////////////////////////////////////////////////////
 
@@ -131,8 +134,7 @@ module.exports = [
 
       if (!nameLike) {
         delete query.nameLike;
-      }
-      else {
+      } else {
         query.nameLike = '%' + nameLike + '%';
       }
 
@@ -140,8 +142,6 @@ module.exports = [
       query.firstResult = 0;
 
       processStartData.set('processDefinitionQuery', query);
-
-
     }, 2000);
 
     $scope.selectProcessDefinition = function(processDefinition) {
@@ -154,15 +154,14 @@ module.exports = [
       $scope.options = angular.copy(DEFAULT_OPTIONS);
 
       $scope.params = {
-        processDefinitionId : processDefinitionId,
-        processDefinitionKey : processDefinitionKey,
-        deploymentId : deploymentId
+        processDefinitionId: processDefinitionId,
+        processDefinitionKey: processDefinitionKey,
+        deploymentId: deploymentId
       };
 
       processStartData.set('currentProcessDefinitionId', {
         id: processDefinitionId
       });
-
     };
 
     // start a process view /////////////////////////////////////////////////////////////////
@@ -172,8 +171,10 @@ module.exports = [
 
     $scope.$on('embedded.form.rendered', function() {
       $timeout(function() {
-        var focusElement = document.querySelectorAll('.modal-body .form-container input')[0];
-        if(focusElement) {
+        var focusElement = document.querySelectorAll(
+          '.modal-body .form-container input'
+        )[0];
+        if (focusElement) {
           focusElement.focus();
         }
       });
@@ -184,11 +185,13 @@ module.exports = [
       $scope.requestInProgress = false;
       $scope.PROCESS_TO_START_SELECTED = false;
       $scope.options = DEFAULT_OPTIONS;
-      processStartData.set('currentProcessDefinitionId', { id: null });
+      processStartData.set('currentProcessDefinitionId', {id: null});
 
       $timeout(function() {
-        var element = document.querySelectorAll('div.modal-content ul.processes a')[0];
-        if(element) {
+        var element = document.querySelectorAll(
+          'div.modal-content ul.processes a'
+        )[0];
+        if (element) {
           element.focus();
         }
       });
@@ -197,8 +200,8 @@ module.exports = [
     var executeAfterDestroy = [];
     $scope.$on('$destroy', function() {
       var job;
-      while((job = executeAfterDestroy.pop())) {
-        if(typeof job === 'function') {
+      while ((job = executeAfterDestroy.pop())) {
+        if (typeof job === 'function') {
           job();
         }
       }
@@ -237,5 +240,5 @@ module.exports = [
     $scope.notifyFormValidation = function(invalid) {
       $scope.$invalid = invalid;
     };
-
-  }];
+  }
+];

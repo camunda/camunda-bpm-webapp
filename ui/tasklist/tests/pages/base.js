@@ -5,19 +5,12 @@ var Page = require('../../../common/tests/pages/page');
 var navigationSection = element(by.css('[cam-widget-header]'));
 
 module.exports = Page.extend({
-
   selectNavbarItem: function(navbarItem) {
-    var index = [
-      'Task',
-      'Process',
-      'Engine',
-      'Account',
-      'Webapps'
-    ];
+    var index = ['Task', 'Process', 'Engine', 'Account', 'Webapps'];
     var cssElement;
     var item;
 
-    switch(index.indexOf(navbarItem)) {
+    switch (index.indexOf(navbarItem)) {
       case 0:
         cssElement = '.create-task-action';
         break;
@@ -49,7 +42,6 @@ module.exports = Page.extend({
   },
 
   navigateLogout: function() {
-    browser.get(this.url +'logout');
+    browser.get(this.url + 'logout');
   }
-
 });

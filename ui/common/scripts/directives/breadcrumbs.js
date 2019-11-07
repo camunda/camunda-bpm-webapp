@@ -7,10 +7,7 @@ var template = fs.readFileSync(__dirname + '/breadcrumbs.html', 'utf8');
 module.exports = [
   '$location',
   'routeUtil',
-  function(
-    $location,
-    routeUtil
-  ) {
+  function($location, routeUtil) {
     return {
       scope: {
         divider: '@'
@@ -27,7 +24,11 @@ module.exports = [
         });
 
         scope.getHref = function(crumb) {
-          return routeUtil.redirectTo(crumb.href, $location.search(), crumb.keepSearchParams);
+          return routeUtil.redirectTo(
+            crumb.href,
+            $location.search(),
+            crumb.keepSearchParams
+          );
         };
 
         scope.selectChoice = function(evt, choice) {
@@ -47,7 +48,7 @@ module.exports = [
 
         scope.sortedChoices = function(choices) {
           return choices.sort(function(a, b) {
-            return a.active ? -1 : (b.active ? 1 : 0);
+            return a.active ? -1 : b.active ? 1 : 0;
           });
         };
       },
@@ -55,12 +56,11 @@ module.exports = [
       controller: [
         '$scope',
         'page',
-        function(
-          $scope,
-          page
-        ) {
+        function($scope, page) {
           // initialize the $scope breadcrumbs from the service
           $scope.breadcrumbs = page.breadcrumbsGet();
-        }]
+        }
+      ]
     };
-  }];
+  }
+];

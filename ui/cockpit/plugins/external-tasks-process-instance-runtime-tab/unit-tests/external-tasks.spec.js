@@ -20,16 +20,18 @@ describe('cockpit.plugin.process-instance-runtime-tab.external-tasks externalTas
 
   beforeEach(module(testModule.name));
 
-  beforeEach(module(function($provide) {
-    externalTasksResource = {
-      count: sinon.stub(),
-      list: sinon.stub()
-    };
+  beforeEach(
+    module(function($provide) {
+      externalTasksResource = {
+        count: sinon.stub(),
+        list: sinon.stub()
+      };
 
-    $provide.value('camAPI', {
-      resource: sinon.stub().returns(externalTasksResource)
-    });
-  }));
+      $provide.value('camAPI', {
+        resource: sinon.stub().returns(externalTasksResource)
+      });
+    })
+  );
 
   beforeEach(inject(function(_$rootScope_, _$q_, _externalTasks_) {
     $rootScope = _$rootScope_;
@@ -45,9 +47,7 @@ describe('cockpit.plugin.process-instance-runtime-tab.external-tasks externalTas
       })
     );
 
-    externalTasksResource.list.returns(
-      $q.when(list)
-    );
+    externalTasksResource.list.returns($q.when(list));
   }));
 
   describe('getActiveExternalTasksForProcess', function() {

@@ -3,7 +3,6 @@
 var Page = require('./edit-groups');
 
 module.exports = Page.extend({
-
   pageHeader: function() {
     return element(by.css('.modal-header')).getText();
   },
@@ -13,15 +12,22 @@ module.exports = Page.extend({
   },
 
   selectGroup: function(idx) {
-    this.groupList().get(idx).element(by.model('group.checked')).click();
+    this.groupList()
+      .get(idx)
+      .element(by.model('group.checked'))
+      .click();
   },
 
   groupId: function(idx) {
-    return this.groupList().get(idx).element(by.css('.group-id a'));
+    return this.groupList()
+      .get(idx)
+      .element(by.css('.group-id a'));
   },
 
   groupName: function(idx) {
-    return this.groupList().get(idx).element(by.css('.group-name'));
+    return this.groupList()
+      .get(idx)
+      .element(by.css('.group-name'));
   },
 
   addSelectedGroupButton: function() {
@@ -42,9 +48,10 @@ module.exports = Page.extend({
 
     this.waitForElementToBeVisible(theElement, 5000);
     this.selectGroup(idx);
-    this.addSelectedGroupButton().click().then(function() {
-      that.okButton().click();
-    });
+    this.addSelectedGroupButton()
+      .click()
+      .then(function() {
+        that.okButton().click();
+      });
   }
-
 });

@@ -3,7 +3,6 @@
 var Table = require('./../../table');
 
 module.exports = Table.extend({
-
   tabRepeater: 'tabProvider in processDefinitionTabs',
   tabIndex: 1,
   tabLabel: 'Called Process Definitions',
@@ -16,5 +15,4 @@ module.exports = Table.extend({
   activity: function(item) {
     return this.tableItem(item, '.activity');
   }
-
 });

@@ -9,20 +9,15 @@ var groupsPage = require('../pages/groups');
 var usersPage = require('../pages/users');
 
 describe('Admin Groups Spec', function() {
-
-
   describe('create new group', function() {
-
     before(function() {
       return testHelper(setupFile.setup1, function() {
-
         usersPage.navigateToWebapp('Admin');
         usersPage.authentication.userLogin('admin', 'admin');
       });
     });
 
     it('should navigate to new group menu', function() {
-
       // given
       groupsPage.navigateTo();
 
@@ -31,12 +26,13 @@ describe('Admin Groups Spec', function() {
       groupsPage.newGroup.isActive();
 
       // then
-      testHelper.expectStringEqual(groupsPage.newGroup.pageHeader(), 'Create New Group');
+      testHelper.expectStringEqual(
+        groupsPage.newGroup.pageHeader(),
+        'Create New Group'
+      );
     });
 
-
     it('should create new group', function() {
-
       // when
       groupsPage.newGroup.createNewGroup('4711', 'blaw', 'Marketing');
 
@@ -47,77 +43,89 @@ describe('Admin Groups Spec', function() {
       expect(groupsPage.groupType(0).getText()).to.eventually.eql('Marketing');
     });
 
-
     it('should create new group with slash', function() {
-
       // given
-        groupsPage.newGroup.navigateTo();
+      groupsPage.newGroup.navigateTo();
 
       // when
-        groupsPage.newGroup.createNewGroup('/göäüp_name', '/üöäüöäü/', 'testgroup/üäö');
+      groupsPage.newGroup.createNewGroup(
+        '/göäüp_name',
+        '/üöäüöäü/',
+        'testgroup/üäö'
+      );
 
       // then
-        expect(groupsPage.groupList().count()).to.eventually.eql(6);
-        expect(groupsPage.groupId(0).getText()).to.eventually.eql('/göäüp_name');
-        expect(groupsPage.groupName(0).getText()).to.eventually.eql('/üöäüöäü/');
-        expect(groupsPage.groupType(0).getText()).to.eventually.eql('testgroup/üäö');
+      expect(groupsPage.groupList().count()).to.eventually.eql(6);
+      expect(groupsPage.groupId(0).getText()).to.eventually.eql('/göäüp_name');
+      expect(groupsPage.groupName(0).getText()).to.eventually.eql('/üöäüöäü/');
+      expect(groupsPage.groupType(0).getText()).to.eventually.eql(
+        'testgroup/üäö'
+      );
     });
-
 
     it('should select group by name', function() {
-
       // when
-      groupsPage.groupName(0).getText().then(function(groupName) {
-        groupsPage.selectGroupByNameLink(0);
+      groupsPage
+        .groupName(0)
+        .getText()
+        .then(function(groupName) {
+          groupsPage.selectGroupByNameLink(0);
 
-        // then
-        testHelper.expectStringEqual(groupsPage.editGroup.pageHeader(), groupName);
-      });
+          // then
+          testHelper.expectStringEqual(
+            groupsPage.editGroup.pageHeader(),
+            groupName
+          );
+        });
     });
-
 
     it('should create new group with backslash', function() {
-
       // given
-        groupsPage.newGroup.navigateTo();
+      groupsPage.newGroup.navigateTo();
 
       // when
-        groupsPage.newGroup.createNewGroup('\\göäüp_name', '\\üöäüöäü\\', 'testgroup\\üäö');
+      groupsPage.newGroup.createNewGroup(
+        '\\göäüp_name',
+        '\\üöäüöäü\\',
+        'testgroup\\üäö'
+      );
 
       // then
-        expect(groupsPage.groupList().count()).to.eventually.eql(7);
-        expect(groupsPage.groupId(2).getText()).to.eventually.eql('\\göäüp_name');
-        expect(groupsPage.groupName(2).getText()).to.eventually.eql('\\üöäüöäü\\');
-        expect(groupsPage.groupType(2).getText()).to.eventually.eql('testgroup\\üäö');
+      expect(groupsPage.groupList().count()).to.eventually.eql(7);
+      expect(groupsPage.groupId(2).getText()).to.eventually.eql('\\göäüp_name');
+      expect(groupsPage.groupName(2).getText()).to.eventually.eql(
+        '\\üöäüöäü\\'
+      );
+      expect(groupsPage.groupType(2).getText()).to.eventually.eql(
+        'testgroup\\üäö'
+      );
     });
-
 
     it('should select group by edit link', function() {
-
       // when
-      groupsPage.groupType(2).getText().then(function(type) {
-        groupsPage.selectGroupByEditLink(2);
+      groupsPage
+        .groupType(2)
+        .getText()
+        .then(function(type) {
+          groupsPage.selectGroupByEditLink(2);
 
-        // then
-        expect(groupsPage.editGroup.groupTypeInput().getAttribute('value')).to.eventually.eql(type);
-      });
+          // then
+          expect(
+            groupsPage.editGroup.groupTypeInput().getAttribute('value')
+          ).to.eventually.eql(type);
+        });
     });
-
   });
-  
-  describe('update/delete group', function() {
 
+  describe('update/delete group', function() {
     before(function() {
       return testHelper(setupFile.setup1, function() {
-
         usersPage.navigateToWebapp('Admin');
         usersPage.authentication.userLogin('admin', 'admin');
       });
     });
 
-
     it('should navigate to edit group menu', function() {
-
       // given
       groupsPage.navigateTo();
 
@@ -125,25 +133,29 @@ describe('Admin Groups Spec', function() {
       groupsPage.selectGroupByNameLink(1);
 
       // then
-      testHelper.expectStringEqual(groupsPage.editGroup.pageHeader(), 'camunda BPM Administrators');
-      groupsPage.editGroup.isActive({ group: 'camunda-admin' });
-      expect(groupsPage.editGroup.updateGroupButton().isEnabled()).to.eventually.eql(false);
+      testHelper.expectStringEqual(
+        groupsPage.editGroup.pageHeader(),
+        'camunda BPM Administrators'
+      );
+      groupsPage.editGroup.isActive({group: 'camunda-admin'});
+      expect(
+        groupsPage.editGroup.updateGroupButton().isEnabled()
+      ).to.eventually.eql(false);
     });
 
-
     it('should edit group', function() {
-
       // when
       groupsPage.editGroup.groupNameInput('i');
       groupsPage.editGroup.updateGroupButton().click();
 
       // then
-      testHelper.expectStringEqual(groupsPage.editGroup.pageHeader(), 'camunda BPM Administratorsi');
+      testHelper.expectStringEqual(
+        groupsPage.editGroup.pageHeader(),
+        'camunda BPM Administratorsi'
+      );
     });
 
-
     it('should delete group', function() {
-
       // when
       groupsPage.editGroup.deleteGroup();
 
@@ -153,10 +165,8 @@ describe('Admin Groups Spec', function() {
   });
 
   describe('Group Tenants', function() {
-
     before(function() {
       return testHelper(setupFile.setup1, function() {
-
         usersPage.navigateToWebapp('Admin');
         usersPage.authentication.userLogin('admin', 'admin');
       });
@@ -171,29 +181,39 @@ describe('Admin Groups Spec', function() {
       groupsPage.editGroup.selectUserNavbarItem('Tenants');
 
       // then
-      groupsPage.editGroupTenants.isActive({ group: 'camunda-admin' });
-      expect(groupsPage.editGroupTenants.subHeader()).to.eventually
-        .eql('camunda BPM Administrators\'s' + ' ' + 'Tenants');
-      expect(groupsPage.editGroupTenants.tenantList().count()).to.eventually.eql(0);
+      groupsPage.editGroupTenants.isActive({group: 'camunda-admin'});
+      expect(groupsPage.editGroupTenants.subHeader()).to.eventually.eql(
+        "camunda BPM Administrators's" + ' ' + 'Tenants'
+      );
+      expect(
+        groupsPage.editGroupTenants.tenantList().count()
+      ).to.eventually.eql(0);
     });
 
     it('should add group to tenant - select tenant modal', function() {
-
       // when
       groupsPage.editGroupTenants.openAddTenantModal();
 
       //then
-      expect(groupsPage.editGroupTenants.selectTenantModal.pageHeader()).to.eventually.eql('Select Tenants');
-      expect(groupsPage.editGroupTenants.selectTenantModal.tenantList().count()).to.eventually.eql(2);
+      expect(
+        groupsPage.editGroupTenants.selectTenantModal.pageHeader()
+      ).to.eventually.eql('Select Tenants');
+      expect(
+        groupsPage.editGroupTenants.selectTenantModal.tenantList().count()
+      ).to.eventually.eql(2);
     });
-    
+
     it('should add group to tenants', function() {
       // when
       groupsPage.editGroupTenants.selectTenantModal.addTenant(0);
 
       // then
-      expect(groupsPage.editGroupTenants.tenantId(0)).to.eventually.eql('tenantOne');
-      expect(groupsPage.editGroupTenants.tenantList().count()).to.eventually.eql(1);
+      expect(groupsPage.editGroupTenants.tenantId(0)).to.eventually.eql(
+        'tenantOne'
+      );
+      expect(
+        groupsPage.editGroupTenants.tenantList().count()
+      ).to.eventually.eql(1);
     });
 
     it('should show tenants', function() {
@@ -205,22 +225,24 @@ describe('Admin Groups Spec', function() {
       groupsPage.editGroup.selectUserNavbarItem('Tenants');
 
       // then
-      groupsPage.editGroupTenants.isActive({ group: 'camunda-admin' });
-      expect(groupsPage.editGroupTenants.tenantList().count()).to.eventually.eql(1);
+      groupsPage.editGroupTenants.isActive({group: 'camunda-admin'});
+      expect(
+        groupsPage.editGroupTenants.tenantList().count()
+      ).to.eventually.eql(1);
     });
 
     it('should remove tenant', function() {
       // when
       groupsPage.editGroupTenants.removeTenant(0);
 
-      expect(groupsPage.editGroupTenants.tenantList().count()).to.eventually.eql(0);
+      expect(
+        groupsPage.editGroupTenants.tenantList().count()
+      ).to.eventually.eql(0);
     });
   });
 
-  describe('Pagination', function () {
-
+  describe('Pagination', function() {
     describe('list of groups', function() {
-
       before(function() {
         return testHelper(setupFile.setup2, function() {
           usersPage.navigateToWebapp('Admin');
@@ -229,17 +251,20 @@ describe('Admin Groups Spec', function() {
         });
       });
 
-      it('displays a pager', function () {
-
+      it('displays a pager', function() {
         // then
-        expect(element(by.css('.pagination')).isPresent()).to.eventually.eql(true);
-        expect(element.all(by.css('[ng-repeat="page in pages track by $index"]')).count()).to.eventually.eql(2);
+        expect(element(by.css('.pagination')).isPresent()).to.eventually.eql(
+          true
+        );
+        expect(
+          element
+            .all(by.css('[ng-repeat="page in pages track by $index"]'))
+            .count()
+        ).to.eventually.eql(2);
       });
-
     });
 
     describe('list of users in group', function() {
-
       before(function() {
         return testHelper(setupFile.setup3, function() {
           usersPage.navigateToWebapp('Admin');
@@ -248,19 +273,21 @@ describe('Admin Groups Spec', function() {
         });
       });
 
-      it('displays a pager', function () {
-
+      it('displays a pager', function() {
         // when
         groupsPage.selectGroupByNameLink(0);
         groupsPage.editGroup.selectUserNavbarItem('Users');
 
         // then
-        expect(element(by.css('.pagination')).isPresent()).to.eventually.eql(true);
-        expect(element.all(by.css('[ng-repeat="page in pages track by $index"]')).count()).to.eventually.eql(2);
+        expect(element(by.css('.pagination')).isPresent()).to.eventually.eql(
+          true
+        );
+        expect(
+          element
+            .all(by.css('[ng-repeat="page in pages track by $index"]'))
+            .count()
+        ).to.eventually.eql(2);
       });
-
     });
-
   });
-
 });

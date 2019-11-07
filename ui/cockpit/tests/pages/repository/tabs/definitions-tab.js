@@ -3,7 +3,6 @@
 var Table = require('./../../table');
 
 module.exports = Table.extend({
-
   tabRepeater: 'resourceDetailTab in resourceDetailTabs',
   tabIndex: 0,
   tabLabel: 'Definitions',
@@ -24,5 +23,4 @@ module.exports = Table.extend({
   instanceCount: function(idx) {
     return this.tableItem(idx, '.instance-count');
   }
-
 });

@@ -8,7 +8,7 @@ module.exports = {
 
   operation: function(module, operation, params) {
     var out = [];
-    for(var i = 0; i < params.length; i++) {
+    for (var i = 0; i < params.length; i++) {
       out.push({
         module: module,
         operation: operation,
@@ -18,7 +18,7 @@ module.exports = {
     return out;
   },
 
-  readResource: function (filename) {
+  readResource: function(filename) {
     return fs.readFileSync(__dirname + '/resources/' + filename).toString();
   }
 };

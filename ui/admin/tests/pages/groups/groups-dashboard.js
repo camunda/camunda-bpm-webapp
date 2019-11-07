@@ -3,7 +3,6 @@
 var Base = require('./../base');
 
 module.exports = Base.extend({
-
   url: '/camunda/app/admin/default/#/groups',
 
   newGroupButton: function() {
@@ -15,23 +14,31 @@ module.exports = Base.extend({
   },
 
   groupId: function(idx) {
-    return this.groupList().get(idx).element(by.css('.group-id > a'));
+    return this.groupList()
+      .get(idx)
+      .element(by.css('.group-id > a'));
   },
 
   groupName: function(idx) {
-    return this.groupList().get(idx).element(by.binding('{{group.name}}'));
+    return this.groupList()
+      .get(idx)
+      .element(by.binding('{{group.name}}'));
   },
 
   groupType: function(idx) {
-    return this.groupList().get(idx).element(by.binding('{{group.type}}'));
+    return this.groupList()
+      .get(idx)
+      .element(by.binding('{{group.type}}'));
   },
 
   selectGroupByEditLink: function(idx) {
-    return this.groupList().get(idx).element(by.linkText('Edit')).click();
+    return this.groupList()
+      .get(idx)
+      .element(by.linkText('Edit'))
+      .click();
   },
 
   selectGroupByNameLink: function(idx) {
     return this.groupId(idx).click();
   }
-
 });

@@ -1,9 +1,7 @@
 'use strict';
 module.exports = [
   'ViewsProvider',
-  function(
-    ViewsProvider
-  ) {
+  function(ViewsProvider) {
     ViewsProvider.registerDefaultView('cockpit.navigation', {
       id: 'tasks',
       label: 'COCKPIT_HUMAN_TASKS',
@@ -16,4 +14,5 @@ module.exports = [
 
       priority: 20
     });
-  }];
+  }
+];
