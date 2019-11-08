@@ -44,7 +44,6 @@ var Configuration = function PluginConfiguration(ViewsProvider) {
             dialog.result.then(function(result) {
               // dialog closed. YEA!
               if (result.status === 'FINISHED') {
-                processData.changed('jobDefinitions');
                 processData.set('filter', angular.extend({}, $scope.filter));
               }
             });
