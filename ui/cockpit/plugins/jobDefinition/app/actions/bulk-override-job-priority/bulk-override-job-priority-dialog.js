@@ -8,7 +8,6 @@ module.exports = [
   'Notifications',
   'JobDefinitionResource',
   '$modalInstance',
-  '$modalInstance',
   '$timeout',
   '$translate',
   'processData',
@@ -41,7 +40,7 @@ module.exports = [
             })
             .then(function(res) {
               jobDefinitions = jobDefinitions.concat(
-                res.map(function(jobDef) {
+                res.items.map(function(jobDef) {
                   jobDef.activityName =
                     bpmnElements[jobDef.activityId] &&
                     bpmnElements[jobDef.activityId].name;
