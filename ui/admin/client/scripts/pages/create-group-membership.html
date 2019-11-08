@@ -51,10 +51,10 @@
     </tbody>
   </table>
 
-  <p ng-show="availableGroups.length == 0 && pages.total <= 1">
+  <p ng-show="availableGroups.length == 0 && pages.total <= pages.size">
   	{{ 'GROUP_MEMBERSHIP_GROUP_MESSAGE_AVAILABLE_GROUPS' | translate }} <a href="#/group-create" ng-click="close">{{ 'GROUP_MEMBERSHIP_GROUP_MESSAGE_HERE' | translate }}</a>.
   </p>
-  <p ng-show="availableGroups.length == 0 && pages.total > 1">
+  <p ng-show="availableGroups.length == 0 && pages.total > pages.size">
   	{{ 'GROUP_MEMBERSHIP_GROUP_MESSAGE_AVAILABLE_GROUPS_PAGE' | translate }}</a>.
   </p>
 
