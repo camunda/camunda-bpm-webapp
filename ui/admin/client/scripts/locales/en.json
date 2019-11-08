@@ -51,6 +51,7 @@
   "GROUP_MEMBERSHIP_GROUP_GROUP_NAME" : "Group Name",
   "GROUP_MEMBERSHIP_GROUP_GROUP_TYPE" : "Group Type",
   "GROUP_MEMBERSHIP_GROUP_MESSAGE_AVAILABLE_GROUPS" : "There are no additional groups available to which the user can be added. You can create a new group",
+  "GROUP_MEMBERSHIP_GROUP_MESSAGE_AVAILABLE_GROUPS_PAGE": "There are no additional groups available on this page to which the user can be added. You can check other pages for more Groups.",
   "GROUP_MEMBERSHIP_GROUP_MESSAGE_HERE" : "here",
   "GROUP_MEMBERSHIP_GROUP_MESSAGE_SUCCESS" : "User was successfully added to selected groups.",
   "GROUP_MEMBERSHIP_GROUP_CLOSE" : "Close",
