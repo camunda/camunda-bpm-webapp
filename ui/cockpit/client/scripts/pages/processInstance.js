@@ -142,7 +142,8 @@ var Controller = [
       [
         'activityInstanceTree',
         'activityIdToInstancesMap',
-        'instanceIdToInstanceMap'
+        'instanceIdToInstanceMap',
+        'activityIdToIncidentIdMap'
       ],
       [
         'activityInstances',
@@ -151,7 +152,8 @@ var Controller = [
         function(activityInstances, processDefinition, bpmnElements) {
           var activityIdToInstancesMap = {},
             instanceIdToInstanceMap = {},
-            model = bpmnElements[processDefinition.key];
+            model = bpmnElements[processDefinition.key],
+            activityIdToIncidentIdMap = {};
 
           function getActivityName(bpmnElement) {
             var name = bpmnElement.name;
@@ -169,12 +171,15 @@ var Controller = [
 
           function decorateActivityInstanceTree(instance) {
             var children = instance.childActivityInstances;
+            var incidents = [];
 
             if (children && children.length > 0) {
               for (var i = 0, child; (child = children[i]); i++) {
                 var activityId = child.activityId,
                   bpmnElement = bpmnElements[activityId],
                   instances = activityIdToInstancesMap[activityId] || [];
+
+                incidents = activityIdToIncidentIdMap[activityId] || [];
 
                 if (bpmnElement) {
                   child.name = getActivityName(bpmnElement);
@@ -187,6 +192,8 @@ var Controller = [
                   instanceIdToInstanceMap[child.id] = child;
                 }
                 instances.push(child);
+                incidents = incidents.concat(child.incidentIds || []);
+                activityIdToIncidentIdMap[activityId] = incidents;
 
                 decorateActivityInstanceTree(child);
               }
@@ -199,6 +206,10 @@ var Controller = [
                   transitionBpmnElement = bpmnElements[targetActivityId],
                   transitionInstances =
                     activityIdToInstancesMap[targetActivityId] || [];
+
+                incidents = activityIdToIncidentIdMap[targetActivityId] || [];
+                incidents = incidents.concat(transition.incidentIds || []);
+                activityIdToIncidentIdMap[targetActivityId] = incidents;
 
                 if (transitionBpmnElement) {
                   transition.name = getActivityName(transitionBpmnElement);
@@ -227,7 +238,8 @@ var Controller = [
           return [
             activityInstances,
             activityIdToInstancesMap,
-            instanceIdToInstanceMap
+            instanceIdToInstanceMap,
+            activityIdToIncidentIdMap
           ];
         }
       ]
@@ -255,38 +267,6 @@ var Controller = [
         }
 
         return executionIdToInstanceMap;
-      }
-    ]);
-
-    // incidents
-    processData.provide('incidents', [
-      'processInstance',
-      function(processInstance) {
-        // Unpaginated, will be fixed after CAM-10906 is implemented
-        return camAPI.resource('history').incident({
-          processInstanceId: processInstance.id,
-          open: true,
-          maxResults: 2000
-        });
-      }
-    ]);
-
-    // incidentStatistics
-    processData.provide('activityIdToIncidentsMap', [
-      'incidents',
-      function(incidents) {
-        var activityIdToIncidentsMap = {};
-
-        for (var i = 0, incident; (incident = incidents[i]); i++) {
-          var activity = activityIdToIncidentsMap[incident.activityId];
-          if (!activity) {
-            activity = [];
-            activityIdToIncidentsMap[incident.activityId] = activity;
-          }
-          activity.push(incident);
-        }
-
-        return activityIdToIncidentsMap;
       }
     ]);
 
