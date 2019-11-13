@@ -41,17 +41,20 @@ module.exports = function(config, copyConf) {
   }
 
   copyConf.cockpit_index = {
-    options: {
-      process: fileProcessing
-    },
-    files: [
-      {
-        expand: true,
-        cwd: '<%= pkg.gruntConfig.cockpitSourceDir %>/scripts/',
-        src: ['index.html', 'camunda-cockpit-bootstrap.js', 'csrf-token.html'],
-        dest: '<%= pkg.gruntConfig.cockpitBuildTarget %>/'
-      }
-    ]
+      options: {
+        process: fileProcessing
+      },
+      files: [
+        {
+          expand: true,
+          cwd: '<%= pkg.gruntConfig.cockpitSourceDir %>/scripts/',
+          src: [
+            'index.html',
+            'camunda-cockpit-bootstrap.js'
+          ],
+          dest: '<%= pkg.gruntConfig.cockpitBuildTarget %>/'
+        }
+      ]
   };
 
   copyConf.cockpit_assets = {
