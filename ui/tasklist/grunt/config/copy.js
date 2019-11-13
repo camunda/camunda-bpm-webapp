@@ -97,8 +97,10 @@ module.exports = function(config, copyConf) {
       {
         expand: true,
         cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>',
-        src: ['index.html', 'csrf-token.html'],
-        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/'
+        src: [
+          'index.html'
+        ],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/',
       }
     ]
   };
