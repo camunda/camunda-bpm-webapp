@@ -31,7 +31,7 @@ module.exports = [
       changeDrdSorting: changeDrdSorting
     });
 
-    var decisionSorting = localConf.get('sortDecDefTab', {
+    var decisionSorting = localConf.get('sortDecDefTable', {
       sortBy: 'name',
       sortOrder: 'asc'
     });
@@ -49,7 +49,7 @@ module.exports = [
 
     function changeDecisionSorting(sorting) {
       decisionSorting = sorting;
-      localConf.set('sortDecDefTab', sorting);
+      localConf.set('sortDecDefTable', sorting);
       updateDecisionPage();
     }
 
