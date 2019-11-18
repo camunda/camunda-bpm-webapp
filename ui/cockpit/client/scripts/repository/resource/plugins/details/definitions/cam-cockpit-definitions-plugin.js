@@ -48,7 +48,7 @@ var Controller = [
     };
 
     definitionsData.observe('resource', function() {
-      $scope.pages.current = 0;
+      $scope.pages.current = 1;
       $scope.loadingState = 'LOADING';
     });
 
