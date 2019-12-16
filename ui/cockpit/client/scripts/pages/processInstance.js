@@ -171,10 +171,10 @@ var Controller = [
 
           function addIncidents(incidents) {
             incidents.forEach(function(incident) {
-              var incidents =
+              var incidentIds =
                 activityIdToIncidentIdMap[incident.activityId] || [];
-              incidents.push(incident.id);
-              activityIdToIncidentIdMap[incident.activityId] = incidents;
+              incidentIds.push(incident.id);
+              activityIdToIncidentIdMap[incident.activityId] = incidentIds;
             });
           }
 
