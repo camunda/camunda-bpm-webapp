@@ -168,7 +168,9 @@ module.exports = [
             ) {
               $scope.processDefinitionData = processDefinitionStatistics.map(
                 function(el) {
-                  return el.definition;
+                  var definition = el.definition;
+                  definition.label = definition.name || definition.key;
+                  return definition;
                 }
               );
 
