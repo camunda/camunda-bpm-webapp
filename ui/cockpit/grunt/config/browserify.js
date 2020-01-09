@@ -29,12 +29,13 @@ module.exports = function(config, browserifyConfig) {
         [
           'babelify',
           {
+            ignore: [/node_modules\/(?!camunda*)/],
             presets: [
               [
                 '@babel/preset-env',
                 {
                   targets:
-                    'last 1 chrome version, last 1 firefox version, last 1 edge version',
+                    'ie 11, last 1 chrome version, last 1 firefox version, last 1 edge version',
                   forceAllTransforms: true,
                   useBuiltIns: 'usage',
                   corejs: 3
@@ -82,12 +83,13 @@ module.exports = function(config, browserifyConfig) {
         [
           'babelify',
           {
+            ignore: [/node_modules\/(?!camunda*)/],
             presets: [
               [
                 '@babel/preset-env',
                 {
                   targets:
-                    'last 1 chrome version, last 1 firefox version, last 1 edge version',
+                    'ie 11, last 1 chrome version, last 1 firefox version, last 1 edge version',
                   forceAllTransforms: true,
                   useBuiltIns: 'usage',
                   corejs: 3
