@@ -25,7 +25,25 @@ module.exports = function(config, browserifyConfig) {
         debug: true
       },
       watch: true,
-      transform: ['brfs'],
+      transform: [
+        [
+          'babelify',
+          {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets:
+                    'last 1 chrome version, last 1 firefox version, last 1 edge version',
+                  forceAllTransforms: true,
+                  useBuiltIns: 'usage',
+                  corejs: 3
+                }
+              ]
+            ]
+          }
+        ],
+        'brfs'],
       postBundleCB: function(err, src, next) {
         var buildMode = config.grunt.config('buildMode');
         var livereloadPort = config.grunt.config(
@@ -61,6 +79,23 @@ module.exports = function(config, browserifyConfig) {
     options: {
       watch: true,
       transform: [
+        [
+          'babelify',
+          {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets:
+                    'last 1 chrome version, last 1 firefox version, last 1 edge version',
+                  forceAllTransforms: true,
+                  useBuiltIns: 'usage',
+                  corejs: 3
+                }
+              ]
+            ]
+          }
+        ],
         'brfs',
         [
           'exposify',
