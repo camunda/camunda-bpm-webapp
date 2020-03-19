@@ -29,7 +29,7 @@ module.exports = function(config, browserifyConfig) {
         [
           'babelify',
           {
-            ignore: [/node_modules\/(core-js|camunda*)/],
+            ignore: [/node_modules\/(core-js|camunda-commons-ui\/(vendor|lib))/],
             presets: [
               [
                 '@babel/preset-env',
