@@ -30,7 +30,9 @@ module.exports = [
             $translate,
             configuration
           ) {
-            $scope.toggle = configuration.getRuntimeActivityInstanceMetrics();
+            $scope.enabled = configuration.getRuntimeActivityInstanceMetrics();
+
+            $scope.toggle = $scope.enabled;
             $scope.isLoading = false;
 
             $scope.toggleOverlay = function() {
@@ -80,7 +82,7 @@ module.exports = [
               processDiagram
             ) {
               $scope.processDiagram = processDiagram;
-              showOverlays();
+              $scope.toggle && showOverlays();
             });
 
             function observe(callback) {

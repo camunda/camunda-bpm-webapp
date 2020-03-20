@@ -33,6 +33,7 @@ var Controller = [
   'page',
   '$translate',
   'queryMaxResults',
+  'configuration',
   function(
     $location,
     $scope,
@@ -51,7 +52,8 @@ var Controller = [
     processDefinition,
     page,
     $translate,
-    queryMaxResults
+    queryMaxResults,
+    configuration
   ) {
     var processData = ($scope.processData = dataDepend.create($scope));
     var pageData = ($scope.pageData = dataDepend.create($scope));
@@ -299,10 +301,13 @@ var Controller = [
     processData.provide('activityInstanceStatistics', [
       'processDefinition',
       function(processDefinition) {
-        return ProcessDefinitionResource.queryActivityStatistics({
-          id: processDefinition.id,
-          incidents: true
-        }).$promise;
+        if (configuration.getRuntimeActivityInstanceMetrics()) {
+          return ProcessDefinitionResource.queryActivityStatistics({
+            id: processDefinition.id,
+            incidents: true
+          }).$promise;
+        }
+        return [];
       }
     ]);
     // activityInstances
