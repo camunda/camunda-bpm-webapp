@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
-    "@babel/preset-env": "7.4.5",
+    "@babel/preset-env": "7.9.5",
     "angular-mocks": "1.7.9",
     "babelify": "10.0.0",
     "brfs": "2.0.2",
