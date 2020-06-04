@@ -27,7 +27,7 @@
 
     <frontend.development.cockpit.path>${frontend.app.path}</frontend.development.cockpit.path>
     <frontend.development.tasklist.path>${frontend.app.path}</frontend.development.tasklist.path>
-    <frontend.react.path>../camunda-bpm-webapps-react</frontend.react.path>
+    <frontend.react.path>ui/cockpit</frontend.react.path>
 
     <exec.shell>bash</exec.shell>
     <exec.arg>-c</exec.arg>
@@ -945,11 +945,16 @@
                       <arg value="install" />
                     </exec>
                     -->
-                    <exec executable="cmd" failonerror="true">
+                    <exec dir="./ui/cockpit" executable="cmd" failonerror="true">
                       <arg value="/c" />
-                      <arg value="node_modules\.bin\grunt.cmd" />
+                      <arg value="npm" />
+                      <arg value="install" />
+                    </exec>
+                    <exec dir="./ui/cockpit" executable="cmd" failonerror="true">
+                      <arg value="/c" />
+                      <arg value="npm" />
+                      <arg value="run" />
                       <arg value="build" />
-                      <arg value="--color=false" />
                     </exec>
                   </target>
                 </configuration>
