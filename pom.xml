@@ -397,7 +397,7 @@
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-juli</artifactId>
-          <version>7.0.33</version>
+          <version>9.0.36</version>
         </dependency>
 
         <dependency>
@@ -515,7 +515,7 @@
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-juli</artifactId>
-          <version>7.0.33</version>
+          <version>9.0.36</version>
         </dependency>
       </dependencies>
       <build>
@@ -667,7 +667,7 @@
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-juli</artifactId>
-          <version>7.0.33</version>
+          <version>9.0.36</version>
         </dependency>
         <dependency>
           <groupId>org.camunda.bpm.identity</groupId>
