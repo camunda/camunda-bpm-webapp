@@ -3,15 +3,15 @@
 
 <head>
   <meta charset="utf-8" />
-  <!-- prod --> <!-- /prod --> <!-- /prod --> <!-- /prod --> <!-- /prod --> <!-- /prod -->  <link rel="icon" href="$APP_ROOT/app/cockpit/favicon.ico" /> <!-- /prod -->
-  <!-- dev
-  <link rel="icon" href="/favicon.ico" />-->
+  <!-- prod  <link rel="icon" href="$APP_ROOT/app/cockpit/favicon.ico" /> -->
+  <!-- dev -->
+  <link rel="icon" href="/favicon.ico" /><!-- /dev -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Camunda Cockpit" />
   <title>Camunda Cockpit</title>
 
-  <!-- dev
+  <!-- dev -->
   <link rel="stylesheet" href="%PUBLIC_URL%/styles/styles.css" />
   <link rel="stylesheet" href="%PUBLIC_URL%/styles/styles-components.css" />
 
@@ -19,9 +19,9 @@
 
   <base href="/camunda/app/cockpit/default/" admin-api="/camunda/api/admin/" cockpit-api="/camunda/api/cockpit/"
     engine-api="/camunda/api/engine/" app-root="/camunda/" />
-  -->
+  <!-- /dev -->
 
-  <!-- prod --> <!-- /prod --> <!-- /prod --> <!-- /prod --> <!-- /prod --> <!-- /prod -->
+  <!-- prod
     <link rel="stylesheet" href="$APP_ROOT/app/cockpit/styles/styles.css" />
     <link rel="stylesheet" href="$APP_ROOT/app/cockpit/styles/styles-components.css" />
 
@@ -32,7 +32,7 @@
           cockpit-api="$APP_ROOT/api/cockpit/"
           engine-api="$APP_ROOT/api/engine/"
           app-root="$APP_ROOT" />
-<!-- /prod -->
+-->
 
 </head>
 
@@ -41,19 +41,19 @@
   <div id="root"></div>
 </body>
 
-<!-- dev
+<!-- dev -->
 <script>
   window.JAR_PLUGINS = [];
   // Format for Plugins:
   // window.JAR_PLUGINS = [{ name: 'cockpit-test-plugin', location: '/', main: 'vanillaJsScript.js' }];
 </script>
--->
+<!-- /dev -->
 
-<!-- prod --> <!-- /prod --> <!-- /prod --> <!-- /prod --> <!-- /prod --> <!-- /prod -->
+<!-- prod
 <script>
   window.JAR_PLUGINS = $PLUGIN_PACKAGES || [];
 </script>
-<!-- /prod -->
+-->
 
 
 </html>

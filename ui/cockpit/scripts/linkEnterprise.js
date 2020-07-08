@@ -30,7 +30,13 @@ console.log(
 );
 
 fs.symlinkSync(
-  '../node_modules/camunda-bpm-webapp-ee/src/main/resources-plugin/cockpit',
+  srcDirectory + '/camunda-bpm-platform-ee/webapps/camunda-webapp/plugins/src/main/resources-plugin/cockpit',
   srcDirectory + '/enterprise',
+  'dir'
+);
+
+fs.symlinkSync(
+  srcDirectory,
+  srcDirectory + '/enterprise/node_modules',
   'dir'
 );
