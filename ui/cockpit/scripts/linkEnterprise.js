@@ -24,19 +24,8 @@ try {
   fs.unlinkSync(srcDirectory + '/enterprise');
 } catch {}
 
-console.log(
-  __dirname +
-    '/node_modules/camunda-bpm-webapp-ee/src/main/resources-plugin/cockpit'
-);
-
 fs.symlinkSync(
-  srcDirectory + '/camunda-bpm-platform-ee/webapps/camunda-webapp/plugins/src/main/resources-plugin/cockpit',
+  srcDirectory + '/enterprise_modules',
   srcDirectory + '/enterprise',
-  'dir'
-);
-
-fs.symlinkSync(
-  srcDirectory,
-  srcDirectory + '/enterprise/node_modules',
   'dir'
 );

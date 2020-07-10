@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-import React from "react";
-import "./Footer.scss";
-import translate from "utils/translation";
+import React from 'react';
+import './Footer.scss';
+import translate from 'utils/translation';
 
-const buildVersion = process.env.REACT_APP_RELEASE_VERSION || "REACT-SNAPSHOT";
+const buildVersion = process.env.REACT_APP_VERSION || 'REACT-SNAPSHOT';
 
 export default function Footer() {
   const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -29,12 +29,12 @@ export default function Footer() {
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-6 timezone">
-            {translate("CAM_WIDGET_FOOTER_TIMEZONE")} <i>{timezoneName}</i>
+            {translate('CAM_WIDGET_FOOTER_TIMEZONE')} <i>{timezoneName}</i>
           </div>
           <div className="col-xs-6">
-            {translate("CAM_WIDGET_FOOTER_POWERED_BY")}
+            {translate('CAM_WIDGET_FOOTER_POWERED_BY')}
             <a href="http://camunda.org"> camunda BPM </a>
-            <span className="version">{buildVersion}</span>
+            <span className="version">v{buildVersion}</span>
           </div>
         </div>
       </div>

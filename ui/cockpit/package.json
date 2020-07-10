@@ -1,6 +1,6 @@
 {
   "name": "camunda-react-webapp",
-  "version": "0.1.0",
+  "version": "7.14.0-SNAPSHOT",
   "private": true,
   "homepage": "..",
   "dependencies": {
@@ -42,7 +42,7 @@
     "buildEE": "node scripts/linkEnterprise; npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "node wireModules; node scripts/linkCommunity; npm run translations;",
+    "postinstall": "node wireModules; node scripts/linkCommunity; npm run translations; npm run styles",
     "prebuild": "npm run styles; node scripts/prebuild",
     "postbuild": "node scripts/postbuild"
   },

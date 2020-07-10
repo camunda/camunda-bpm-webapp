@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-import buildInPlugins from "../../plugins";
-import eePlugins from "../../enterprise";
+import buildInPlugins from '../../plugins';
+import eePlugins from '../../enterprise';
 
-const inProduction = process.env.NODE_ENV === "production";
+const inProduction = process.env.NODE_ENV === 'production';
 
-const configPath = inProduction ? "../config.json" : "/config.json";
+const configPath = inProduction ? '../config.json' : '/config.json';
 let config = {};
 
 function getLanguage() {
@@ -31,16 +31,16 @@ function getLanguage() {
       : nav.language ||
         nav.browserLanguage ||
         nav.systemLanguage ||
-        nav.userLanguage) || ""
-  ).split("-");
+        nav.userLanguage) || ''
+  ).split('-');
 
   return browserLang[0].toLowerCase();
 }
 
 function addCssSource(url) {
-  var link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.type = "text/css";
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
   link.href = url;
   document.head.appendChild(link);
 }
@@ -53,7 +53,7 @@ async function loadPlugins() {
   });
 
   const fetchers = customScripts.map(url =>
-    import(/* webpackIgnore: true */ "../../" + url)
+    import(/* webpackIgnore: true */ '../../' + url)
   );
 
   fetchers.push(
@@ -61,7 +61,12 @@ async function loadPlugins() {
   );
 
   const loadedPlugins = (await Promise.all(fetchers)).reduce((acc, module) => {
-    acc.push(...Object.keys(module).map(key => module[key]));
+    const plugins = module.default;
+    if (Array.isArray(plugins)) {
+      acc.push(...plugins);
+    } else {
+      acc.push(plugins);
+    }
     return acc;
   }, []);
 
@@ -75,20 +80,18 @@ async function loadLocale() {
     ? preferredLanguage
     : locales[0];
 
-  config.locale = await (
-    await fetch(
-      inProduction
-        ? `../locales/${localeToLoad}.json`
-        : `/locales/${localeToLoad}.json`
-    )
-  ).json();
+  config.locale = await (await fetch(
+    inProduction
+      ? `../locales/${localeToLoad}.json`
+      : `/locales/${localeToLoad}.json`
+  )).json();
 }
 
 async function loadBpmnJsExtensions() {
-  const bpmnJsConf = config["bpmnJs"] || {};
+  const bpmnJsConf = config['bpmnJs'] || {};
 
   const moduleFetchers = bpmnJsConf.additionalModules.map(url =>
-    import(/* webpackIgnore: true */ "../../" + url)
+    import(/* webpackIgnore: true */ '../../' + url)
   );
 
   const modulePromise = Promise.all(moduleFetchers).then(result => {
@@ -119,8 +122,8 @@ export async function loadConfig() {
 }
 
 export const getConfig = () => config;
-export const getLocale = () => config["locale"];
-export const getPlugins = () => config["plugins"];
-export const getCSRFCookieName = () => config["csrfCookieName"];
+export const getLocale = () => config['locale'];
+export const getPlugins = () => config['plugins'];
+export const getCSRFCookieName = () => config['csrfCookieName'];
 
 export default config;

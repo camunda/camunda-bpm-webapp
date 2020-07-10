@@ -36,11 +36,9 @@ export function UserProvider({children}) {
     try {
       const user = await (await get('%ADMIN_API%/auth/user/%ENGINE%')).json();
 
-      user.profile = await (
-        await get(`%ENGINE_API%/user/${user.userId}/profile`)
-      ).json();
-
-      console.log(user, window.location.href);
+      user.profile = await (await get(
+        `%ENGINE_API%/user/${user.userId}/profile`
+      )).json();
 
       if (
         user &&
@@ -69,8 +67,6 @@ export function UserProvider({children}) {
   );
 }
 
-export default Component => props => {
-  console.log('foooo');
-  console.log(props, UserContext, useContext(UserContext));
-  return <Component {...useContext(UserContext)} {...props} />;
-};
+export default Component => props => (
+  <Component {...useContext(UserContext)} {...props} />
+);

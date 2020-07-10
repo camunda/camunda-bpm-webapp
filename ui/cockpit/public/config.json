@@ -1,6 +1,8 @@
 {
   "customScripts": [],
-  "locales": ["en"],
+  "locales": [
+    "en"
+  ],
   "csrfCookieName": "XSRF-TOKEN",
   "bpmnJs": {
     "additionalModules": [],
@@ -22,6 +24,10 @@
     "period": {
       "unit": "day"
     }
+  },
+  "batchOperation": {
+    "mode": "filter",
+    "autoLoadEnded": true
   },
   "defaultFilter": {
     "historicProcessDefinitionInstancesSearch": {}

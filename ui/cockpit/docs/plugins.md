@@ -15,7 +15,7 @@ export default {
 ```
 ### Important things about the structure:
  1. The File is an JavaScript module (ES module).
- 2. The Module only exports Plugins. It is possible to use named exports or export multiple plugins from one File.
+ 2. The default export is either a Plugin or an array of Plugins. Only the default export is used by Camunda Cockpit.
 
 ### Attributes in Detail
 `id`: A string which defines this Plugin. Should be unique across the Application. This can be used to exclude Plugins later on.
@@ -125,7 +125,7 @@ Negative priority will hide the entry in a drop-down.
 uses label property
 
 Additional Arguments
-  - `ProcessDefinitionId`
+  - `processDefinitionId`
 
 ![Process Definition Runtime Tab Plugin Point](plugin-points/plugin-point-process-definition-details.png)
 
@@ -135,7 +135,7 @@ Additional Arguments
 uses label property
 
 Additional Arguments
-  - `ProcessInstanceId`
+  - `processInstanceId`
 
 ![Process Instance Runtime Tab Plugin Point](plugin-points/plugin-point-process-instance-details.png)
 
@@ -143,7 +143,7 @@ Additional Arguments
 `cockpit.processDefinition.runtime.action`
 
 Additional Arguments
-  - `ProcessDefinitionId`
+  - `processDefinitionId`
 
 ![Process Instance Runtime Tab Plugin Point](plugin-points/plugin-point-process-definition-runtime-action.png)
 
@@ -151,7 +151,7 @@ Additional Arguments
 `cockpit.processInstance.runtime.action`
 
 Additional Arguments
-  - `ProcessInstanceId`
+  - `processInstanceId`
 
 ## Process Definition Diagram Overlay
 `cockpit.processDefinition.diagram.plugin`
