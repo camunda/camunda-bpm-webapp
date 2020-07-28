@@ -18,34 +18,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function(id, label, priority) {
-  let node;
-
-  function checkActive(url) {
-    if (url.includes("/" + id)) {
-      node.classList.add("active");
-    } else {
-      node.classList.remove("active");
-    }
-  }
-
-  function handleLocationChange(evt) {
-    checkActive(evt.newURL);
-  }
-
+export default function(id, label, priority, path) {
   return {
-    id: "cockpit" + id,
+    id: "cockpit." + id,
     pluginPoint: "cockpit.navigation",
     priority: priority,
-    render: container => {
-      node = container;
-      window.addEventListener("hashchange", handleLocationChange);
-      checkActive(window.location.href);
-
-      return <Link to={"/" + id}>{label}</Link>;
-    },
-    cleanup: () => {
-      window.removeEventListener("hashchange", handleLocationChange);
-    }
+    path: path || id,
+    render: () => <Link to={"/" + id}>{label}</Link>
   };
 }

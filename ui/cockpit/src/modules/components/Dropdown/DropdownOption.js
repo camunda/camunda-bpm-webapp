@@ -16,12 +16,12 @@
  */
 
 import React from "react";
-
+import classNames from "classnames";
 import "./DropdownOption.scss";
 
-export default function DropdownOption({ children, onClick }) {
+export default function DropdownOption({ children, className, onClick }) {
   return (
-    <li className="DropdownOption">
+    <li className={classNames(className, "DropdownOption")}>
       <button onClick={onClick}>{children}</button>
     </li>
   );

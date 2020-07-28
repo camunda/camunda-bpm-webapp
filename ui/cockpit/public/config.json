@@ -9,11 +9,11 @@
     "moddleExtensions": {}
   },
   "skipCustomListeners": {
-    "default": false,
+    "default": true,
     "hidden": false
   },
   "skipIoMappings": {
-    "default": false,
+    "default": true,
     "hidden": false
   },
   "runtimeActivityInstanceMetrics": {

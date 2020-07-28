@@ -15,11 +15,41 @@
  * limitations under the License.
  */
 
-export default {
-  id: "vanillaJS Plugin",
-  pluginPoint: "cockpit.dashboard",
+let cb = el => console.error("No callback defined: ", el);
+const diagramPlugin = {
+  id: "Diagram Interaction",
+  pluginPoint: "cockpit.processDefinition.diagram.plugin",
   priority: 5,
-  render: container => {
-    container.innerHTML = "<hello-world></hello-world>";
+
+  render: (viewer, { processDefinitionId }) => {
+    viewer.get("eventBus").on("element.click", event => {
+      if (event.element.type.includes("Task")) {
+        cb(event.element);
+      } else {
+        cb(false);
+      }
+    });
   }
 };
+
+const tabPlugin = {
+  id: "Angular9 Plugin",
+  pluginPoint: "cockpit.processDefinition.runtime.tab",
+  label: "MyAngular",
+  priority: 5,
+  render: (container, { processDefinitionId }) => {
+    container.innerHTML = `<activity-table id="myActivityTable" process-definition-id="${processDefinitionId}"></activity-table>`;
+    cb = el => {
+      if (el.id)
+        document
+          .getElementById("myActivityTable")
+          .setAttribute("activity-id", el.id);
+      else
+        document
+          .getElementById("myActivityTable")
+          .removeAttribute("activity-id");
+    };
+  }
+};
+
+export default [tabPlugin, diagramPlugin];

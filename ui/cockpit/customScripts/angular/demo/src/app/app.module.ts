@@ -4,23 +4,25 @@ import  { createCustomElement } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { HelloWorldComponent } from './hello-world/hello-world.component';
+import { ActivityTableComponent } from './activity-table/activity-table.component';
 
 @NgModule({
   declarations: [
-    HelloWorldComponent,
+    ActivityTableComponent,
   ],
   imports: [
     BrowserModule
   ],
   entryComponents :  [
-    HelloWorldComponent
+    ActivityTableComponent
  ]
 })
 export class AppModule {
   constructor(private injector : Injector){
-    const el = createCustomElement(HelloWorldComponent, {injector : this.injector});
-    customElements.define('hello-world',el);
+    const el = createCustomElement(ActivityTableComponent, {injector : this.injector});
+
+    customElements.define('activity-table',el);
+
   
   }
   ngDoBootstrap(){}

@@ -17,8 +17,13 @@
 
 import navFactory from "utils/cockpitNavigationFactory";
 
-export const processes = navFactory("processes", "Processes", 100);
-export const decisions = navFactory("decisions", "Decisions", 90);
+export const processes = navFactory(
+  "processes",
+  "Processes",
+  100,
+  /(process|migration)/
+);
+export const decisions = navFactory("decisions", "Decisions", 90, "decision");
 export const tasks = navFactory("tasks", "Human Tasks", 80);
 export const repository = navFactory("repository", "Deployments", -5);
-export const batch = navFactory("batch", "Batches", -6);
+export const batch = navFactory("batch", "Batches", -6, /batch(?!\/)/);

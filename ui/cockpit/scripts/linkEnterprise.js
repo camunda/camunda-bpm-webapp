@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const srcDirectory = path.resolve(__dirname, '../src');
+const srcDirectory = path.resolve(__dirname, "../src");
 
 try {
-  fs.unlinkSync(srcDirectory + '/enterprise');
+  fs.unlinkSync(srcDirectory + "/enterprise");
 } catch {}
 
 fs.symlinkSync(
-  srcDirectory + '/enterprise_modules',
-  srcDirectory + '/enterprise',
-  'dir'
+  srcDirectory + "/enterprise_modules",
+  srcDirectory + "/enterprise",
+  "dir"
 );

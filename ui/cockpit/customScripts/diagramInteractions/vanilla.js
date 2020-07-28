@@ -15,37 +15,37 @@
  * limitations under the License.
  */
 
-const apiUrl = '/camunda/api/engine/engine/default/';
+const apiUrl = "/camunda/api/engine/engine/default/";
 
 // export default plugin;
 
 const renderTable = async (res, node) => {
   const result = await res.json();
   if (!result.length) {
-    node.innerHTML = 'No incidents';
+    node.innerHTML = "No incidents";
     return;
   }
 
-  const table = document.createElement('table');
-  table.style = 'table-layout: fixed; width: 100%;';
+  const table = document.createElement("table");
+  table.style = "table-layout: fixed; width: 100%;";
 
   result.forEach(element => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
 
-    const time = document.createElement('td');
+    const time = document.createElement("td");
     time.innerHTML = new Date(element.incidentTimestamp).toLocaleString();
 
-    const message = document.createElement('td');
+    const message = document.createElement("td");
     message.innerHTML = element.incidentMessage;
 
-    const process = document.createElement('td');
-    const link = document.createElement('a');
+    const process = document.createElement("td");
+    const link = document.createElement("a");
     if (element.processInstanceId) {
-      link.href = '#/process-instance/' + element.processInstanceId;
-      link.innerText = 'Process Instance';
+      link.href = "#/process-instance/" + element.processInstanceId;
+      link.innerText = "Process Instance";
     } else {
-      link.href = '#/process-definition/' + element.processDefinitionId;
-      link.innerText = 'Process Definition';
+      link.href = "#/process-definition/" + element.processDefinitionId;
+      link.innerText = "Process Definition";
     }
     process.appendChild(link);
 
@@ -56,19 +56,19 @@ const renderTable = async (res, node) => {
     table.appendChild(row);
   });
 
-  node.innerHTML = '';
+  node.innerHTML = "";
   node.appendChild(table);
 };
 
-let cb = el => console.error('No callback defined: ', el);
+let cb = el => console.error("No callback defined: ", el);
 const diagramPlugin = {
-  id: 'externalPlugin',
-  pluginPoint: 'cockpit.processDefinition.diagram.plugin',
+  id: "externalPlugin",
+  pluginPoint: "cockpit.processDefinition.diagram.plugin",
   priority: 5,
 
-  render: (viewer, {processDefinitionId}) => {
-    viewer.get('eventBus').on('element.click', event => {
-      if (event.element.type.includes('Task')) {
+  render: (viewer, { processDefinitionId }) => {
+    viewer.get("eventBus").on("element.click", event => {
+      if (event.element.type.includes("Task")) {
         cb(event.element);
       } else {
         cb(false);
@@ -78,11 +78,11 @@ const diagramPlugin = {
 };
 
 const tabPlugin = {
-  id: 'externalPlugin',
-  pluginPoint: 'cockpit.processDefinition.runtime.tab',
+  id: "externalPlugin",
+  pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 5,
-  label: 'Fooobar',
-  render: (node, {processDefinitionId}) => {
+  label: "Fooobar",
+  render: (node, { processDefinitionId }) => {
     async function getIncidentsLogs(taskId) {
       let result;
       if (taskId) {

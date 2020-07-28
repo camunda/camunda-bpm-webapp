@@ -59,7 +59,7 @@ export default function setup(module) {
         plugin.render(
           getViewer(),
           getPassthroughData(plugin.pluginPoint, scope),
-          scope
+          scope // The 'scope' argument is deprecated and should not be used - it will be removed in future releases
         );
         scope.$on("$destroy", plugin.cleanup);
       }
@@ -73,20 +73,13 @@ export default function setup(module) {
             plugin.render(
               isolatedContainer,
               getPassthroughData(plugin.pluginPoint, scope),
-              scope
+              scope // The 'scope' argument is deprecated and should not be used - it will be removed in future releases
             );
 
             element[0].appendChild(isolatedContainer);
             scope.$on("$destroy", plugin.cleanup);
           }
         };
-      }
-    ]);
-
-    module.config([
-      "$httpProvider",
-      function($httpProvider) {
-        $httpProvider.defaults.xsrfCookieName = config.csrfCookieName;
       }
     ]);
 
@@ -100,6 +93,13 @@ export default function setup(module) {
       }
     ]);
   });
+
+  module.config([
+    "$httpProvider",
+    function($httpProvider) {
+      $httpProvider.defaults.xsrfCookieName = config.csrfCookieName;
+    }
+  ]);
 
   module.provider(
     "configuration",
@@ -115,6 +115,24 @@ export default function setup(module) {
       // add translation table
       $translateProvider.translations("en", locale).preferredLanguage("en");
       $translateProvider.useSanitizeValueStrategy("escapeParameters");
+    }
+  ]);
+
+  module.config([
+    "camDateFormatProvider",
+    function(camDateFormatProvider) {
+      var formats = {
+        monthName: "MMMM",
+        day: "DD",
+        abbr: "lll",
+        normal: "YYYY-MM-DD[T]HH:mm:ss", // yyyy-MM-dd'T'HH:mm:ss => 2013-01-23T14:42:45
+        long: "LLLL",
+        short: "LL"
+      };
+
+      for (var f in formats) {
+        camDateFormatProvider.setDateFormat(formats[f], f);
+      }
     }
   ]);
 

@@ -32,12 +32,12 @@ module.exports = [
       template: template,
       controller: [
         "$scope",
-        "$location",
+        "$timeout",
         "$rootScope",
         "search",
         "Notifications",
         "camAPI",
-        function($scope, $location, $rootScope, search, Notifications, camAPI) {
+        function($scope, $timeout, $rootScope, search, Notifications, camAPI) {
           var Deployment = camAPI.resource("deployment");
           var deploymentsListData = ($scope.deploymentsListData = $scope.deploymentsData.newChild(
             $scope
@@ -123,14 +123,18 @@ module.exports = [
             deploymentsListData.changed("currentDeployment");
           };
 
-          $scope.onSearchChange({}, { size: 50, current: 1 });
-
           var isFocused = ($scope.isFocused = function(deployment) {
             return (
               deployment &&
               $scope.currentDeployment &&
               deployment.id === $scope.currentDeployment.id
             );
+          });
+
+          $timeout(() => {
+            if ($scope.loadingState === "INITIAL") {
+              $scope.onSearchChange({}, { size: 50, current: 1 });
+            }
           });
         }
       ]

@@ -86,10 +86,13 @@ export default {
 
 ## Navigation
 `cockpit.navigation`
+This plugin point can be used in conjunction with a `cockpit.route` plugin or for shortcuts to existing pages.
 
 uses label property
 
 Negative priority will hide the entry in a drop-down.
+
+This plugin point has a new property, `path`, which matches the location to highlight the active menu entry when the user is on a certain page. The value can be a regex. If no `path` is set, the menu entry will never be highlighted.
 
 ![Dashboard Plugin Point](plugin-points/plugin-point-navigation.png)
 

@@ -15,11 +15,9 @@
  * limitations under the License.
  */
 
-export { Breadcrumbs } from "./Breadcrumbs";
 export { Dropdown } from "./Dropdown";
 export { EnterpriseComponent } from "./EnterpriseComponent";
 export { LinkButton } from "./LinkButton";
 export { LoadingIndicator } from "./LoadingIndicator";
-export { Search } from "./Search";
 export { StateCircle } from "./StateCircle";
 export { Table } from "./Table";

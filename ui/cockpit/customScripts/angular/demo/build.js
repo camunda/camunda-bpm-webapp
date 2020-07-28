@@ -25,5 +25,5 @@ const concat = require("concat");
     "./plugin.js"
   ];
   await fs.ensureDir("elements");
-  await concat(files, "elements/camunda-plugin.js");
+  await concat(files, "../../../public/camunda-plugin.js");
 })();

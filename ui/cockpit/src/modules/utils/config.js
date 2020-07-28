@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-import buildInPlugins from '../../plugins';
-import eePlugins from '../../enterprise';
+import buildInPlugins from "../../plugins";
+import eePlugins from "../../enterprise";
 
-const inProduction = process.env.NODE_ENV === 'production';
+const inProduction = process.env.NODE_ENV === "production";
 
-const configPath = inProduction ? '../config.json' : '/config.json';
+const configPath = inProduction ? "../config.json" : "/config.json";
 let config = {};
 
 function getLanguage() {
@@ -31,21 +31,41 @@ function getLanguage() {
       : nav.language ||
         nav.browserLanguage ||
         nav.systemLanguage ||
-        nav.userLanguage) || ''
-  ).split('-');
+        nav.userLanguage) || ""
+  ).split("-");
 
   return browserLang[0].toLowerCase();
 }
 
 function addCssSource(url) {
-  var link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
+  var link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.type = "text/css";
   link.href = url;
   document.head.appendChild(link);
 }
 
+const getExcludedPlugins = () => {
+  const excludeString =
+    document.querySelector("base").getAttribute("cam-exclude-plugins") || "";
+
+  const excluded = excludeString.split(",").map(element => {
+    let pluginPoint = element.trim().split(":");
+    if (pluginPoint.length < 2) pluginPoint.push("*");
+    return pluginPoint;
+  });
+  return excluded;
+};
+
 async function loadPlugins() {
+  const excludedPlugins = getExcludedPlugins();
+  const excludedPluginsFilter = plugin => {
+    return !excludedPlugins.some(
+      el =>
+        plugin.pluginPoint === el[0] && (el[1] === "*" || el[1] === plugin.id)
+    );
+  };
+
   const customScripts = config.customScripts;
   const JARScripts = window.JAR_PLUGINS.map(el => {
     addCssSource(`${el.location}/plugin.css`);
@@ -53,7 +73,7 @@ async function loadPlugins() {
   });
 
   const fetchers = customScripts.map(url =>
-    import(/* webpackIgnore: true */ '../../' + url)
+    import(/* webpackIgnore: true */ "../../" + url)
   );
 
   fetchers.push(
@@ -70,28 +90,49 @@ async function loadPlugins() {
     return acc;
   }, []);
 
-  config.plugins = [...buildInPlugins, ...eePlugins, ...loadedPlugins];
+  const combinedPlugins = [...buildInPlugins, ...eePlugins, ...loadedPlugins];
+  config.plugins = combinedPlugins.filter(excludedPluginsFilter);
 }
 
 async function loadLocale() {
   const locales = config.locales;
   const preferredLanguage = getLanguage();
-  const localeToLoad = locales.includes(preferredLanguage)
-    ? preferredLanguage
-    : locales[0];
+  const defaultLanguage = locales[0];
+  const localesToLoad = locales.includes(preferredLanguage)
+    ? [defaultLanguage, preferredLanguage] // Order is important, defaultLanguage always first
+    : [defaultLanguage];
 
-  config.locale = await (await fetch(
-    inProduction
-      ? `../locales/${localeToLoad}.json`
-      : `/locales/${localeToLoad}.json`
-  )).json();
+  const loadedLocales = await Promise.all(
+    localesToLoad.map(
+      async local =>
+        await (
+          await fetch(
+            inProduction ? `../locales/${local}.json` : `/locales/${local}.json`
+          )
+        ).json()
+    )
+  );
+
+  if (!locales.includes(preferredLanguage)) {
+    config.locale = loadedLocales[0];
+    return;
+  }
+  const defaultLocale = loadedLocales[0];
+  const preferredLocale = loadedLocales[1];
+  for (let key in defaultLocale) {
+    preferredLocale[key] = preferredLocale[key]
+      ? { ...defaultLocale[key], ...preferredLocale[key] }
+      : defaultLocale[key];
+  }
+
+  config.locale = preferredLocale;
 }
 
 async function loadBpmnJsExtensions() {
-  const bpmnJsConf = config['bpmnJs'] || {};
+  const bpmnJsConf = config["bpmnJs"] || {};
 
   const moduleFetchers = bpmnJsConf.additionalModules.map(url =>
-    import(/* webpackIgnore: true */ '../../' + url)
+    import(/* webpackIgnore: true */ "../../" + url)
   );
 
   const modulePromise = Promise.all(moduleFetchers).then(result => {
@@ -122,8 +163,8 @@ export async function loadConfig() {
 }
 
 export const getConfig = () => config;
-export const getLocale = () => config['locale'];
-export const getPlugins = () => config['plugins'];
-export const getCSRFCookieName = () => config['csrfCookieName'];
+export const getLocale = () => config["locale"];
+export const getPlugins = () => config["plugins"];
+export const getCSRFCookieName = () => config["csrfCookieName"];
 
 export default config;

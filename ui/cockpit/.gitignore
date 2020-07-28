@@ -23,6 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 yarn.lock
 
-public/styles
+public/styles/*
+!public/styles/user-styles.css
 src/node_modules
 src/enterprise

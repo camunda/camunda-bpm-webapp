@@ -22,18 +22,19 @@
 
   .Dropdown ul {
     line-height: 25px;
+    padding: 0;
   }
 
   .app-banner {
     font-size: 21px;
     line-height: 42px;
     color: #000;
-    padding: 0 10px 0 15px;
+    padding: 0 15px 0 11px;
     display: flex;
     align-items: center;
 
     .logo {
-      margin-right: 5px;
+      margin-right: 10px;
       fill: #666;
     }
   }
@@ -45,17 +46,6 @@
 
   .divider {
     margin-left: auto;
-  }
-
-  .navigation > div {
-    display: inline-block;
-    height: 42px;
-    padding: 0 6px;
-
-    &.active {
-      color: #000;
-      background-color: #eee;
-    }
   }
 
   > div {

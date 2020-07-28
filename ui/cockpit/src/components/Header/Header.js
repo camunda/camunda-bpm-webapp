@@ -18,8 +18,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Dropdown } from "components";
-import PluginPoint from "utils/PluginPoint";
 import withUser from "HOC/withUser";
 
 import EngineSelect from "./EngineSelect";
@@ -31,33 +29,17 @@ import "./Header.scss";
 import SmallScreenSwitch from "./SmallScreenSwitch";
 import Tooltip from "components/Tooltip";
 import translate from "utils/translation";
+import Navigation from "./Navigation";
 
 function Header({ user }) {
   return (
     <div className="Header">
       <Link to="/" className="app-banner">
         <Logo className="logo" />
-        Camunda Cockpit
+        {translate("APP_VENDOR")} Cockpit
       </Link>
-      <nav className="navigation">
-        {user && (
-          <>
-            <PluginPoint
-              location="cockpit.navigation"
-              filter={({ priority }) => priority >= 0}
-            />
-            <Dropdown title="More">
-              <PluginPoint
-                location="cockpit.navigation"
-                filter={({ priority }) => priority < 0}
-                wrapPlugins={({ children }) => (
-                  <Dropdown.Option>{children}</Dropdown.Option>
-                )}
-              />
-            </Dropdown>
-          </>
-        )}
-      </nav>
+
+      {user && <Navigation />}
 
       <span className="divider" />
       <SmallScreenSwitch

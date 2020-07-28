@@ -15,37 +15,37 @@
  * limitations under the License.
  */
 
-import React, {createContext, useContext, useState, useEffect} from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-import {get} from 'utils/request';
+import { get } from "utils/request";
 
 const UserContext = createContext();
 
 let previousUrl;
 
-window.addEventListener('hashchange', function(event) {
-  if (event.newURL.includes('#/login')) {
+window.addEventListener("hashchange", function(event) {
+  if (event.newURL.includes("#/login")) {
     previousUrl = event.oldURL;
   }
 });
 
-export function UserProvider({children}) {
+export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   const refreshUser = async () => {
     try {
-      const user = await (await get('%ADMIN_API%/auth/user/%ENGINE%')).json();
+      const user = await (await get("%ADMIN_API%/auth/user/%ENGINE%")).json();
 
-      user.profile = await (await get(
-        `%ENGINE_API%/user/${user.userId}/profile`
-      )).json();
+      user.profile = await (
+        await get(`%ENGINE_API%/user/${user.userId}/profile`)
+      ).json();
 
       if (
         user &&
-        ((previousUrl && window.location.href.includes('/dashboard')) || // redirect after login
-          window.location.href.includes('/login')) // Navigated to login when logged in
+        ((previousUrl && window.location.href.includes("/dashboard")) || // redirect after login
+          window.location.href.includes("/login")) // Navigated to login when logged in
       ) {
-        window.location.href = previousUrl || '#/dashboard';
+        window.location.href = previousUrl || "#/dashboard";
         previousUrl = null;
       }
 
@@ -61,7 +61,7 @@ export function UserProvider({children}) {
   }, []);
 
   return (
-    <UserContext.Provider value={{user, refreshUser}}>
+    <UserContext.Provider value={{ user, refreshUser }}>
       {children}
     </UserContext.Provider>
   );

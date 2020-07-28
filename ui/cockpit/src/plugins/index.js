@@ -16,15 +16,5 @@
  */
 
 import * as cockpitNavigation from "./cockpit.navigation";
-// import * as cockpitProcessDefinitionRuntimeTab from "./cockpit.processDefinition.runtime.tab";
-// import * as cockpitProcessDefinitionDiagramPlugin from "./cockpit.processDefinition.diagram.plugin";
-// import * as cockpitProcessesDashboard from "./cockpit.processes.dashboard";
-// import * as jobDefinitionAction from "./jobDefinition.action";
 
-export default [
-  ...Object.values(cockpitNavigation)
-  // ...Object.values(cockpitProcessDefinitionRuntimeTab),
-  // ...Object.values(cockpitProcessDefinitionDiagramPlugin),
-  // ...Object.values(cockpitProcessesDashboard),
-  // ...Object.values(jobDefinitionAction)
-];
+export default [...Object.values(cockpitNavigation)];

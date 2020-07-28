@@ -15,10 +15,7 @@
  * limitations under the License.
  */
 
-import {
-  deploymentModule,
-  directive
-} from "../legacy/client/scripts/repository/main";
+import deploymentModule from "../legacy/client/scripts/repository/main";
 import angular from "angular";
 
 export default function() {
@@ -26,10 +23,10 @@ export default function() {
     deploymentModule.name
   ]);
 
-  ngModule.directive("camCockpitRepository", directive);
+  // ngModule.directive("camCockpitRepository", directive);
 
   const node = document.createElement("div");
-  node.innerHTML = `<div cam-cockpit-repository />`;
+  node.innerHTML = `<div ng-view></div>`;
 
   return { node, module: ngModule };
 }

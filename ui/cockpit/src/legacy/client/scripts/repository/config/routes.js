@@ -15,46 +15,16 @@
  * limitations under the License.
  */
 
-import React from "react";
+var template = require("../controllers/cam-cockpit-repository-view.html");
 
-import "./Breadcrumbs.scss";
-import { Link } from "react-router-dom";
-
-export default function Breadcrumbs() {
-  const urls = {
-    dashboard: {
-      label: "Dashboard",
-      url: "/"
-    },
-    processes: {
-      label: "Processes",
-      url: "/processes"
-    }
-  };
-
-  const currentLocation = window.location.hash;
-
-  let path = [];
-
-  switch (currentLocation) {
-    case "#/processes":
-      path.push("processes");
-      break;
-
-    default:
-      break;
+module.exports = [
+  "$routeProvider",
+  function($routeProvider) {
+    $routeProvider.when("/repository", {
+      template: template,
+      controller: "camCockpitRepositoryViewCtrl",
+      authentication: "required",
+      reloadOnSearch: false
+    });
   }
-
-  return (
-    <div className="Breadcrumbs">
-      <Link to="/">Dashboard</Link>
-
-      {path.map(el => (
-        <span key={el}>
-          {" "}
-          » <Link to={urls[el].url}> {urls[el].label}</Link>
-        </span>
-      ))}
-    </div>
-  );
-}
+];

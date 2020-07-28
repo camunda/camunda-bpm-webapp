@@ -23,7 +23,7 @@ module.exports = `<!-- # CE - camunda-commons-ui/lib/auth/page/login.html -->
         request-aware>
 
       <div class="login-header">
-        <div class="login-logo" ng-bind-html="logo" />
+        <div class="login-logo" ng-bind-html="logo"></div>
   
         <div class="app-name">
           {{ appName }}

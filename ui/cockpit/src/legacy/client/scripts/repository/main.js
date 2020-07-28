@@ -17,12 +17,11 @@
 
 var angular = require("../../../camunda-commons-ui/vendor/angular");
 
-var template = require("./controllers/cam-cockpit-repository-view.html.js");
-
 require("angular-data-depend");
 require("../../../camunda-commons-ui/lib/index");
 
-var camCockpitRepositoryViewCtrl = require("./controllers/cam-cockpit-repository-view-ctrl"),
+var routes = require("./config/routes"),
+  camCockpitRepositoryViewCtrl = require("./controllers/cam-cockpit-repository-view-ctrl"),
   deploymentsModule = require("./deployments/main"),
   resourcesModule = require("./resources/main"),
   resourceDetailsModule = require("./resource/main");
@@ -36,22 +35,13 @@ var ngDeps = [
   resourceDetailsModule.name
 ];
 
-const ngModule = angular.module("cam.cockpit.repository", ngDeps);
+var deploymentModule = angular.module("cam.cockpit.repository", ngDeps);
 
-ngModule.controller(
+deploymentModule.config(routes);
+
+deploymentModule.controller(
   "camCockpitRepositoryViewCtrl",
   camCockpitRepositoryViewCtrl
 );
 
-export const controller = camCockpitRepositoryViewCtrl;
-
-export const deploymentModule = ngModule;
-
-export function directive() {
-  return {
-    template: template,
-    controller: camCockpitRepositoryViewCtrl
-  };
-}
-
-// module.exports = deploymentModule;
+module.exports = deploymentModule;
