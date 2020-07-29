@@ -64,5 +64,5 @@ export default {
     historicProcessDefinitionInstancesSearch: {}
   },
   disableWelcomeMessage: false,
-  userOperationLogAnnotationLength: 2000
+  userOperationLogAnnotationLength: 4000
 };
