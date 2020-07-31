@@ -42,7 +42,7 @@ export default function PluginPoint({
 
 function Plugin({
   render,
-  cleanup,
+  unmount,
   renderIn: ContainerComponent,
   data,
   pluginPoint
@@ -56,8 +56,8 @@ function Plugin({
 
   useEffect(() => {
     setReactContent(render(ref.current, params));
-    return cleanup;
-  }, [render, cleanup, params]);
+    return unmount;
+  }, [render, unmount, params]);
 
   return <ContainerComponent ref={ref}>{reactContent}</ContainerComponent>;
 }
