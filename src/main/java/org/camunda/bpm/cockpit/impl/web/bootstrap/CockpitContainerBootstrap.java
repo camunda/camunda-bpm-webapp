@@ -16,12 +16,16 @@
  */
 package org.camunda.bpm.cockpit.impl.web.bootstrap;
 
+import java.util.Set;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.camunda.bpm.ProcessEngineService;
 import org.camunda.bpm.cockpit.Cockpit;
 import org.camunda.bpm.cockpit.impl.DefaultCockpitRuntimeDelegate;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
+import org.camunda.bpm.engine.ProcessEngine;
 
 /**
  * A servlet context listener that bootstraps cockpit on a
@@ -38,6 +42,28 @@ public class CockpitContainerBootstrap implements ServletContextListener {
 
     environment = createCockpitEnvironment();
     environment.setup();
+
+    try {
+      String serverInfo = sce.getServletContext().getServerInfo();
+      if (serverInfo != null && !serverInfo.isEmpty()) {
+        ProcessEngineService processEngineService = environment.getContainerRuntimeDelegate().getProcessEngineService();
+        Set<String> processEngineNames = processEngineService.getProcessEngineNames();
+        for (String engineName : processEngineNames) {
+          ProcessEngine processEngine = processEngineService.getProcessEngine(engineName);
+          // store application server information
+          if (processEngine.getProcessEngineConfiguration().getTelemetryRegistry() != null &&
+              processEngine.getProcessEngineConfiguration().getTelemetryRegistry().getApplicationServer() == null) {
+            processEngine.getProcessEngineConfiguration()
+                .getTelemetryRegistry()
+                .setApplicationServer(serverInfo);
+          }
+        }
+      }
+    } catch (Exception e) {
+      // do nothing
+    }
+
+
   }
 
   @Override
