@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-const apiUrl = "/camunda/api/engine/engine/default/";
+const engineApi = document.querySelector("base").getAttribute("engine-api");
+const apiUrl = `${engineApi}/engine/default/`;
 
 export default {
   id: "vanillaJS Plugin",

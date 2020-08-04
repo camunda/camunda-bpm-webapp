@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-const apiUrl = "/camunda/api/engine/engine/default/";
-
-// export default plugin;
+const engineApi = document.querySelector("base").getAttribute("engine-api");
+const apiUrl = `${engineApi}/engine/default/`;
 
 const renderTable = async (res, node) => {
   const result = await res.json();
@@ -66,7 +65,7 @@ const diagramPlugin = {
   pluginPoint: "cockpit.processDefinition.diagram.plugin",
   priority: 5,
 
-  render: (viewer, { processDefinitionId }) => {
+  render: (viewer) => {
     viewer.get("eventBus").on("element.click", event => {
       if (event.element.type.includes("Task")) {
         cb(event.element);
@@ -81,7 +80,7 @@ const tabPlugin = {
   id: "externalPlugin",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 5,
-  label: "Fooobar",
+  label: "My Incidents Tab",
   render: (node, { processDefinitionId }) => {
     async function getIncidentsLogs(taskId) {
       let result;

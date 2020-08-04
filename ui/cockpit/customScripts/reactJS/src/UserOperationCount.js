@@ -22,11 +22,11 @@ import { Table } from "./Table";
 function UserOperationCount({ processDefinitionId }) {
   const [opLog, setOpLog] = useState();
 
-  console.log(opLog);
+  const engineApi = document.querySelector("base").getAttribute("engine-api");
 
   useEffect(() => {
     fetch(
-      `/camunda/api/engine/engine/default/history/user-operation?maxResults=2000&processDefinitionId=${processDefinitionId}`
+      `${engineApi}/engine/default/history/user-operation?maxResults=2000&processDefinitionId=${processDefinitionId}`
     )
       .then(async res => {
         setOpLog(await res.json());

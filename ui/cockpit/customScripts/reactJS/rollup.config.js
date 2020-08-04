@@ -26,7 +26,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import scss from "rollup-plugin-scss";
 
 export default {
-  input: "src/index.js",
+  input: "src/plugin.js",
   output: {
     file: "dist/reactJsScript.js"
   },
