@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-import react from "react";
-import reactDom from "react-dom";
-
 import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 
@@ -28,17 +25,13 @@ import scss from "rollup-plugin-scss";
 export default {
   input: "src/plugin.js",
   output: {
-    file: "dist/reactJsScript.js"
+    file: "dist/reactJsPlugin.js"
   },
   plugins: [
     resolve(),
     babel(),
     commonjs({
-      include: "node_modules/**",
-      namedExports: {
-        react: Object.keys(react),
-        "react-dom": Object.keys(reactDom)
-      }
+      include: "node_modules/**"
     }),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production")

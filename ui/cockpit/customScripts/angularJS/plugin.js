@@ -17,17 +17,17 @@
 
 import angular from "angular";
 
-var template =
-  '<div ng-controller="searchProcessViewController">' +
-  '<section class="processes-dashboard" ng-class="{\'section-collapsed\': !activeSection}">' +
-  '<div class="inner">' +
-  '<button tooltip="Toggle this section" class="section-toggle btn btn-link btn-sm" ng-click="toggleSection()">' +
-  "<span class=\"glyphicon\" ng-class=\"{'glyphicon-menu-down': !activeSection, 'glyphicon-menu-up': activeSection}\"></span></button>" +
-  "<h2>Search Process By Process Instance Id</h2>" +
-  '<div ng-if="activeSection"><br/>Enter a Process Instance Id: <input ng-keydown="pressEnter($event)" id="processInstanceId" ng-model="processInstanceId" type="text" size="80"/> ' +
-  '<a id="searchProcessGo" href="#/process-instance/{{processInstanceId}}"><button>Search</button></a></div>' +
-  "</div></section>" +
-  "</div>";
+var template = `
+  <div ng-controller="searchProcessViewController">
+  <section class="processes-dashboard" ng-class="{'section-collapsed': !activeSection}">
+  <div class="inner">
+  <button tooltip="Toggle this section" class="section-toggle btn btn-link btn-sm" ng-click="toggleSection()">
+  <span class="glyphicon" ng-class="{'glyphicon-menu-down': !activeSection, 'glyphicon-menu-up': activeSection}"></span></button>
+  <h2>Search Process By Process Instance Id</h2>
+  <div ng-if="activeSection"><br/>Enter a Process Instance Id: <input ng-keydown="pressEnter($event)" id="processInstanceId" ng-model="processInstanceId" type="text" size="80"/> 
+  <a id="searchProcessGo" href="#/process-instance/{{processInstanceId}}"><button>Search</button></a></div>
+  </div></section>
+  </div>`;
 
 export default {
   id: "cockpit.searchProcess",
