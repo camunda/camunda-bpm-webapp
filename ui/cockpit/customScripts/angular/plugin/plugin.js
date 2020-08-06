@@ -20,7 +20,6 @@ const diagramPlugin = {
   id: "Diagram Interaction",
   pluginPoint: "cockpit.processDefinition.diagram.plugin",
   priority: 5,
-
   render: viewer => {
     viewer.get("eventBus").on("element.click", event => {
       if (event.element.type.includes("Task")) {
@@ -35,7 +34,7 @@ const diagramPlugin = {
 const tabPlugin = {
   id: "Angular9 Plugin",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
-  label: "Open Usertasks",
+  label: "Open User Tasks",
   priority: 5,
   render: (container, { processDefinitionId }) => {
     container.innerHTML = `<activity-table id="myActivityTable" process-definition-id="${processDefinitionId}"></activity-table>`;

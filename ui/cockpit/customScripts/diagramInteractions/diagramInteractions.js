@@ -16,56 +16,52 @@
  */
 
 const engineApi = document.querySelector("base").getAttribute("engine-api");
-const apiUrl = `${engineApi}/engine/default/`;
+const apiUrl = `${engineApi}/engine/default`;
 
-const renderTable = async (res, node) => {
-  const result = await res.json();
-  if (!result.length) {
-    node.innerHTML = "No incidents";
+const renderTable = async (operationMap, node) => {
+  if (!Object.keys(operationMap).length) {
+    node.innerHTML = "No open Tasks";
     return;
   }
 
   const table = document.createElement("table");
   table.style = "table-layout: fixed; width: 100%;";
+  table.createTHead().innerHTML = `
+    <td>User</td>
+    <td>Activity ID</td>
+    <td>Open Task Count</td>`;
 
-  result.forEach(element => {
-    const row = document.createElement("tr");
+  const body = table.createTBody();
 
-    const time = document.createElement("td");
-    time.innerHTML = new Date(element.incidentTimestamp).toLocaleString();
+  for (const [user, tasks] of Object.entries(operationMap)) {
+    for (const [task, count] of Object.entries(tasks)) {
+      const row = document.createElement("tr");
+      const userCol = document.createElement("td");
+      const taskCol = document.createElement("td");
+      const countCol = document.createElement("td");
 
-    const message = document.createElement("td");
-    message.innerHTML = element.incidentMessage;
+      userCol.innerText = user;
+      taskCol.innerText = task;
+      countCol.innerText = count;
 
-    const process = document.createElement("td");
-    const link = document.createElement("a");
-    if (element.processInstanceId) {
-      link.href = "#/process-instance/" + element.processInstanceId;
-      link.innerText = "Process Instance";
-    } else {
-      link.href = "#/process-definition/" + element.processDefinitionId;
-      link.innerText = "Process Definition";
+      row.appendChild(userCol);
+      row.appendChild(taskCol);
+      row.appendChild(countCol);
+      body.appendChild(row);
     }
-    process.appendChild(link);
-
-    row.appendChild(time);
-    row.appendChild(message);
-    row.appendChild(process);
-
-    table.appendChild(row);
-  });
+  }
 
   node.innerHTML = "";
   node.appendChild(table);
 };
 
 let cb = el => console.error("No callback defined: ", el);
+
 const diagramPlugin = {
-  id: "externalPlugin",
+  id: "diagramPlugin",
   pluginPoint: "cockpit.processDefinition.diagram.plugin",
   priority: 5,
-
-  render: (viewer) => {
+  render: viewer => {
     viewer.get("eventBus").on("element.click", event => {
       if (event.element.type.includes("Task")) {
         cb(event.element);
@@ -77,30 +73,41 @@ const diagramPlugin = {
 };
 
 const tabPlugin = {
-  id: "externalPlugin",
+  id: "tabPlugin",
   pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 5,
-  label: "My Incidents Tab",
+  label: "Open User Tasks",
   render: (node, { processDefinitionId }) => {
-    async function getIncidentsLogs(taskId) {
+    async function getUsertasks(taskId) {
       let result;
       if (taskId) {
         result = await fetch(
-          `${apiUrl}/incident?processDefinitionId=${processDefinitionId}&activityId=${taskId}&maxResults=500`
+          `${apiUrl}/task?processDefinitionId=${processDefinitionId}&taskDefinitionKey=${taskId}&maxResults=500`
         );
       } else {
         result = await fetch(
-          `${apiUrl}/incident?processDefinitionId=${processDefinitionId}&maxResults=500`
+          `${apiUrl}/task?processDefinitionId=${processDefinitionId}&maxResults=500`
         );
       }
 
-      renderTable(result, node);
+      const json = await result.json();
+      const operationMap = {};
+      json.forEach(task => {
+        const assignee = task.assignee || "unassigned";
+        const operationPerUser = operationMap[assignee] || {};
+        operationPerUser[task.taskDefinitionKey] =
+          operationPerUser[task.taskDefinitionKey] || 0;
+        operationPerUser[task.taskDefinitionKey]++;
+        operationMap[assignee] = operationPerUser;
+      });
+
+      renderTable(operationMap, node);
     }
 
-    getIncidentsLogs();
+    getUsertasks();
 
     cb = el => {
-      getIncidentsLogs(el.id);
+      getUsertasks(el.id);
     };
   },
   unmount: () => {
