@@ -15,15 +15,13 @@
  * limitations under the License.
  */
 
-const fs = require("fs-extra");
 const concat = require("concat");
 (async function build() {
   const files = [
-    "./dist/demo/runtime-es2015.js",
-    "./dist/demo/polyfills-es2015.js",
-    "./dist/demo/main-es2015.js",
-    "./plugin.js"
+    "./dist/demo/runtime.js",
+    "./dist/demo/polyfills.js",
+    "./dist/demo/main.js",
+    "./plugin/plugin.js"
   ];
-  await fs.ensureDir("elements");
-  await concat(files, "../../../public/camunda-plugin.js");
+  await concat(files, "./dist/camunda-plugin.js");
 })();

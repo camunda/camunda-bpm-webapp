@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-const CSRFCookieName = 'XSRF-TOKEN';
+const CSRFCookieName = "XSRF-TOKEN";
 const handlers = [];
 
 export function put(url, body, options = {}) {
