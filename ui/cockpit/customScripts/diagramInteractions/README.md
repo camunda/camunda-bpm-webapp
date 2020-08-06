@@ -2,7 +2,7 @@ Diagram interactions with custom plugins
 ========================================
 
 This example shows how you can achieve diagram interactions with custom plugins.
-Click on a activity in the BPMN diagram to apply a filter to the table.
+Click on an activity in the BPMN diagram to apply a filter to the table.
 
 Built and tested against Camunda BPM version `7.14.0-alpha2`.
 
@@ -12,8 +12,8 @@ Built and tested against Camunda BPM version `7.14.0-alpha2`.
 Diagram Interaction
 -------------------
 
-To achieve diagram interaction, we will use 2 plugins scoped in one module. 
-The first plugin registers at `cockpit.processDefinition.diagram.plugin` or another diagram plugin point and registers a listener on the viewer event bus. With the dispatched event we can call our own functions: 
+To achieve diagram interaction, we will use 2 plugins scoped in one module.
+The first plugin registers at `cockpit.processDefinition.diagram.plugin` or another diagram plugin point and registers a listener on the viewer event bus. With the dispatched event we can call our own functions:
 ```javascript
 render: viewer => {
   viewer.get("eventBus").on("element.click", event => {
@@ -51,7 +51,8 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
   ]
 // …
 ```
-After that start the server, login to cockpit and navigate to the process definition view to check the result.
+
+After that start the server, login to Cockpit and navigate to the process definition view to check the result.
 
 License
 -------

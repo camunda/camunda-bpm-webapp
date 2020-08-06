@@ -1,4 +1,4 @@
-AngularJS 1.x "Search Processes" Plugin 
+AngularJS 1.x "Search Processes" Plugin
 =======================================
 
 This is an example of how to migrate an existing angularJS Plugin to the new Plugin system. The original plugin can be found in `original-plugin.js`.
@@ -28,7 +28,7 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
   ]
 // …
 ```
-After that start the server, login to cockpit and navigate to the process definition view to check the result.
+After that start the server, login to Cockpit and navigate to the process definition view to check the result.
 
 License
 -------

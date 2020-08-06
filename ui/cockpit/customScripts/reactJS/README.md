@@ -1,7 +1,7 @@
-React "Involved Users" Plugin 
+React "Involved Users" Plugin
 =======================================
 
-This example shows you how to build and bundle a plugin using react. When building your plugin using libraries, you have to make sure all your components are bundled into a single bundle. In this example, we use rollup to create the bundle.  
+This example shows you how to build and bundle a plugin using react. When building your plugin using libraries, you have to make sure all your components are bundled into a single bundle. In this example, we use rollup to create the bundle.
 
 
 ![Screenshot](screenshot.png)
@@ -30,7 +30,7 @@ Add the following content to the `app/cockpit/scripts/config.js` file:
 
 You can add custom CSS by adding it to the `app/cockpit/styles/user-styles.css`
 
-After that start the server, login to cockpit and navigate to the process definition view to check the result.
+After that start the server, login to Cockpit and navigate to the process definition view to check the result.
 
 License
 -------
