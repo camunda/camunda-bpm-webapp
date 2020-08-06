@@ -1,8 +1,8 @@
-Angular 9 "Open Usertasks" Tab 
+Angular 10 "Open Usertasks" Tab
 =================================
 
-This example shows how to develop a Cockpit plugin in Angular 9.
-Click on a activity in the BPMN diagram to apply a filter to the table.
+This example shows how to develop a Cockpit plugin in Angular 10.
+Click on an activity in the BPMN diagram to apply a filter to the table.
 
 Built and tested against Camunda BPM version `7.14.0-alpha2`.
 
