@@ -111,7 +111,7 @@
     "load-grunt-tasks": "4.0.0",
     "marked": "0.7.0",
     "mkdirp": "0.5.1",
-    "mocha": "6.0.2",
+    "mocha": "8.1.1",
     "mocha-multi": "1.0.1",
     "mocha-proshot": "1.0.1",
     "persistify": "2.0.1",
