@@ -173,7 +173,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>4.1.9.RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -188,7 +193,7 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-webapp</artifactId>
-      <version>8.1.14.v20131031</version>
+      <version>9.4.31.v20200723</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -392,13 +397,13 @@
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-jdbc</artifactId>
-          <version>7.0.33</version>
+          <version>8.5.57</version>
         </dependency>
 
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-juli</artifactId>
-          <version>7.0.33</version>
+          <version>8.5.57</version>
         </dependency>
 
         <dependency>
@@ -429,7 +434,7 @@
           <plugin>
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
-            <version>8.1.14.v20131031</version>
+            <version>9.4.31.v20200723</version>
             <configuration>
               <webAppConfig>
                 <contextPath>/camunda</contextPath>
@@ -511,12 +516,12 @@
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-jdbc</artifactId>
-          <version>7.0.33</version>
+          <version>8.5.57</version>
         </dependency>
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-juli</artifactId>
-          <version>7.0.33</version>
+          <version>8.5.57</version>
         </dependency>
       </dependencies>
       <build>
@@ -541,7 +546,7 @@
           <plugin>
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
-            <version>8.1.14.v20131031</version>
+            <version>9.4.31.v20200723</version>
             <configuration>
               <webAppConfig>
                 <contextPath>/camunda</contextPath>
@@ -663,12 +668,12 @@
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-jdbc</artifactId>
-          <version>7.0.33</version>
+          <version>8.5.57</version>
         </dependency>
         <dependency>
           <groupId>org.apache.tomcat</groupId>
           <artifactId>tomcat-juli</artifactId>
-          <version>7.0.33</version>
+          <version>8.5.57</version>
         </dependency>
         <dependency>
           <groupId>org.camunda.bpm.identity</groupId>
@@ -688,7 +693,7 @@
           <plugin>
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
-            <version>8.1.14.v20131031</version>
+            <version>9.4.31.v20200723</version>
             <configuration>
               <webAppConfig>
                 <contextPath>/camunda</contextPath>

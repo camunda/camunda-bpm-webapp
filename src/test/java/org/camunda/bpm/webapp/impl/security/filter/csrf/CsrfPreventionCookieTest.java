@@ -190,8 +190,8 @@ public class CsrfPreventionCookieTest {
     headerRule.performPostRequest("/api/admin/auth/user/default/login/welcome");
 
     // then
-    assertThat(headerRule.getResponseBody())
-      .matches("CSRFPreventionFilter: Token provided via HTTP Header is absent/empty.");
+    assertThat(headerRule.getResponseCode())
+      .isEqualTo(403);
   }
 
 }
