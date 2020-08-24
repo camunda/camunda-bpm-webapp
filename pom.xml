@@ -561,7 +561,7 @@
                 </resourceBases>
               </webAppConfig>
               <contextHandlers>
-                <contextHandler implementation="org.eclipse.jetty.webapp.JettyWebAppContext">
+                <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
                   <war>${basedir}/target/engine-rest.war</war>
                   <contextPath>/engine-rest</contextPath>
                 </contextHandler>
@@ -705,7 +705,7 @@
                 <defaultsDescriptor>${project.basedir}/src/main/runtime/test/jetty/webdefault.xml</defaultsDescriptor>
               </webAppConfig>
               <contextHandlers>
-                <contextHandler implementation="org.eclipse.jetty.webapp.JettyWebAppContext">
+                <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
                   <war>${basedir}/target/engine-rest.war</war>
                   <contextPath>/engine-rest</contextPath>
                 </contextHandler>
