@@ -119,6 +119,7 @@
     "request": "2.88.0",
     "sinon": "7.3.1",
     "source-map": "0.7.3",
+    "spdx-satisfies": "5.0.0",
     "watchify": "3.11.1",
     "xunit-file": "1.0.0"
   },

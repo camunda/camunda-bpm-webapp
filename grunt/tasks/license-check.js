@@ -18,15 +18,31 @@
 var checker = require('license-checker');
 
 const ALLOWED_LICENSES = [
-  'MIT',
-  'MIT*',
-  'ISC',
-  'BSD',
-  'BSD-3-Clause',
-  'Apache-2.0',
-  'Apache-2.0 WITH LLVM-exception'
+  "0BSD",
+  "Apache 2.0",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "CC-BY-3.0",
+  "CC-BY-4.0",
+  "CC0-1.0",
+  "ISC",
+  "MIT",
+  "ODC-By-1.0",
+  "Unlicense",
+  "WTFPL",
+  "Zlib"
 ];
 
+const ALLOWED_PACKAGES = [
+  "axe-core@3.5.5", // uses MPL-2.0, permitted as of https://jira.camunda.com/browse/OB-8
+  "desired-capabilities@0.1.0", // uses the CC0, but has wrong license field
+  "jsonify@0.0.0", // uses the unlicense, but has wrong license field
+  "map-stream@0.1.0", // uses the MIT, but has wrong license field
+  "stackframe@0.3.1" // uses the MIT, but has wrong license field
+];
 module.exports = function(grunt) {
   grunt.registerTask('license-check', function() {
     var done = this.async();
@@ -34,8 +50,7 @@ module.exports = function(grunt) {
     checker.init(
       {
         start: '.',
-        production: true,
-        excludePrivatePackages: true
+        excludePrivatePackages: true,
       },
       function(err, packages) {
         if (err) {
@@ -45,20 +60,40 @@ module.exports = function(grunt) {
           let licenseWarning = '';
 
           for (const [package, info] of entries) {
-            const licenses =
-              typeof info.licenses === 'object'
-                ? info.licenses
-                : [info.licenses];
+            if(ALLOWED_PACKAGES.includes(package)) {
+              continue;
+            }
 
-            licenses.forEach(license => {
-              if (!ALLOWED_LICENSES.includes(license)) {
-                licenseWarning += `${package} uses ${license}\n`;
+            let licenses = info.licenses;
+            let hasMultipleLicenses = false;
+
+            if(typeof licenses === 'string') {
+              licenses = licenses.replace(/\(|\)|\*/g, '');
+              if(licenses.includes('AND')) {
+                licenses = licenses.split(' AND ');
+                hasMultipleLicenses = true;
+              } else {
+                licenses = licenses.split(' OR ');
               }
-            });
+            }
+            
+            licenses =
+              typeof licenses === 'object'
+                ? licenses
+                : [licenses];
+
+            let approved = hasMultipleLicenses ?
+            licenses.every(license => ALLOWED_LICENSES.includes(license) ) :
+            licenses.some(license => ALLOWED_LICENSES.includes(license) );
+
+            if (!approved) {
+              licenseWarning += `${package} uses ${licenses.join(' OR ')}\n`;
+            }
+            
           }
 
           if (licenseWarning) {
-            grunt.warn(
+            console.log(
               `These Packages use unknown licenses:\n${licenseWarning}`
             );
           }

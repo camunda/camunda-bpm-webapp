@@ -47,7 +47,7 @@
     "test": "rescripts test",
     "eject": "rescripts eject",
     "postinstall": "node wireModules; node scripts/linkCommunity; npm run translations; npm run styles",
-    "prebuild": "npm run styles; node scripts/prebuild",
+    "prebuild": "npm run styles; node scripts/licenseCheck; node scripts/prebuild",
     "postbuild": "node scripts/postbuild"
   },
   "eslintConfig": {
