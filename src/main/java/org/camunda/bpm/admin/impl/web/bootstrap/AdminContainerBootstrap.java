@@ -16,16 +16,13 @@
  */
 package org.camunda.bpm.admin.impl.web.bootstrap;
 
-import java.util.Set;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.camunda.bpm.ProcessEngineService;
 import org.camunda.bpm.admin.Admin;
 import org.camunda.bpm.admin.impl.DefaultAdminRuntimeDelegate;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
-import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.rest.util.WebApplicationUtil;
 
 /**
  * @author Daniel Meyer
@@ -41,25 +38,7 @@ public class AdminContainerBootstrap implements ServletContextListener {
     environment = createAdminEnvironment();
     environment.setup();
 
-    try {
-      String serverInfo = sce.getServletContext().getServerInfo();
-      if (serverInfo != null && !serverInfo.isEmpty()) {
-        ProcessEngineService processEngineService = environment.getContainerRuntimeDelegate().getProcessEngineService();
-        Set<String> processEngineNames = processEngineService.getProcessEngineNames();
-        for (String engineName : processEngineNames) {
-          ProcessEngine processEngine = processEngineService.getProcessEngine(engineName);
-          // store application server information
-          if (processEngine.getProcessEngineConfiguration().getTelemetryRegistry() != null &&
-              processEngine.getProcessEngineConfiguration().getTelemetryRegistry().getApplicationServer() == null) {
-            processEngine.getProcessEngineConfiguration()
-                .getTelemetryRegistry()
-                .setApplicationServer(serverInfo);
-          }
-        }
-      }
-    } catch (Exception e) {
-      // do nothing
-    }
+    WebApplicationUtil.setApplicationServer(sce.getServletContext().getServerInfo());
 
   }
 
