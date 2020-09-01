@@ -87,6 +87,7 @@ export default function setup(module) {
       "ViewsProvider",
       function(ViewsProvider) {
         ViewsProvider.registerDefaultView(plugin.pluginPoint, {
+          ...plugin.properties, // For backwards-compatibility with 'label' property
           ...plugin,
           template: `<div plugin-bridge${pluginDirectiveUID} />`
         });

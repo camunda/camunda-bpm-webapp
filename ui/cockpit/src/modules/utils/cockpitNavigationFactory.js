@@ -24,7 +24,9 @@ export default function(id, label, priority, path) {
     id: "cockpit." + id,
     pluginPoint: "cockpit.navigation",
     priority: priority,
-    path: path || id,
-    render: () => <Link to={"/" + id}>{translate(label)}</Link>
+    render: () => <Link to={"/" + id}>{translate(label)}</Link>,
+    properties: {
+      path: path || id
+    }
   };
 }
