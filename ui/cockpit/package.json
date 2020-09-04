@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "styles": "lessc --include-path=src/legacy/camunda-commons-ui/lib/widgets:src/legacy/camunda-commons-ui/resources/less:src/legacy/camunda-commons-ui/resources/css:src/legacy/common/styles:src/legacy/client/scripts src/legacy/client/styles/styles.less public/styles/styles.css ; lessc --include-path=src/legacy/camunda-commons-ui/lib/widgets:src/legacy/camunda-commons-ui/resources/less:src/legacy/camunda-commons-ui/resources/css:src/legacy/common/styles:src/legacy/client/scripts src/legacy/client/styles/styles-components.less public/styles/styles-components.css",
+    "styles": "lessc --include-path=src/legacy/camunda-commons-ui/lib/widgets:src/legacy/camunda-commons-ui/resources/less:src/legacy/camunda-commons-ui/resources/css:src/legacy/common/styles:src/legacy/client/scripts src/legacy/client/styles/styles.less public/styles/styles.css && lessc --include-path=src/legacy/camunda-commons-ui/lib/widgets:src/legacy/camunda-commons-ui/resources/less:src/legacy/camunda-commons-ui/resources/css:src/legacy/common/styles:src/legacy/client/scripts src/legacy/client/styles/styles-components.less public/styles/styles-components.css",
     "translations": "node scripts/translations",
     "build": "react-scripts build",
     "buildCE": "node scripts/linkCommunity && npm run build",
