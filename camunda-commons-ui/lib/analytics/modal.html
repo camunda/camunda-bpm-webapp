@@ -1,0 +1,95 @@
+<!-- # CE - camunda-bpm-webapp/ui/admin/client/scripts/pages/confirm-delete-authorization.html -->
+<div class="analytics-body">
+    <div class="camunda-logo navigation-element" ng-class="{white: page === 1 || page === 5}" ng-bind-html="logo"></div>
+    <span class="glyphicon glyphicon-remove-sign modal-close" ng-class="{white: page === 1 || page === 5}"
+        ng-click="close()"></span>
+
+    <div class="splash" ng-if="page === 1">
+        <div class="title">
+            Camunda Needs You
+        </div>
+
+        <button class="btn btn-default begin" ng-click="next()">
+            Begin
+        </button>
+    </div>
+
+    <div class="content" ng-if="page === 2">
+        <h3>Enable Telemetry Data</h3>
+        <p>
+            At Camunda we want to collect telemetry for the purpose of enhancing your experience. Data helps Camunda
+            understand how the product is being used, which parts of the engine need improvement and which features we
+            should implement next. </p>
+        <p>
+            Telemetry also helps our team better understand the reasons why you use Camunda. With this knowledge we are
+            able to deliver more value to our community and to you.
+        </p>
+        <p>
+            By enabling telemetry you can:
+        </p>
+        <ul class="checkmark">
+            <li>Contribute to the wider community</li>
+            <li>Help Camunda improve the BPM engine</li>
+        </ul>
+
+        <button class="btn btn-default next" ng-click="next()">
+            Next
+        </button>
+    </div>
+    <div class="content" ng-if="page === 3">
+        <h3>What do we collect and why?</h3>
+        <ul class="triangle collection-details">
+            <li>
+                <b>Meta and usage data</b>
+                <p>Prouduct version, database technology, application server, installation ID.</p>
+                <i>To better understand the environment on which our product is being used.</i>
+            </li>
+        </ul>
+        <button class="btn btn-default next" ng-click="next()">
+            Next
+        </button>
+    </div>
+
+    <div class="content" ng-if="page === 4">
+        <h3>Privacy Preferences</h3>
+        <p>To enhance user experience, Camunda BPM engine can integrate with Camunda Services,
+            which requires external network requests. Please choose from the setting below.</p>
+        <form class="form-inline">
+            <div class="row">
+                <div class="col-xs-1 col-sm-1 text-right form-control-static">
+                    <input type="checkbox" ng-model="enableUsage" class="form-control usage-statistics"
+                        id="usage-statistics">
+                </div>
+                <div class="col-xs-10 col-sm-10 form-control-static ">
+                    <label for="usage-statistics">Enable Meta & Usage Statistics</label>
+                    <p class="details">
+                        Allow Camunda BPM to send anonymous usage statistics. We use this information to provide you
+                        a stable and improved product experience in the environment you are using. This allows
+                        Camunda to collect information about the product version and technical environment you are
+                        using, and how you are using it.
+                    </p>
+
+                </div>
+            </div>
+        </form>
+        <p class="disclaimer">
+            With any of these options, none of your personal information will be submitted.
+        </p>
+        <button class="btn btn-default next" ng-click="save()" ng-disabled="loadingState === 'LOADING'">
+            Save
+        </button>
+    </div>
+
+    <div class="splash" ng-if="page === 5">
+        <div class="title">
+            Thank you!
+        </div>
+
+        <button class="btn btn-default begin" ng-click="close()">
+            Finish
+        </button>
+    </div>
+
+    <div class="footer" ng-if="page > 1 && page < 5"><span>Learn more:&nbsp;</span><a>Camunda Privacy Policy</a></div>
+</div>
+<!-- / CE - camunda-bpm-webapp/ui/admin/client/scripts/pages/confirm-delete-authorization.html -->
