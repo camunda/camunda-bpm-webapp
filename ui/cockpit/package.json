@@ -14,7 +14,7 @@
     "angular-resource": "1.8.0",
     "angular-route": "1.8.0",
     "angular-sanitize": "1.8.0",
-    "angular-translate": "2.18.2",
+    "angular-translate": "2.18.3",
     "bootstrap": "3.4.1",
     "bpmn-js": "6.2.1",
     "camunda-webapp-translations": "git://github.com/camunda/camunda-webapp-translations#master",
