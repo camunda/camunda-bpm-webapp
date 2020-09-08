@@ -17,7 +17,7 @@
 
 var checker = require("license-checker");
 
-const ALLOWED_LICENSES = [
+const PRODUCTION_LICENSES = [
   "0BSD",
   "Apache 2.0",
   "Apache-2.0",
@@ -25,14 +25,17 @@ const ALLOWED_LICENSES = [
   "BSD",
   "BSD-2-Clause",
   "BSD-3-Clause",
-  "CC-BY-3.0",
-  "CC-BY-4.0",
   "CC0-1.0",
   "ISC",
   "MIT",
+  "WTFPL"
+];
+
+const DEV_LICENSES = [
+  "CC-BY-3.0",
+  "CC-BY-4.0",
   "ODC-By-1.0",
   "Unlicense",
-  "WTFPL",
   "Zlib"
 ];
 
@@ -44,21 +47,16 @@ const ALLOWED_PACKAGES = [
   "stackframe@0.3.1" // uses the MIT, but has wrong license field
 ];
 
-let licenseWarning = "";
-
-checker.init(
-  {
-    start: ".",
-    excludePrivatePackages: true
-  },
+const parseResults = (ALLOWED_LICENSES, resolve, reject) =>
   function(err, packages) {
     if (err) {
       throw err;
     } else {
       const entries = Object.entries(packages);
+      let licenseWarning = "";
 
-      for (const [_package, info] of entries) {
-        if (ALLOWED_PACKAGES.includes(_package)) {
+      for (const [id, info] of entries) {
+        if (ALLOWED_PACKAGES.includes(id)) {
           continue;
         }
 
@@ -82,13 +80,47 @@ checker.init(
           : licenses.some(license => ALLOWED_LICENSES.includes(license));
 
         if (!approved) {
-          licenseWarning += `${_package} uses ${licenses.join(" OR ")}\n`;
+          licenseWarning += `${id} uses ${licenses.join(" OR ")}\n`;
         }
       }
 
       if (licenseWarning) {
-        console.warn(`These Packages use unknown licenses:\n${licenseWarning}`);
+        reject(licenseWarning);
+      } else {
+        resolve();
       }
     }
-  }
-);
+  };
+
+const licenseChecks = [
+  new Promise((resolve, reject) => {
+    checker.init(
+      {
+        start: ".",
+        production: true,
+        excludePrivatePackages: true
+      },
+      parseResults(PRODUCTION_LICENSES, resolve, reject)
+    );
+  }),
+  new Promise((resolve, reject) => {
+    checker.init(
+      {
+        start: ".",
+        development: true,
+        excludePrivatePackages: true
+      },
+      parseResults([...PRODUCTION_LICENSES, ...DEV_LICENSES], resolve, reject)
+    );
+  })
+];
+
+console.log("Checking licenses...");
+
+Promise.all(licenseChecks)
+  .then(() => {
+    console.log("Done!");
+  })
+  .catch(err => {
+    console.error(err);
+  });
