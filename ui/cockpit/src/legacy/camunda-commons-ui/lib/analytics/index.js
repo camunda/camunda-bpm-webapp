@@ -15,24 +15,28 @@
  * limitations under the License.
  */
 
-var fs = require('fs');
-var angular = require('angular');
+var angular = require("angular");
 
-var modalTemplate = fs.readFileSync(__dirname + '/modal.html', 'utf8');
-var camundaLogo = fs.readFileSync(__dirname + '/../auth/page/logo.svg', 'utf8');
+var modalTemplate = require("./modal.html");
+var camundaLogo = require("../auth/page/logo.svg");
 
+var previousUrl = "";
+
+// As long as we don't have a global Modal service, this is how we find out if we just logged in.
+window.addEventListener("hashchange", event => {
+  previousUrl = event.oldURL;
+});
 
 var modalController = [
-  '$scope',
-  '$sce',
-  'Notifications',
-  'telemetryResource',
-  '$translate',
+  "$scope",
+  "$sce",
+  "Notifications",
+  "telemetryResource",
+  "$translate",
   function(scope, $sce, Notifications, telemetryResource, $translate) {
     scope.loadingState = "INITIAL";
     scope.logo = $sce.trustAsHtml(camundaLogo);
     scope.enableUsage = false;
-
 
     scope.page = 1;
     scope.close = function() {
@@ -44,54 +48,50 @@ var modalController = [
     scope.save = function() {
       scope.loadingState = "LOADING";
       telemetryResource.configure(!!scope.enableUsage, function(err) {
-        scope.loadingState = "DONE"
+        scope.loadingState = "DONE";
         if (!err) {
           scope.page++;
         } else {
           Notifications.addError({
-            status: $translate.instant(
-              'TELEMETRY_ERROR_STATUS'
-            ),
-            message: $translate.instant('TELEMETRY_ERROR_MESSAGE')
-          })
+            status: $translate.instant("TELEMETRY_ERROR_STATUS"),
+            message: $translate.instant("TELEMETRY_ERROR_MESSAGE")
+          });
         }
       });
-    }
+    };
   }
 ];
 
 module.exports = angular
-  .module('cam.commons.analytics', [])
+  .module("cam.commons.analytics", [])
 
   // Open Modal for Telemetry
   .run([
-    '$rootScope',
-    'camAPI',
-    '$uibModal',
-    function($rootScope, camAPI, $modal) {
-      var telemetryResource = camAPI.resource('telemetry');
+    "camAPI",
+    "$uibModal",
+    function(camAPI, $modal) {
+      var telemetryResource = camAPI.resource("telemetry");
 
-      $rootScope.$on('authentication.login.success', function(event) {
-        // skip if default got prevented
-        if (!event.defaultPrevented) {
-          telemetryResource
-            .get()
-            .then(res => {
-              if (res.enableTelemetry === null) {
-                $modal.open({
-                  template: modalTemplate,
-                  controller: modalController,
-                  size: 'lg',
-                  resolve: {
-                    telemetryResource: function() {
-                      return telemetryResource;
-                    }
+      // Only if we logged in just now
+      if (previousUrl.includes("login")) {
+        telemetryResource
+          .get()
+          .then(res => {
+            if (res.enableTelemetry === null) {
+              $modal.open({
+                template: modalTemplate,
+                controller: modalController,
+                size: "lg",
+                resolve: {
+                  telemetryResource: function() {
+                    return telemetryResource;
                   }
-                });
-              }
-            })
-            .catch(() => {});
-          }
-      });
+                },
+                appendTo: angular.element(".angular-app")
+              });
+            }
+          })
+          .catch(() => {});
+      }
     }
   ]);
