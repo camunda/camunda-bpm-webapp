@@ -6,54 +6,45 @@
 
     <div class="splash" ng-if="page === 1">
         <div class="title">
-            Camunda Needs You
+            {{'TELEMETRY_CAMUNDA_NEEDS_YOU' | translate}}
         </div>
 
         <button class="btn btn-default begin" ng-click="next()">
-            Begin
+            {{'TELEMETRY_BEGIN' | translate}}
         </button>
     </div>
 
     <div class="content" ng-if="page === 2">
-        <h3>Enable Telemetry Data</h3>
-        <p>
-            At Camunda we want to collect telemetry for the purpose of enhancing your experience. Data helps Camunda
-            understand how the product is being used, which parts of the engine need improvement and which features we
-            should implement next. </p>
-        <p>
-            Telemetry also helps our team better understand the reasons why you use Camunda. With this knowledge we are
-            able to deliver more value to our community and to you.
-        </p>
-        <p>
-            By enabling telemetry you can:
-        </p>
+        <h3>{{'TELEMETRY_INTRODUCTION_HEADER' | translate}}</h3>
+        <p>{{'TELEMETRY_INTRODUCTION_EXPLANATION_1' | translate}}</p>
+        <p>{{'TELEMETRY_INTRODUCTION_EXPLANATION_2' | translate}}</p>
+        <p>{{'TELEMETRY_INTRODUCTION_EXPLANATION_3' | translate}}</p>
         <ul class="checkmark">
-            <li>Contribute to the wider community</li>
-            <li>Help Camunda improve the BPM engine</li>
+            <li>{{'TELEMETRY_INTRODUCTION_COMMUNITY' | translate}}</li>
+            <li>{{'TELEMETRY_INTRODUCTION_IMPROVE' | translate}}</li>
         </ul>
 
         <button class="btn btn-default next" ng-click="next()">
-            Next
+            {{'TELEMETRY_NEXT' | translate}}
         </button>
     </div>
     <div class="content" ng-if="page === 3">
-        <h3>What do we collect and why?</h3>
+        <h3>{{'TELEMETRY_DETAILS_HEADER' | translate}}</h3>
         <ul class="triangle collection-details">
             <li>
-                <b>Meta and usage data</b>
-                <p>Prouduct version, database technology, application server, installation ID.</p>
-                <i>To better understand the environment on which our product is being used.</i>
+                <b>{{'TELEMETRY_DETAILS_META_DATA' | translate}}</b>
+                <p>{{'TELEMETRY_DETAILS_META_DATA_WHAT' | translate}}</p>
+                <i>{{'TELEMETRY_DETAILS_META_DATA_WHY' | translate}}</i>
             </li>
         </ul>
         <button class="btn btn-default next" ng-click="next()">
-            Next
+            {{'TELEMETRY_NEXT' | translate}}
         </button>
     </div>
 
     <div class="content" ng-if="page === 4">
-        <h3>Privacy Preferences</h3>
-        <p>To enhance user experience, Camunda BPM engine can integrate with Camunda Services,
-            which requires external network requests. Please choose from the setting below.</p>
+        <h3>{{'TELEMETRY_PREFERENCES_HEADER' | translate}}</h3>
+        <p>{{'TELEMETRY_PREFERENCES_DETAILS' | translate}}</p>
         <form class="form-inline">
             <div class="row">
                 <div class="col-xs-1 col-sm-1 text-right form-control-static">
@@ -61,35 +52,33 @@
                         id="usage-statistics">
                 </div>
                 <div class="col-xs-10 col-sm-10 form-control-static ">
-                    <label for="usage-statistics">Enable Meta & Usage Statistics</label>
-                    <p class="details">
-                        Allow Camunda BPM to send anonymous usage statistics. We use this information to provide you
-                        a stable and improved product experience in the environment you are using. This allows
-                        Camunda to collect information about the product version and technical environment you are
-                        using, and how you are using it.
-                    </p>
+                    <label for="usage-statistics">{{'TELEMETRY_PREFERENCES_META' | translate}}</label>
+                    <p class="details">{{'TELEMETRY_PREFERENCES_META_DETAILS' | translate}}</p>
 
                 </div>
             </div>
         </form>
         <p class="disclaimer">
-            With any of these options, none of your personal information will be submitted.
+            {{'TELEMETRY_PREFERENCES_DISCLAIMER' | translate}}
         </p>
         <button class="btn btn-default next" ng-click="save()" ng-disabled="loadingState === 'LOADING'">
-            Save
+            {{'TELEMETRY_SAVE' | translate}}
         </button>
     </div>
 
     <div class="splash" ng-if="page === 5">
         <div class="title">
-            Thank you!
+            {{'TELEMETRY_THANKS' | translate}}
         </div>
 
         <button class="btn btn-default begin" ng-click="close()">
-            Finish
+            {{'TELEMETRY_FINISH' | translate}}
         </button>
     </div>
 
-    <div class="footer" ng-if="page > 1 && page < 5"><span>Learn more:&nbsp;</span><a>Camunda Privacy Policy</a></div>
+    <div class="footer" ng-if="page > 1 && page < 5">
+        <span>{{'TELEMETRY_FOOTER_LEARN_MORE' | translate}}&nbsp;</span>
+        <a href="http://camunda.com/">{{'TELEMETRY_FOOTER_PRIVACY_POLICY' | translate}}</a>
+    </div>
 </div>
 <!-- / CE - camunda-bpm-webapp/ui/admin/client/scripts/pages/confirm-delete-authorization.html -->
