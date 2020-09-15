@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-module.exports = `<!-- # CE - camunda-bpm-webapp/ui/admin/client/scripts/pages/confirm-delete-authorization.html -->
+module.exports = `<!-- # CE - camunda-bpm-webapp/ui/cockpit/src/legacy/camunda-commons-ui/lib/analytics/modal.html.js -->
 <div class="analytics-body">
     <div class="camunda-logo navigation-element" ng-class="{white: page === 1 || page === 5}" ng-bind-html="logo"></div>
     <span class="glyphicon glyphicon-remove-sign modal-close" ng-class="{white: page === 1 || page === 5}"
@@ -98,4 +98,4 @@ module.exports = `<!-- # CE - camunda-bpm-webapp/ui/admin/client/scripts/pages/c
         <a href="https://camunda.com/legal/privacy/">{{'TELEMETRY_FOOTER_PRIVACY_POLICY' | translate}}</a>
     </div>
 </div>
-<!-- / CE - camunda-bpm-webapp/ui/admin/client/scripts/pages/confirm-delete-authorization.html -->`;
+<!-- / CE - camunda-bpm-webapp/ui/cockpit/src/legacy/camunda-commons-ui/lib/analytics/modal.html.js -->`;
