@@ -4,7 +4,7 @@
     <span class="glyphicon glyphicon-remove-sign modal-close" ng-class="{white: page === 1 || page === 5}"
         ng-click="close()"></span>
 
-    <div class="splash" ng-if="page === 1">
+    <div class="splash" ng-show="page === 1">
         <div class="title">
             {{'TELEMETRY_CAMUNDA_NEEDS_YOU' | translate}}
         </div>
@@ -14,7 +14,7 @@
         </button>
     </div>
 
-    <div class="content" ng-if="page === 2">
+    <div class="content" ng-show="page === 2">
         <h3>{{'TELEMETRY_INTRODUCTION_HEADER' | translate}}</h3>
         <p>{{'TELEMETRY_INTRODUCTION_EXPLANATION_1' | translate}}</p>
         <p>{{'TELEMETRY_INTRODUCTION_EXPLANATION_2' | translate}}</p>
@@ -28,7 +28,7 @@
             {{'TELEMETRY_NEXT' | translate}}
         </button>
     </div>
-    <div class="content" ng-if="page === 3">
+    <div class="content" ng-show="page === 3">
         <h3>{{'TELEMETRY_DETAILS_HEADER' | translate}}</h3>
         <ul class="triangle collection-details">
             <li>
@@ -42,7 +42,7 @@
         </button>
     </div>
 
-    <div class="content" ng-if="page === 4">
+    <div class="content" ng-show="page === 4">
         <h3>{{'TELEMETRY_PREFERENCES_HEADER' | translate}}</h3>
         <p>{{'TELEMETRY_PREFERENCES_DETAILS' | translate}}</p>
         <form class="form-inline">
@@ -66,7 +66,7 @@
         </button>
     </div>
 
-    <div class="splash" ng-if="page === 5">
+    <div class="splash" ng-show="page === 5">
         <div class="title">
             {{'TELEMETRY_THANKS' | translate}}
         </div>
@@ -76,9 +76,11 @@
         </button>
     </div>
 
-    <div class="footer" ng-if="page > 1 && page < 5">
+    <div class="footer" ng-show="page > 1 && page < 5">
         <span>{{'TELEMETRY_FOOTER_LEARN_MORE' | translate}}&nbsp;</span>
-        <a href="https://camunda.com/legal/privacy/">{{'TELEMETRY_FOOTER_PRIVACY_POLICY' | translate}}</a>
+        <a href="https://camunda.com/legal/privacy/" target="_blank">
+            {{'TELEMETRY_FOOTER_PRIVACY_POLICY' | translate}}
+        </a>
     </div>
 </div>
 <!-- / CE - camunda-bpm-webapp/camunda-commons-ui/lib/analytics/modal.html -->

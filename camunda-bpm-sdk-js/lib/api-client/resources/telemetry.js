@@ -20,7 +20,7 @@
 var AbstractClientResource = require('./../abstract-client-resource');
 
 /**
- * Authorization Resource
+ * Telemetry Resource
  * @class
  * @memberof CamSDK.client.resource
  * @augments CamSDK.client.AbstractClientResource
@@ -33,7 +33,11 @@ var Telemetry = AbstractClientResource.extend();
  */
 Telemetry.path = 'telemetry';
 
-
+/**
+ * Fetches the telemetry configuration.
+ *
+ * @param  {Function} done
+ */
 Telemetry.get = function(done) {
   return this.http.get(this.path + '/configuration', {
     done: done
@@ -43,7 +47,8 @@ Telemetry.get = function(done) {
 /**
  * Configures whether Camunda receives data collection of the process engine setup and usage.
  *
- * @param  {Object}   authorization       is an object representation of an authorization
+ * @param  {Object}   payload                  is an object representation of an authorization
+ * @param  {Boolean}  payload.enableTelemetry  Specifies if the data collection should be sent or not.
  * @param  {Function} done
  */
 Telemetry.configure = function(payload, done) {
@@ -56,6 +61,5 @@ Telemetry.configure = function(payload, done) {
     done: done
   });
 };
-
 
 module.exports = Telemetry;
