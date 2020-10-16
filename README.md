@@ -1,13 +1,13 @@
 # Camunda Webapp
 
-This is the camunda BPM web application source.
+This is the Camunda BPM web application source.
 Clean, package and install it via [Maven](https://maven.apache.org/).
 
 ## Structure of this project
 
 The structure is as follows:
 
-* `ui` - HTML, CSS and Javascript sources as well as plugins and tests for the Camunda webapplications Cockpit, Tasklist and Admin.
+* `ui` - HTML, CSS and Javascript sources as well as Plugins and tests for the Camunda webapplications Cockpit, Tasklist and Admin.
 * `src` - Java sources and tests for the Camunda web application.
 
 
