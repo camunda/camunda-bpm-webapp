@@ -1,4 +1,4 @@
-# camunda Webapp
+# Camunda Webapp
 
 This is the camunda BPM web application source.
 Clean, package and install it via [Maven](https://maven.apache.org/).
@@ -13,7 +13,7 @@ The structure is as follows:
 
 ## UI
 
-There are 3 web applications available for the camunda BPM platform:
+There are 3 web applications available for the Camunda BPM platform:
 
 * __cockpit__: an administration interface for processes and decisions
 * __tasklist__: provides an interface to process user tasks
@@ -61,9 +61,9 @@ You need [node.js](http://nodejs.org) and npm. You will also need to install [gr
 
 See https://github.com/camunda/camunda-bpm-platform#building-camunda-bpm-platform
 
-#### Using grunt
+#### Using Grunt
 
-Installing the webapps is done by grunt:
+Installing the webapps is done by Grunt:
 
 ```sh
 # cd <path to your workspace>
@@ -86,7 +86,7 @@ If you are only changing Javascript files, you can set the environment variable 
 
 #### Testing
 
-Install the webapps with grunt and start the server in test mode:
+Install the webapps with Grunt and start the server in test mode:
 
 ```sh
 mvn jetty:run -Pdev-e2e
