@@ -18,7 +18,7 @@
 var angular = require("angular");
 
 var modalTemplate = require("./modal.html");
-var camundaLogo = require("../auth/page/logo.svg");
+var camundaLogo = require("./logo.svg");
 
 var previousUrl = "";
 

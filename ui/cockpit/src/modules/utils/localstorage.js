@@ -15,8 +15,17 @@
  * limitations under the License.
  */
 
-export { UserProvider, default as withUser } from "./withUser";
-export {
-  PreviousLocationProvider,
-  default as withPreviousLocation
-} from "./withPreviousLocation";
+const localStorage = window.localStorage;
+const values = JSON.parse(localStorage.getItem("camunda") || "{}");
+
+export function getItem(key, defaultValue) {
+  return typeof values[key] !== "undefined" ? values[key] : defaultValue;
+}
+export function setItem(key, value) {
+  values[key] = value;
+  localStorage.setItem("camunda", JSON.stringify(values));
+}
+export function removeItem(key) {
+  delete values[key];
+  localStorage.setItem("camunda", JSON.stringify(values));
+}
