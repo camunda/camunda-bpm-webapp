@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+var registerFilter = require("../../../../../components/ProcessInstance/HOC/withFilter")
+  .registerFilter;
+
 var angular = require("../../../../camunda-commons-ui/vendor/angular");
 
 module.exports = [
@@ -31,6 +34,8 @@ module.exports = [
       // filter
       $scope.filter = parseFilterFromUri();
       processData.provide("filter", parseFilterFromUri());
+
+      registerFilter(processData);
 
       processData.observe(
         ["filter", "instanceIdToInstanceMap", "activityIdToInstancesMap"],
