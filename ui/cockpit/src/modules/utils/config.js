@@ -21,6 +21,12 @@ import defaultConfig from "./defaultConfig.json";
 
 const inProduction = process.env.NODE_ENV === "production";
 const engine = window.location.href.replace(/.*cockpit\/([^/]*).*/, "$1");
+const baseImportPath = inProduction
+  ? document.querySelector("base").href + "../"
+  : "../../";
+const baseFetchPath = inProduction
+  ? document.querySelector("base").href + "../"
+  : "/";
 
 let config = {};
 
@@ -78,7 +84,7 @@ async function loadPlugins() {
   });
 
   const fetchers = customScripts.map(url =>
-    import(/* webpackIgnore: true */ "../../" + withSuffix(url, ".js"))
+    import(/* webpackIgnore: true */ baseImportPath + withSuffix(url, ".js"))
   );
 
   fetchers.push(
@@ -119,11 +125,7 @@ async function loadLocale() {
   const loadedLocales = await Promise.all(
     localesToLoad.map(
       async local =>
-        await (
-          await fetch(
-            inProduction ? `../locales/${local}.json` : `/locales/${local}.json`
-          )
-        ).json()
+        await (await fetch(baseFetchPath + `locales/${local}.json`)).json()
     )
   );
 
@@ -160,7 +162,7 @@ async function loadBpmnJsExtensions() {
     const path = withSuffix(bpmnJsConf.moddleExtensions[key], ".json");
 
     moddlePromises.push(
-      fetch(inProduction ? `../${path}` : `/${path}`)
+      fetch(baseFetchPath + path)
         .then(res => res.json())
         .then(json => {
           bpmnJsConf.moddleExtensions[key] = json;
@@ -173,7 +175,11 @@ async function loadBpmnJsExtensions() {
 
 export async function loadConfig() {
   let loadedConfig = (
-    await import(/* webpackIgnore: true */ "../../scripts/config.js")
+    await import(
+      /* webpackIgnore: true */ baseImportPath +
+        "scripts/config.js?bust=" +
+        new Date().getTime()
+    )
   ).default;
   config = { ...defaultConfig, ...loadedConfig };
   await Promise.all([loadPlugins(), loadLocale(), loadBpmnJsExtensions()]);
