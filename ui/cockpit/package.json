@@ -16,7 +16,7 @@
     "angular-sanitize": "1.8.0",
     "angular-translate": "2.18.2",
     "bootstrap": "3.4.1",
-    "bpmn-js": "6.2.1",
+    "bpmn-js": "7.4.0",
     "camunda-webapp-translations": "git://github.com/camunda/camunda-webapp-translations#master",
     "chart.js": "2.8.0",
     "classnames": "2.2.6",
