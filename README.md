@@ -3,6 +3,24 @@
 This is the Camunda BPM web application source.
 Clean, package and install it via [Maven](https://maven.apache.org/).
 
+Table of Contents
+=================
+
+  -[Structure of this project]
+  -[UI]
+    -[Plugins]
+  -[Libraries]
+  -[Development]
+    -[Prerequisite]
+    -[Setup]
+      -[Adjusting Maven Settings]
+      -[Using Grunt]
+      -[Testing]
+  -[Browsers support]
+  -[Contributing]
+  -[Help and support]
+  -[License]
+
 ## Structure of this project
 
 The structure is as follows:
