@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,12 +35,14 @@ import org.camunda.bpm.cockpit.Cockpit;
 import org.camunda.bpm.cockpit.CockpitRuntimeDelegate;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.authorization.Groups;
+import org.camunda.bpm.engine.rest.util.WebApplicationUtil;
 import org.camunda.bpm.tasklist.Tasklist;
 import org.camunda.bpm.tasklist.TasklistRuntimeDelegate;
 import org.camunda.bpm.webapp.impl.IllegalWebAppConfigurationException;
 import org.camunda.bpm.webapp.impl.filter.AbstractTemplateFilter;
 import org.camunda.bpm.webapp.impl.security.SecurityActions;
 import org.camunda.bpm.webapp.impl.security.SecurityActions.SecurityAction;
+import org.camunda.bpm.webapp.impl.util.ServletContextUtil;
 import org.camunda.bpm.webapp.plugin.spi.AppPlugin;
 import org.camunda.bpm.welcome.Welcome;
 import org.camunda.bpm.welcome.WelcomeRuntimeDelegate;
@@ -231,6 +234,7 @@ public class ProcessEnginesFilter extends AbstractTemplateFilter {
   }
 
   protected void serveIndexPage(String appName, String engineName, String contextPath, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    setWebappInTelemetry(engineName, appName, request.getServletContext());
     String data = getWebResourceContents("/app/" + appName + "/index.html");
 
     data = replacePlaceholder(data, appName, engineName, contextPath, request, response);
@@ -246,6 +250,13 @@ public class ProcessEnginesFilter extends AbstractTemplateFilter {
                .replace(BASE_PLACEHOLDER, String.format("%s/app/%s/%s/", contextPath, appName, engineName))
                .replace(PLUGIN_PACKAGES_PLACEHOLDER, createPluginPackagesStr(appName, contextPath))
                .replace(PLUGIN_DEPENDENCIES_PLACEHOLDER, createPluginDependenciesStr(appName));
+  }
+
+  protected void setWebappInTelemetry(String engineName, String appName, ServletContext servletContext) {
+    if (!ServletContextUtil.isTelemetryDataSentAlready(appName, engineName, servletContext) &&
+        WebApplicationUtil.setWebapp(engineName, appName)) {
+      ServletContextUtil.setTelemetryDataSent(appName, engineName, servletContext);
+    }
   }
 
   protected <T extends AppPlugin> CharSequence createPluginPackagesStr(String appName, String contextPath) {
