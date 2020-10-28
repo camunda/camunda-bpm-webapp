@@ -119,11 +119,5 @@
     "source-map": "0.7.3",
     "watchify": "3.11.1",
     "xunit-file": "1.0.0"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
   }
 }
