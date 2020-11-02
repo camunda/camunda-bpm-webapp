@@ -58,16 +58,27 @@ function Login({ user, refreshUser, previousLocation }) {
       await doLogin();
     } catch (e) {
       setLoadingState("ERROR");
-      addError({
-        status: translate("PAGE_LOGIN_FAILED"),
-        message: translate("PAGE_LOGIN_ERROR_MSG"),
-        exclusive: true
-      });
+      setUsername("");
+      setPassword("");
+
+      if (e.status === 401 || e.status === 403) {
+        addError({
+          status: translate("PAGE_LOGIN_FAILED"),
+          message: translate("PAGE_LOGIN_ERROR_MSG"),
+          exclusive: true
+        });
+      } else {
+        addError({
+          status: translate("PAGE_LOGIN_FAILED"),
+          message: (await e.json()).message,
+          exclusive: true
+        });
+      }
     }
   }
 
   if (user || loadingState === "DONE") {
-    return <Redirect to={previousLocation || "/"}></Redirect>;
+    return <Redirect to={previousLocation || "/"} />;
   }
 
   return (
@@ -84,15 +95,20 @@ function Login({ user, refreshUser, previousLocation }) {
           value={username}
           onChange={e => setUsername(e.target.value)}
           required
-        ></FormControl>
+        />
         <FormControl
           placeholder={translate("PAGE_LOGIN_PASSWORD")}
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
-        ></FormControl>
-        <Button type="submit" size="lg" disabled={loadingState === "LOADING"}>
+        />
+        <Button
+          type="submit"
+          bsStyle="primary"
+          bsSize="large"
+          disabled={loadingState === "LOADING"}
+        >
           {translate("PAGE_LOGIN_SIGN_IN_ACTION")}
         </Button>
       </form>
