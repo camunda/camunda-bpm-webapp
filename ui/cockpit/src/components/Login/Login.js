@@ -83,12 +83,14 @@ function Login({ user, refreshUser, previousLocation }) {
           type="text"
           value={username}
           onChange={e => setUsername(e.target.value)}
+          required
         ></FormControl>
         <FormControl
           placeholder={translate("PAGE_LOGIN_PASSWORD")}
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
+          required
         ></FormControl>
         <Button type="submit" size="lg" disabled={loadingState === "LOADING"}>
           {translate("PAGE_LOGIN_SIGN_IN_ACTION")}
