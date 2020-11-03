@@ -17,20 +17,20 @@
 
 import React, { useState, useEffect } from "react";
 
-let _filter = {};
+let currentFilter = {};
 let filterListeners = [];
 let processData = null;
 
 function handleFilterChange(newFilter) {
-  if (JSON.stringify(newFilter) === JSON.stringify(_filter)) return;
-  _filter = newFilter;
-  filterListeners.forEach(el => {
-    el(newFilter);
+  if (JSON.stringify(newFilter) === JSON.stringify(currentFilter)) return;
+  currentFilter = newFilter;
+  filterListeners.forEach(setFilter => {
+    setFilter(newFilter);
   });
 }
 
 function setNewFilter(newFilter) {
-  _filter = newFilter;
+  currentFilter = newFilter;
   processData.set("filter", newFilter);
 }
 // This file mocks the behaviour of an HOC
@@ -42,9 +42,11 @@ export function registerFilter(dataDepend) {
 }
 
 const withFilter = Component => props => {
-  const [filter, setFilter] = useState(_filter);
+  const [filter, setFilter] = useState(currentFilter);
 
   useEffect(() => {
+    // We don't have a react provider, so every Consumer needs a state
+    // The state is updated when the dataDepend 'filter' object is changed
     filterListeners.push(setFilter);
     return () => {
       filterListeners = filterListeners.filter(val => val !== setFilter);
