@@ -15,10 +15,4 @@
  * limitations under the License.
  */
 
-import * as cockpitNavigation from "./cockpit.navigation";
-import * as processInstanceRuntimeActions from "./cockpit.processInstance.runtime.action";
-
-export default [
-  ...Object.values(cockpitNavigation),
-  ...Object.values(processInstanceRuntimeActions)
-];
+export { default as CancelProcessInstance } from "./CancelProcessInstance";

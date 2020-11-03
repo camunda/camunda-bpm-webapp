@@ -15,10 +15,14 @@
  * limitations under the License.
  */
 
-import * as cockpitNavigation from "./cockpit.navigation";
-import * as processInstanceRuntimeActions from "./cockpit.processInstance.runtime.action";
+import React from "react";
+import { CancelProcessInstance } from "components";
 
-export default [
-  ...Object.values(cockpitNavigation),
-  ...Object.values(processInstanceRuntimeActions)
-];
+export default {
+  id: "cockpit.processInstance.runtime.action.CancelProcessInstance",
+  pluginPoint: "cockpit.processInstance.runtime.action",
+  priority: 20,
+  render: (viewer, { processInstanceId }) => {
+    return <CancelProcessInstance processInstanceId={processInstanceId} />;
+  }
+};

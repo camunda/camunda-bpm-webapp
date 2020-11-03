@@ -15,10 +15,33 @@
  * limitations under the License.
  */
 
-import * as cockpitNavigation from "./cockpit.navigation";
-import * as processInstanceRuntimeActions from "./cockpit.processInstance.runtime.action";
+import React from "react";
+import {
+  Tooltip,
+  OverlayTrigger,
+  FormGroup,
+  Col,
+  ControlLabel
+} from "react-bootstrap";
+import translate from "utils/translation";
 
-export default [
-  ...Object.values(cockpitNavigation),
-  ...Object.values(processInstanceRuntimeActions)
-];
+export default function ModalFormGroup({ label, tooltip, formControl }) {
+  return (
+    <FormGroup>
+      <Col componentClass={ControlLabel} xs={5}>
+        {translate(label)}&nbsp;
+        {tooltip && (
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip id="tooltip">{translate(tooltip)}</Tooltip>}
+          >
+            <span className="glyphicon glyphicon-question-sign" />
+          </OverlayTrigger>
+        )}
+      </Col>
+      <Col componentClass={ControlLabel} xs={7}>
+        {formControl}
+      </Col>
+    </FormGroup>
+  );
+}

@@ -23,3 +23,6 @@ export { LoadingIndicator } from "./LoadingIndicator";
 export { Notifications } from "./Notifications";
 export { StateCircle } from "./StateCircle";
 export { Table } from "./Table";
+export { ActionButton } from "./ActionButton";
+export { CancelProcessInstance } from "./CancelProcessInstance";
+export { ModalFormGroup } from "./ModalFormGroup";
