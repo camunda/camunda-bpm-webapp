@@ -32,9 +32,9 @@ export default function Table({ head, children }) {
   );
 }
 
-Table.Head = function Head({ children, sortOrder, onSort }) {
+Table.Head = function Head({ children, sortOrder, onSort, className }) {
   if (!onSort) {
-    return <th className="TableHead">{children}</th>;
+    return <th className={classNames("TableHead", className)}>{children}</th>;
   }
 
   let sortIcon;
@@ -53,7 +53,7 @@ Table.Head = function Head({ children, sortOrder, onSort }) {
   }
 
   return (
-    <th className="TableHead">
+    <th className={classNames("TableHead", className)}>
       {children} &nbsp;
       <LinkButton onClick={onSort}>
         <span className={classNames("glyphicon", sortIcon)}></span>
@@ -62,8 +62,8 @@ Table.Head = function Head({ children, sortOrder, onSort }) {
   );
 };
 
-Table.Row = function Row({ children }) {
-  return <tr className="TableRow">{children}</tr>;
+Table.Row = function Row({ children, className }) {
+  return <tr className={classNames("TableRow", className)}>{children}</tr>;
 };
 
 Table.Cell = function Cell({ children, className }) {

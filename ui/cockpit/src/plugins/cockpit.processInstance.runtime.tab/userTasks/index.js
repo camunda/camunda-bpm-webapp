@@ -15,12 +15,23 @@
  * limitations under the License.
  */
 
-import * as cockpitNavigation from "./cockpit.navigation";
-import * as diagramOverlays from "./cockpit.processInstance.diagram.plugin";
-import * as processInstanceRuntimeTabs from "./cockpit.processInstance.runtime.tab";
+import React from "react";
 
-export default [
-  ...Object.values(cockpitNavigation),
-  ...Object.values(diagramOverlays),
-  ...Object.values(processInstanceRuntimeTabs)
-];
+import UserTasks from "./UserTasks";
+import { ActivityProvider } from "../../../components/ProcessInstance/HOC/withActivityInstanceMap";
+
+export default {
+  id: "user-tasks-tab",
+  pluginPoint: "cockpit.processInstance.runtime.tab",
+  priority: 6,
+  render: (node, { processInstanceId }) => {
+    return (
+      <ActivityProvider processInstanceId={processInstanceId}>
+        <UserTasks processInstanceId={processInstanceId} />
+      </ActivityProvider>
+    );
+  },
+  properties: {
+    label: "PLUGIN_USER_TASKS_LABEL"
+  }
+};

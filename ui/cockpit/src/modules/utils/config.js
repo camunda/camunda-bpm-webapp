@@ -21,6 +21,7 @@ import defaultConfig from "./defaultConfig.json";
 
 const inProduction = process.env.NODE_ENV === "production";
 const engine = window.location.href.replace(/.*cockpit\/([^/]*).*/, "$1");
+
 const baseImportPath = inProduction
   ? document.querySelector("base").href + "../"
   : "../../";

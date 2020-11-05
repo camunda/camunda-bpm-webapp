@@ -15,4 +15,26 @@
  * limitations under the License.
  */
 
-export { default as abbreviateNumber } from "./abbreviateNumber";
+const getSearch = () => new URLSearchParams(window.location.hash.split("?")[1]);
+const setSearch = search => {
+  window.location.hash =
+    window.location.hash.split("?")[0] + "?" + search.toString();
+};
+
+export default {
+  get: key => {
+    const locationSearch = getSearch();
+    return locationSearch.get(key);
+  },
+  set: (key, value) => {
+    const locationSearch = getSearch();
+    locationSearch.set(key, value);
+
+    setSearch(locationSearch);
+  },
+  delete: key => {
+    const locationSearch = getSearch();
+    locationSearch.delete(key);
+    setSearch(locationSearch);
+  }
+};
