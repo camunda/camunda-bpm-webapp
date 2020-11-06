@@ -16,81 +16,87 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Modal, Button, Form, FormControl, Table } from "react-bootstrap";
 import translate from "utils/translation";
-import { getConfig } from "utils/config";
+import { getSkipCustomListeners, getSkipIoMappings } from "utils/config";
 import { addMessage, addError, clearAll } from "utils/notifications";
-import { Notifications, ActionButton, ModalFormGroup } from "components";
 import { del, get, post } from "utils/request";
-import { useHistory } from "react-router-dom";
+import { Notifications, ActionButton, ModalFormGroup } from "components";
 
 import eePlugins from "enterprise/cockpit/cockpitPluginsEE";
 
-export default function CancelProcessInstance({ processInstanceId }) {
-  const STATUS = Object.freeze({
-    LOADING: 1,
-    INITIAL: 2,
-    ACTION_PENDING: 3,
-    CONFIRMATION: 4,
-    FAILED: 5
-  });
+const isEnterprise = eePlugins.name !== "ee-stub";
 
-  const [status, setStatus] = useState(STATUS.LOADING);
+const STATUS = Object.freeze({
+  LOADING: 1,
+  INITIAL: 2,
+  ACTION_PENDING: 3,
+  CONFIRMATION: 4,
+  FAILED: 5,
+  NOT_FOUND: 6
+});
+
+export default function CancelProcessInstance({ processInstanceId }) {
+  const [status, setStatus] = useState(null);
 
   const [processInstance, setProcessInstance] = useState(null);
   const [subProcessInstances, setSubProcessInstances] = useState(null);
   const [subProcessInstancesCount, setSubProcessInstancesCount] = useState(
     null
   );
+  const [show, setShow] = useState(false);
 
-  const loadProcessInstance = async () => {
-    return await (await get(
-      `%ENGINE_API%/process-instance/${processInstanceId}`
-    )).json();
-  };
+  useEffect(() => {
+    const loadProcessInstance = async () => {
+      return await (await get(
+        `%ENGINE_API%/process-instance/${processInstanceId}`
+      )).json();
+    };
 
-  const loadSubProcessInstances = async () => {
-    return await (await post(
-      `%ENGINE_API%/process-instance?firstResult=0&maxResults=5`,
-      { superProcessInstance: processInstanceId }
-    )).json();
-  };
+    loadProcessInstance()
+      .then(processInstance => {
+        setProcessInstance(processInstance);
+      })
+      .catch(error => {
+        if (error.status === 404) {
+          setStatus(STATUS.NOT_FOUND);
+        }
+      });
+  }, [processInstanceId]);
 
-  const loadSubProcessInstancesCount = async () => {
-    return await (await post(`%ENGINE_API%/process-instance/count`, {
-      superProcessInstance: processInstanceId
-    })).json();
-  };
+  useEffect(() => {
+    if (show) {
+      const loadSubProcessInstances = async () => {
+        return await (await post(
+          `%ENGINE_API%/process-instance?firstResult=0&maxResults=5`,
+          { superProcessInstance: processInstanceId }
+        )).json();
+      };
 
-  const load = () => {
-    Promise.all([
-      loadProcessInstance(),
-      loadSubProcessInstances(),
-      loadSubProcessInstancesCount()
-    ])
-      .then(
-        ([processInstance, subProcessInstances, subProcessInstancesCount]) => {
-          setProcessInstance(processInstance);
+      const loadSubProcessInstancesCount = async () => {
+        return await (await post(`%ENGINE_API%/process-instance/count`, {
+          superProcessInstance: processInstanceId
+        })).json();
+      };
+
+      setStatus(STATUS.LOADING);
+
+      Promise.all([loadSubProcessInstances(), loadSubProcessInstancesCount()])
+        .then(([subProcessInstances, subProcessInstancesCount]) => {
           setSubProcessInstances(subProcessInstances);
           setSubProcessInstancesCount(subProcessInstancesCount.count);
+        })
+        .catch(() => {})
+        .finally(() => {
           setStatus(STATUS.INITIAL);
-        }
-      )
-      .catch(() => {
-        setStatus(STATUS.FAILED);
-      });
-  };
-
-  useEffect(load, [processInstanceId]);
-
-  const isEnterprise = eePlugins.name !== "ee-stub";
-
-  const initialShow = false;
-  const [show, setShow] = useState(initialShow);
+        });
+    }
+  }, [processInstanceId, show]);
 
   const initialChecked = {
-    skipCustomListeners: getConfig().skipCustomListeners.default,
-    skipIoMappings: getConfig().skipIoMappings.default
+    skipCustomListeners: getSkipCustomListeners().default,
+    skipIoMappings: getSkipIoMappings().default
   };
 
   const [checked, setChecked] = useState(initialChecked);
@@ -124,12 +130,11 @@ export default function CancelProcessInstance({ processInstanceId }) {
         } else {
           history.push(pathname);
         }
-      } else {
-        setStatus(STATUS.INITIAL);
-        setChecked(initialChecked);
-        setShow(initialShow);
-        clearAll();
       }
+
+      setChecked(initialChecked);
+      setShow(false);
+      clearAll();
     }
   };
 
@@ -171,7 +176,7 @@ export default function CancelProcessInstance({ processInstanceId }) {
         }}
         icon="remove"
         onClick={openDialog}
-        disabled={check(STATUS.FAILED) || check(STATUS.LOADING)}
+        disabled={check(STATUS.NOT_FOUND) || check(STATUS.CONFIRMATION)}
       />
 
       <Modal show={show} onHide={closeDialog}>
@@ -190,7 +195,7 @@ export default function CancelProcessInstance({ processInstanceId }) {
 
           {(check(STATUS.INITIAL) || check(STATUS.ACTION_PENDING)) && (
             <>
-              {subProcessInstances.length > 0 && (
+              {!!subProcessInstances && subProcessInstances.length > 0 && (
                 <>
                   {translate("PLUGIN_CANCEL_PROCESS_BEFORE_DELETION")}
                   <Table className="table cam-table">
@@ -237,11 +242,11 @@ export default function CancelProcessInstance({ processInstanceId }) {
                   </Table>
                 </>
               )}
-              {(!getConfig().skipIoMappings.hidden ||
-                !getConfig().skipCustomListeners.hidden) && (
+              {(!getSkipIoMappings().hidden ||
+                !getSkipCustomListeners().hidden) && (
                 <Form horizontal>
                   <fieldset disabled={check(STATUS.ACTION_PENDING)}>
-                    {!getConfig().skipCustomListeners.hidden && (
+                    {!getSkipCustomListeners().hidden && (
                       <ModalFormGroup
                         label="PLUGIN_CANCEL_PROCESS_SKIP_CUSTOM_LISTENERS"
                         tooltip="PLUGIN_CANCEL_PROCESS_TOOLTIP_VALUE_ENABLED"
@@ -255,7 +260,7 @@ export default function CancelProcessInstance({ processInstanceId }) {
                         }
                       />
                     )}
-                    {!getConfig().skipIoMappings.hidden && (
+                    {!getSkipIoMappings().hidden && (
                       <ModalFormGroup
                         label="PLUGIN_CANCEL_PROCESS_SKIP_IO_MAPPINGS"
                         tooltip="PLUGIN_CANCEL_PROCESS_TOOLTIP_VALUE_ENABLED_IO"
