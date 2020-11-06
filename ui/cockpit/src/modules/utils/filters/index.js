@@ -15,12 +15,4 @@
  * limitations under the License.
  */
 
-import * as cockpitNavigation from "./cockpit.navigation";
-import * as diagramOverlays from "./cockpit.processInstance.diagram.plugin";
-import * as processInstanceRuntimeActions from "./cockpit.processInstance.runtime.action";
-
-export default [
-  ...Object.values(cockpitNavigation),
-  ...Object.values(diagramOverlays),
-  ...Object.values(processInstanceRuntimeActions)
-];
+export { default as abbreviateNumber } from "./abbreviateNumber";

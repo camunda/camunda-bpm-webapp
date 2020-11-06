@@ -15,12 +15,19 @@
  * limitations under the License.
  */
 
-import * as cockpitNavigation from "./cockpit.navigation";
-import * as diagramOverlays from "./cockpit.processInstance.diagram.plugin";
-import * as processInstanceRuntimeActions from "./cockpit.processInstance.runtime.action";
+import React from "react";
+import Overlays from "./Overlays";
+import { ActivityProvider } from "../../components/ProcessInstance/HOC/withActivityInstances";
 
-export default [
-  ...Object.values(cockpitNavigation),
-  ...Object.values(diagramOverlays),
-  ...Object.values(processInstanceRuntimeActions)
-];
+export default {
+  id: "cockpit.processInstance.diagram.plugin.instanceCount",
+  pluginPoint: "cockpit.processInstance.diagram.plugin",
+  priority: 0,
+  render: (viewer, { processInstanceId }) => {
+    return (
+      <ActivityProvider processInstanceId={processInstanceId}>
+        <Overlays viewer={viewer} processInstanceId={processInstanceId} />
+      </ActivityProvider>
+    );
+  }
+};
