@@ -47,6 +47,13 @@ export default function CancelProcessInstance({ processInstanceId }) {
   );
   const [show, setShow] = useState(false);
 
+  const initialChecked = {
+    skipCustomListeners: getSkipCustomListeners().default,
+    skipIoMappings: getSkipIoMappings().default
+  };
+
+  const [checked, setChecked] = useState(initialChecked);
+
   useEffect(() => {
     const loadProcessInstance = async () => {
       return await (await get(
@@ -87,19 +94,11 @@ export default function CancelProcessInstance({ processInstanceId }) {
           setSubProcessInstances(subProcessInstances);
           setSubProcessInstancesCount(subProcessInstancesCount.count);
         })
-        .catch(() => {})
         .finally(() => {
           setStatus(STATUS.INITIAL);
         });
     }
   }, [processInstanceId, show]);
-
-  const initialChecked = {
-    skipCustomListeners: getSkipCustomListeners().default,
-    skipIoMappings: getSkipIoMappings().default
-  };
-
-  const [checked, setChecked] = useState(initialChecked);
 
   const handleChange = event => {
     setChecked({

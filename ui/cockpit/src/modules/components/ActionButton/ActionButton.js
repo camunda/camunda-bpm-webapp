@@ -16,12 +16,10 @@
  */
 
 import React from "react";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Tooltip, OverlayTrigger, Button } from "react-bootstrap";
 import translate from "utils/translation";
 
 export default function ActionButton({ icon, labels, disabled, onClick }) {
-  // button is a span because a disabled button cannot have tooltips
-  // and a link without href is semantically wrong
   return (
     <OverlayTrigger
       placement="left"
@@ -31,13 +29,16 @@ export default function ActionButton({ icon, labels, disabled, onClick }) {
         </Tooltip>
       }
     >
-      <span
-        className="btn btn-default btn-toolbar"
-        onClick={disabled ? () => {} : onClick}
-        disabled={disabled}
-      >
-        <span className={"glyphicon glyphicon-" + icon} />
-      </span>
+      <div>
+        <Button
+          bsStyle="default"
+          className="btn-toolbar"
+          onClick={disabled ? () => {} : onClick}
+          disabled={disabled}
+        >
+          <span className={"glyphicon glyphicon-" + icon} />
+        </Button>
+      </div>
     </OverlayTrigger>
   );
 }

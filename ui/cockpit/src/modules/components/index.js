@@ -24,5 +24,5 @@ export { Notifications } from "./Notifications";
 export { StateCircle } from "./StateCircle";
 export { Table } from "./Table";
 export { ActionButton } from "./ActionButton";
-export { CancelProcessInstance } from "./CancelProcessInstance";
+export { CancelProcessInstance } from "./processInstance/CancelProcessInstance";
 export { ModalFormGroup } from "./ModalFormGroup";
