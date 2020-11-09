@@ -45,7 +45,7 @@
     "cmmn-js": "0.18.1",
     "dmn-js": "8.0.2",
     "dmn-js-decision-table": "8.0.2",
-    "dmn-js-drd": "8.0.2",
+    "dmn-js-drd": "9.4.0",
     "dmn-js-literal-expression": "8.0.2",
     "dmn-js-shared": "8.0.2",
     "dom4": "2.1.5",
