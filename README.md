@@ -1,6 +1,6 @@
-# This project has been moved away
+# This project was moved
 
-This repository has been merged with the `camunda-bpm-platform` repository starting with 
+This repository was merged with the `camunda-bpm-platform` repository starting with 
 Camunda BPM Runtime 7.15.0-alpha2. Please find the new location of the source code here: 
 https://github.com/camunda/camunda-bpm-platform/tree/master/webapps/
 
