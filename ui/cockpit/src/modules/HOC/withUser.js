@@ -36,9 +36,11 @@ export function UserProvider({ children }) {
     try {
       const user = await (await get("%ADMIN_API%/auth/user/%ENGINE%")).json();
 
-      user.profile = await (
-        await get(`%ENGINE_API%/user/${user.userId}/profile`)
-      ).json();
+      try {
+        user.profile = await (
+          await get(`%ENGINE_API%/user/${user.userId}/profile`)
+        ).json();
+      } catch (e) {}
 
       if (
         user &&
@@ -52,6 +54,9 @@ export function UserProvider({ children }) {
       setUser(user);
       return user;
     } catch (err) {
+      if (err.status === 404) {
+        window.location.href = "#/login";
+      }
       setUser(null);
     }
   };
