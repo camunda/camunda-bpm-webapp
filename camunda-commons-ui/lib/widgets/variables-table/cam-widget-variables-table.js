@@ -15,19 +15,10 @@
  * limitations under the License.
  */
 
-'use strict';
-var fs = require('fs');
-
 var angular = require('../../../../camunda-bpm-sdk-js/vendor/angular'),
   varUtils = require('../variable/cam-variable-utils'),
-  template = fs.readFileSync(
-    __dirname + '/cam-widget-variables-table.html',
-    'utf8'
-  ),
-  confirmationTemplate = fs.readFileSync(
-    __dirname + '/cam-widget-variables-deletion-dialog.html',
-    'utf8'
-  );
+  template = require('./cam-widget-variables-table.html.js'),
+  confirmationTemplate = require('./cam-widget-variables-deletion-dialog.html.js');
 
 var typeUtils = varUtils.typeUtils;
 
@@ -73,7 +64,10 @@ module.exports = [
         downloadVar: '=?onDownload',
         uploadVar: '=?onUpload',
         onSortChange: '&',
-        defaultSort: '=?'
+        onChangeStart: '&',
+        onChangeEnd: '&',
+        defaultSort: '=?',
+        ignoreTypes: '=?'
       },
 
       link: function($scope) {
@@ -116,6 +110,11 @@ module.exports = [
         $scope.editable = $scope.editable || $scope.headerClasses;
 
         $scope.variableTypes = angular.copy(varUtils.types);
+        $scope.variableTypes = $scope.ignoreTypes
+          ? $scope.variableTypes.filter(
+              types => !$scope.ignoreTypes.includes(types)
+            )
+          : $scope.variableTypes;
         $scope.defaultValues = varUtils.defaultValues;
         $scope.isPrimitive = varUtils.isPrimitive($scope);
         $scope.isBinary = varUtils.isBinary($scope);
@@ -170,7 +169,8 @@ module.exports = [
                 return angular.copy(_getVar(variable));
               },
               readonly: readonly
-            }
+            },
+            appendTo: angular.element('.angular-app')
           };
         };
 
@@ -395,19 +395,24 @@ module.exports = [
 
         $scope.saveVariable = function(v) {
           var info = $scope.variables[v];
-          info.editMode = false;
+          $scope.enableEditMode(info, false);
 
           $scope.saveVar(info, v).then(
             function(saved) {
               info.variable.name = saved.name;
-              info.variable.type = saved.type;
+              var type = (info.variable.type = saved.type);
               info.variable.value = saved.value;
-              info.variable.valueInfo = saved.valueInfo;
               delete info._copy;
+
+              if (type !== 'Object') {
+                delete info.variable.valueInfo;
+              } else {
+                info.variable.valueInfo = saved.valueInfo;
+              }
             },
             function(/*err*/) {
               // console.error(err);
-              info.editMode = true;
+              $scope.enableEditMode(info, true);
             }
           );
         };
@@ -418,13 +423,38 @@ module.exports = [
           $scope.uploadVar(info, v).then(
             function(/*saved*/) {
               delete info._copy;
-              info.editMode = false;
+              $scope.enableEditMode(info, false);
             },
             function(/*err*/) {
               // console.error(err);
-              info.editMode = false;
+              $scope.enableEditMode(info, false);
             }
           );
+        };
+
+        $scope.enableEditMode = function(info, enableEditMode) {
+          info.editMode = enableEditMode;
+          if (enableEditMode) {
+            var uncompletedCount = 0;
+            $scope.variables.forEach(function(variable) {
+              if (variable.editMode) {
+                uncompletedCount++;
+              }
+            });
+            if (uncompletedCount === 1) {
+              $scope.onChangeStart();
+            }
+          } else {
+            var completedCount = 0;
+            $scope.variables.forEach(function(variable) {
+              if (!variable.editMode) {
+                completedCount++;
+              }
+            });
+            if (completedCount === $scope.variables.length) {
+              $scope.onChangeEnd();
+            }
+          }
         };
       }
     };
