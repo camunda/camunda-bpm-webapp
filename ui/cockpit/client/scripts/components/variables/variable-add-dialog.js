@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
-var angular = require('angular');
+'use strict';
 
-var template = require('./variable-add-dialog.html.js');
+var angular = require('angular');
+var fs = require('fs');
+
+var template = fs.readFileSync(__dirname + '/variable-add-dialog.html', 'utf8');
 
 var Controller = [
   '$uibModalInstance',

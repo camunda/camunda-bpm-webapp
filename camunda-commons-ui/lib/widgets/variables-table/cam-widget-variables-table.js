@@ -15,10 +15,19 @@
  * limitations under the License.
  */
 
+'use strict';
+var fs = require('fs');
+
 var angular = require('../../../../camunda-bpm-sdk-js/vendor/angular'),
   varUtils = require('../variable/cam-variable-utils'),
-  template = require('./cam-widget-variables-table.html.js'),
-  confirmationTemplate = require('./cam-widget-variables-deletion-dialog.html.js');
+  template = fs.readFileSync(
+    __dirname + '/cam-widget-variables-table.html',
+    'utf8'
+  ),
+  confirmationTemplate = fs.readFileSync(
+    __dirname + '/cam-widget-variables-deletion-dialog.html',
+    'utf8'
+  );
 
 var typeUtils = varUtils.typeUtils;
 
@@ -67,6 +76,7 @@ module.exports = [
         onChangeStart: '&',
         onChangeEnd: '&',
         defaultSort: '=?',
+        onValidation: '&',
         ignoreTypes: '=?'
       },
 
@@ -169,8 +179,7 @@ module.exports = [
                 return angular.copy(_getVar(variable));
               },
               readonly: readonly
-            },
-            appendTo: angular.element('.angular-app')
+            }
           };
         };
 
