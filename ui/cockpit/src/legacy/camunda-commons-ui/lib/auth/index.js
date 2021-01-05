@@ -62,7 +62,8 @@ ngModule
           }
 
           preLoginUrl = url;
-          $location.url("/login");
+          // $location takes forever to redirect, use browser API instead
+          window.location.hash = "#/login";
         });
       });
 
