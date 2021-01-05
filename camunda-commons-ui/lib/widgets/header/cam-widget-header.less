@@ -2,20 +2,22 @@ body {
   padding-top: @header-height;
 }
 
+.brand-logo {
+  padding-right: 10px;
+  svg {
+    margin: 0 auto;
+    display: block;
+    fill: #666666;
+  }
+}
+
 [cam-widget-header] {
   .cam-corporate-header();
 
   .navbar-brand {
     display: flex;
     align-items: center;
-    .brand-logo {
-      padding-right: 10px;
-      svg {
-        margin: 0 auto;
-        display: block;
-        fill: #666666;
-      }
-    }
+    white-space: nowrap;
   }
 
   [ng-transclude] {
