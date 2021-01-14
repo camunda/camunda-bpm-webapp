@@ -26,6 +26,10 @@ var inspectTemplate = fs.readFileSync(
   'utf8'
 );
 
+var debouncePromiseFactory = require('camunda-bpm-sdk-js').utils
+  .debouncePromiseFactory;
+var debouncePromise = debouncePromiseFactory();
+
 var Directive = [
   '$http',
   '$q',
@@ -211,8 +215,9 @@ var Directive = [
 
         // get the incidents
         scope.loadingState = 'LOADING';
-        return $http
-          .post(Uri.appUri(baseUrl), params, {params: pagingParams})
+        return debouncePromise(
+          $http.post(Uri.appUri(baseUrl), params, {params: pagingParams})
+        )
           .then(function(res) {
             var data = res.data;
             angular.forEach(data, function(incident) {
@@ -236,6 +241,11 @@ var Directive = [
 
             scope.incidents = data;
             scope.loadingState = data.length ? 'LOADED' : 'EMPTY';
+
+            var phase = scope.$root.$$phase;
+            if (phase !== '$apply' && phase !== '$digest') {
+              scope.$apply();
+            }
           })
           .catch(angular.noop);
       }
