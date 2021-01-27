@@ -31,6 +31,8 @@ module.exports.ExternalTasksTabController = ExternalTasksTabController;
 function ExternalTasksTabController($scope, exposeScopeProperties, search) {
   exposeScopeProperties($scope, this, ['onLoad']);
 
+  this.scope = $scope;
+
   // reset Page when changing Tabs
   $scope.$on('$destroy', function() {
     search('page', null);
@@ -80,6 +82,11 @@ ExternalTasksTabController.prototype.loadTasks = function() {
         this.loadingState = 'EMPTY';
       } else {
         this.loadingState = 'LOADED';
+      }
+
+      var phase = this.scope.$root.$$phase;
+      if (phase !== '$apply' && phase !== '$digest') {
+        this.scope.$apply();
       }
     }.bind(this)
   );
