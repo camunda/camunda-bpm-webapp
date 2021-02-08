@@ -1,19 +1,19 @@
-# camunda Webapp
+# Camunda Webapp
 
-This is the camunda BPM webapplication source.
+This is the Camunda Platform web application source.
 Clean, package and install it via [Maven](https://maven.apache.org/).
 
 ## Structure of this project
 
 The structure is as follows:
 
-* `ui` - HTML, CSS and Javascript sources as well as plugins and test for the Camunda webapplications Cockpit, Tasklist and Admin.
-* `src` - Java sources and tests for the Camunda webapplication.
+* `ui` - HTML, CSS and Javascript sources as well as Plugins and tests for the Camunda webapplications Cockpit, Tasklist and Admin.
+* `src` - Java sources and tests for the Camunda web application.
 
 
 ## UI
 
-There are 3 webapplications available for the camunda BPM platform:
+There are 3 web applications available for the Camunda Platform :
 
 * __cockpit__: an administration interface for processes and decisions
 * __tasklist__: provides an interface to process user tasks
@@ -27,7 +27,7 @@ The webapps above are relying on 2 libraries:
 
 #### Plugins
 
-Parts of the webapplications can be extended using plugins.
+Parts of the web applications can be extended using plugins.
 
 See [plugin development guide](http://docs.camunda.org/latest/real-life/how-to/#cockpit-how-to-develop-a-cockpit-plugin) for details.
 
@@ -61,9 +61,9 @@ You need [node.js](http://nodejs.org) and npm. You will also need to install [gr
 
 See https://github.com/camunda/camunda-bpm-platform#building-camunda-bpm-platform
 
-#### Using grunt
+#### Using Grunt
 
-Installing the webapps is done by grunt:
+Installing the webapps is done by Grunt:
 
 ```sh
 # cd <path to your workspace>
@@ -78,7 +78,7 @@ To start the server in development mode, call
 ```sh
 mvn jetty:run -Pdevelop
 ```
-The webapps are then available pointing a browser at [http://localhost:8080](http://localhost:8080). To login as admin user, use `jonny1` as username and password.
+The webapps are then available pointing a browser at [http://localhost:8080](http://localhost:8080). To login as an admin user, use `jonny1` as username and password.
 
 You can now start developing using the `grunt auto-build` command in the webapp directory. To shorten compile times, you can specify the project you are going to make changes to by calling `grunt auto-build:admin`
 
@@ -86,7 +86,7 @@ If you are only changing Javascript files, you can set the environment variable 
 
 #### Testing
 
-Install the webapps with grunt and start the server in test mode:
+Install the webapps with Grunt and start the server in test mode:
 
 ```sh
 mvn jetty:run -Pdev-e2e
@@ -112,9 +112,9 @@ describe.only('Cockpit Dashboard Spec', function() {
 
 The supported browsers are:
 
-- Chrome
-- Firefox
-- Edge 79+
+- Chrome Latest
+- Firefox Latest
+- Edge Latest
 
 
 ## Contributing
