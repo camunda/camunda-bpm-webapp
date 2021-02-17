@@ -36,48 +36,18 @@ public class QueryServiceImpl implements QueryService {
     this.commandExecutor = commandExecutor;
   }
 
-  public <T> List<T> executeQuery(final String statement, final QueryParameters<T> parameter) {
-    List<T> queryResult = commandExecutor.executeCommand(new Command<List<T>>() {
-
-      @SuppressWarnings("unchecked")
-      public List<T> execute(CommandContext commandContext) {
-        commandContext.getAuthorizationManager()
-          .enableQueryAuthCheck(parameter.getAuthCheck());
-
-        if (parameter.isMaxResultsLimitEnabled()) {
-          QueryMaxResultsLimitUtil.checkMaxResultsLimit(parameter.getMaxResults(),
-            getProcessEngineConfiguration(commandContext));
-        }
-
-        return (List<T>) commandContext.getDbSqlSession().selectList(statement, parameter);
-      }
-
-    });
+  public <T> List<T> executeQuery(String statement, QueryParameters<T> parameter) {
+    List<T> queryResult = commandExecutor.executeCommand(new ExecuteListQueryCmd<T>(statement, parameter));
     return queryResult;
   }
 
-  public <T> T executeQuery(final String statement, final Object parameter, final Class<T> clazz) {
-      T queryResult = commandExecutor.executeCommand(new Command<T>() {
-
-      @SuppressWarnings("unchecked")
-      public T execute(CommandContext commandContext) {
-        return (T) commandContext.getDbSqlSession().selectOne(statement, parameter);
-      }
-
-    });
+  public <T> T executeQuery(String statement, Object parameter, Class<T> clazz) {
+    T queryResult = commandExecutor.executeCommand(new ExecuteSingleQueryCmd<T>(statement, parameter, clazz));
     return queryResult;
   }
 
-  public Long executeQueryRowCount(final String statement, final ListQueryParameterObject parameter) {
-    Long queryResult = commandExecutor.executeCommand(new Command<Long>() {
-
-      public Long execute(CommandContext commandContext) {
-        commandContext.getAuthorizationManager()
-          .enableQueryAuthCheck(parameter.getAuthCheck());
-        return (Long) commandContext.getDbSqlSession().selectOne(statement, parameter);
-      }
-
-    });
+  public Long executeQueryRowCount(String statement, ListQueryParameterObject parameter) {
+    Long queryResult = commandExecutor.executeCommand(new QueryServiceRowCountCmd(statement, parameter));
     return queryResult;
   }
 
@@ -98,4 +68,73 @@ public class QueryServiceImpl implements QueryService {
     return processEngineConfiguration;
   }
 
+  /*
+    The Command interface should always be implemented as a regular,
+    or inner class so that invoked commands are correctly counted with Telemetry.
+   */
+  protected class QueryServiceRowCountCmd implements Command<Long> {
+
+    protected String statement;
+    protected ListQueryParameterObject parameter;
+
+    public QueryServiceRowCountCmd(String statement, ListQueryParameterObject parameter) {
+      this.statement = statement;
+      this.parameter = parameter;
+    }
+
+    @Override
+    public Long execute(CommandContext commandContext) {
+      commandContext.getAuthorizationManager().enableQueryAuthCheck(parameter.getAuthCheck());
+      return (Long) commandContext.getDbSqlSession().selectOne(statement, parameter);
+    }
+  }
+
+  /*
+    The Command interface should always be implemented as a regular,
+    or inner class so that invoked commands are correctly counted with Telemetry.
+   */
+  protected class ExecuteListQueryCmd<T> implements Command<List<T>> {
+
+    protected String statement;
+    protected QueryParameters parameter;
+
+    public ExecuteListQueryCmd(String statement, QueryParameters parameter) {
+      this.statement = statement;
+      this.parameter = parameter;
+    }
+
+    @Override
+    public List<T> execute(CommandContext commandContext) {
+      commandContext.getAuthorizationManager().enableQueryAuthCheck(parameter.getAuthCheck());
+
+      if (parameter.isMaxResultsLimitEnabled()) {
+        QueryMaxResultsLimitUtil.checkMaxResultsLimit(parameter.getMaxResults(),
+            getProcessEngineConfiguration(commandContext));
+      }
+
+      return (List<T>) commandContext.getDbSqlSession().selectList(statement, parameter);
+    }
+  }
+
+  /*
+    The Command interface should always be implemented as a regular,
+    or inner class so that invoked commands are correctly counted with Telemetry.
+   */
+  protected class ExecuteSingleQueryCmd<T> implements Command<T> {
+
+    protected String statement;
+    protected Object parameter;
+    protected Class clazz;
+
+    public <T> ExecuteSingleQueryCmd(String statement, Object parameter, Class<T> clazz) {
+      this.statement = statement;
+      this.parameter = parameter;
+      this.clazz = clazz;
+    }
+
+    @Override
+    public T execute(CommandContext commandContext) {
+      return (T) commandContext.getDbSqlSession().selectOne(statement, parameter);
+    }
+  }
 }
