@@ -68,10 +68,6 @@ public class QueryServiceImpl implements QueryService {
     return processEngineConfiguration;
   }
 
-  /*
-    The Command interface should always be implemented as a regular,
-    or inner class so that invoked commands are correctly counted with Telemetry.
-   */
   protected class QueryServiceRowCountCmd implements Command<Long> {
 
     protected String statement;
@@ -89,10 +85,6 @@ public class QueryServiceImpl implements QueryService {
     }
   }
 
-  /*
-    The Command interface should always be implemented as a regular,
-    or inner class so that invoked commands are correctly counted with Telemetry.
-   */
   protected class ExecuteListQueryCmd<T> implements Command<List<T>> {
 
     protected String statement;
@@ -116,10 +108,6 @@ public class QueryServiceImpl implements QueryService {
     }
   }
 
-  /*
-    The Command interface should always be implemented as a regular,
-    or inner class so that invoked commands are correctly counted with Telemetry.
-   */
   protected class ExecuteSingleQueryCmd<T> implements Command<T> {
 
     protected String statement;
