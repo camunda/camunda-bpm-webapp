@@ -21,6 +21,8 @@ import org.camunda.bpm.admin.Admin;
 import org.camunda.bpm.admin.resource.AbstractAdminPluginResource;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.interceptor.Command;
+import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.engine.rest.dto.converter.DateConverter;
 import org.camunda.bpm.engine.rest.dto.metrics.MetricsResultDto;
 
@@ -53,7 +55,31 @@ public class MetricsRestService extends AbstractAdminPluginResource {
     ProcessEngine processEngine = Admin.getRuntimeDelegate().getProcessEngine(engineName);
     ProcessEngineConfigurationImpl engineConfig =
       ((ProcessEngineConfigurationImpl)processEngine.getProcessEngineConfiguration());
-    return engineConfig.getCommandExecutorTxRequired().execute(commandContext -> {
+    return engineConfig.getCommandExecutorTxRequired()
+        .execute(new CountUniqueTaskWorkersCmd(startDateAsString, endDateAsString));
+  }
+
+  protected Date convertToDate(DateConverter dateConverter,
+                               String dateAsString) {
+    return dateConverter.convertQueryParameterToType(dateAsString);
+  }
+
+  public void setObjectMapper(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper;
+  }
+
+  protected class CountUniqueTaskWorkersCmd implements Command<MetricsResultDto> {
+
+    protected String startDateAsString;
+    protected String endDateAsString;
+
+    public CountUniqueTaskWorkersCmd(String startDateAsString, String endDateAsString) {
+      this.startDateAsString = startDateAsString;
+      this.endDateAsString = endDateAsString;
+    }
+
+    @Override
+    public MetricsResultDto execute(CommandContext commandContext) {
       // analogous to metrics, no permission check is performed
 
       DateConverter dateConverter = new DateConverter();
@@ -69,16 +95,6 @@ public class MetricsRestService extends AbstractAdminPluginResource {
       result.setResult(count);
 
       return result;
-    });
+    }
   }
-
-  protected Date convertToDate(DateConverter dateConverter,
-                               String dateAsString) {
-    return dateConverter.convertQueryParameterToType(dateAsString);
-  }
-
-  public void setObjectMapper(ObjectMapper objectMapper) {
-    this.objectMapper = objectMapper;
-  }
-
 }
