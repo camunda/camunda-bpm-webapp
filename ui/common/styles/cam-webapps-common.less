@@ -1,5 +1,5 @@
-@import "shared/bootstrap.less";
-@import "shared/base.less";
+@import 'shared/bootstrap.less';
+@import 'shared/base.less';
 
 .align-left {
   text-align: left;
@@ -9,15 +9,12 @@
   text-align: right;
 }
 
-
-
 .text-help {
   font-style: italic;
   font-size: 90%;
   color: @gray;
   margin-bottom: (@grid-gutter-width / 2);
 }
-
 
 .dropdown-menu {
   > li {
@@ -53,17 +50,14 @@
   padding: 1px 5px;
 }
 
-
 .tab-content {
   position: relative;
   padding-top: (@grid-gutter-width * 0.5);
 }
 
-
 .tooltip .tooltip-inner {
   word-wrap: break-word;
 }
-
 
 .btn-link:hover {
   color: @link-hover-color;
@@ -78,12 +72,6 @@
 }
 
 /* ---------------------------------------------------------------- */
-
-
-
-
-
-
 
 // Give the tabs something to sit on
 .nav-tabs {
@@ -157,24 +145,21 @@
   }
 }
 
-
 /* ---------------------------------------------------------------- */
 
-
-[cam-widget-search] .main-field, [cam-widget-search] [cam-widget-search-pill] {
-  max-width: 100%
+[cam-widget-search] .main-field,
+[cam-widget-search] [cam-widget-search-pill] {
+  max-width: 100%;
 }
 
 /* ---------------------------------------------------------------- */
-
-
 
 .modal-dialog {
   .camunda-ee-license-missing {
     position: relative;
     top: 0;
     left: 0;
-    margin:0;
+    margin: 0;
 
     > div {
       width: 100%;
@@ -186,8 +171,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top:-50px;
-  margin-left:-200px;
+  margin-top: -50px;
+  margin-left: -200px;
 
   .alert {
     margin: 0;
@@ -209,19 +194,16 @@
   }
 }
 
+@import 'shared/animation-spin.less';
+@import './modal.less';
 
+@import 'directives/notifications-panel.less';
+@import 'directives/pagination.less';
 
-@import "shared/animation-spin.less";
-@import "./modal.less";
+@import '../../lib/auth/page/login.less';
 
-@import "directives/notifications-panel.less";
-@import "directives/pagination.less";
+@import 'clipboard/cam-widget-clipboard.less';
+@import 'header/cam-widget-header.less';
+@import 'footer/cam-widget-footer.less';
 
-@import "../../lib/auth/page/login.less";
-@import "../../lib/analytics/styles.less";
-
-@import "clipboard/cam-widget-clipboard.less";
-@import "header/cam-widget-header.less";
-@import "footer/cam-widget-footer.less";
-
-@import "./glyphicon-overrides.less";
+@import './glyphicon-overrides.less';
