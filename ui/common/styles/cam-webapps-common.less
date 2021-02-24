@@ -1,5 +1,7 @@
-@import "shared/bootstrap.less";
-@import "shared/base.less";
+/* stylelint-disable no-descending-specificity -- contains non-trivial nesting */
+
+@import 'shared/bootstrap.less';
+@import 'shared/base.less';
 
 .align-left {
   text-align: left;
@@ -9,8 +11,6 @@
   text-align: right;
 }
 
-
-
 .text-help {
   font-style: italic;
   font-size: 90%;
@@ -18,20 +18,20 @@
   margin-bottom: (@grid-gutter-width / 2);
 }
 
-
 .dropdown-menu {
   > li {
     padding: 0;
     margin: 2px 0;
 
-    > a {
+    a {
       padding: 2px 9px;
+      display: block;
     }
   }
 
   > .active,
   > li:hover {
-    > a {
+    a {
       padding-left: 4px;
       border-width: 0 0 0 3px;
       margin-left: 2px;
@@ -42,7 +42,7 @@
   }
 
   > li:hover {
-    > a {
+    a {
       color: @gray-base;
       border-color: @link-color;
     }
@@ -53,17 +53,14 @@
   padding: 1px 5px;
 }
 
-
 .tab-content {
   position: relative;
   padding-top: (@grid-gutter-width * 0.5);
 }
 
-
 .tooltip .tooltip-inner {
   word-wrap: break-word;
 }
-
 
 .btn-link:hover {
   color: @link-hover-color;
@@ -79,12 +76,6 @@
 
 /* ---------------------------------------------------------------- */
 
-
-
-
-
-
-
 // Give the tabs something to sit on
 .nav-tabs {
   margin-top: 5px;
@@ -92,6 +83,7 @@
   > li {
     text-align: center;
     border: none;
+
     &:first-of-type {
       > a {
         margin-left: 0;
@@ -126,6 +118,7 @@
 
     &.active {
       border: none;
+
       > a {
         &,
         &:hover,
@@ -157,24 +150,21 @@
   }
 }
 
-
 /* ---------------------------------------------------------------- */
 
-
-[cam-widget-search] .main-field, [cam-widget-search] [cam-widget-search-pill] {
-  max-width: 100%
+[cam-widget-search] .main-field,
+[cam-widget-search] [cam-widget-search-pill] {
+  max-width: 100%;
 }
 
 /* ---------------------------------------------------------------- */
-
-
 
 .modal-dialog {
   .camunda-ee-license-missing {
     position: relative;
     top: 0;
     left: 0;
-    margin:0;
+    margin: 0;
 
     > div {
       width: 100%;
@@ -186,8 +176,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top:-50px;
-  margin-left:-200px;
+  margin-top: -50px;
+  margin-left: -200px;
 
   .alert {
     margin: 0;
@@ -209,19 +199,17 @@
   }
 }
 
+@import 'shared/animation-spin.less';
+@import './modal.less';
 
+@import 'directives/notifications-panel.less';
+@import 'directives/pagination.less';
 
-@import "shared/animation-spin.less";
-@import "./modal.less";
+@import '../../lib/auth/page/login.less';
+@import '../../lib/analytics/styles.less';
 
-@import "directives/notifications-panel.less";
-@import "directives/pagination.less";
+@import 'clipboard/cam-widget-clipboard.less';
+@import 'header/cam-widget-header.less';
+@import 'footer/cam-widget-footer.less';
 
-@import "../../lib/auth/page/login.less";
-@import "../../lib/analytics/styles.less";
-
-@import "clipboard/cam-widget-clipboard.less";
-@import "header/cam-widget-header.less";
-@import "footer/cam-widget-footer.less";
-
-@import "./glyphicon-overrides.less";
+@import './glyphicon-overrides.less';
