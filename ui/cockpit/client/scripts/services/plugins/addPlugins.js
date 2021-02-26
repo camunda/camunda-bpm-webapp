@@ -78,6 +78,12 @@ module.exports = function(module) {
         function($routeProvider) {
           $routeProvider.when(plugin.properties.path, {
             template: `<div plugin-bridge${pluginDirectiveUID} />`,
+            controller: [
+              '$scope',
+              function($scope) {
+                $scope.$root.showBreadcrumbs = false;
+              }
+            ],
             authentication: 'required'
           });
         }
