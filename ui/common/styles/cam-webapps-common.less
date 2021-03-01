@@ -21,14 +21,15 @@
     padding: 0;
     margin: 2px 0;
 
-    > a {
+    a {
       padding: 2px 9px;
+      display: block;
     }
   }
 
   > .active,
   > li:hover {
-    > a {
+    a {
       padding-left: 4px;
       border-width: 0 0 0 3px;
       margin-left: 2px;
@@ -39,7 +40,7 @@
   }
 
   > li:hover {
-    > a {
+    a {
       color: @gray-base;
       border-color: @link-color;
     }
@@ -80,6 +81,7 @@
   > li {
     text-align: center;
     border: none;
+
     &:first-of-type {
       > a {
         margin-left: 0;
@@ -114,6 +116,7 @@
 
     &.active {
       border: none;
+
       > a {
         &,
         &:hover,
