@@ -81,6 +81,15 @@ const loadConfig = (async function() {
   )).default;
 
   await loadPlugins(config);
+
+  if (Array.isArray(config.bpmnJs?.additionalModules)) {
+    const fetchers = config.bpmnJs.additionalModules.map(el =>
+      import(withSuffix(baseImportPath + el, '.js'))
+    );
+    const bpmnJsModules = await Promise.all(fetchers);
+    config.bpmnJs.additionalModules = bpmnJsModules.map(el => el.default);
+  }
+
   window.camCockpitConf = config;
   return config;
 })();
