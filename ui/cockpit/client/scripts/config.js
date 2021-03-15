@@ -72,7 +72,7 @@ export default {
   //   additionalModules: [
   //     // if you have a folder called 'my-custom-module' (in the 'cockpit' folder)
   //     // with a file called 'module.js' in it
-  //     myCustomModule: 'my-custom-module/module'
+  //     'my-custom-module/module'
   //   ]
   // },
   // defaultFilter: {
