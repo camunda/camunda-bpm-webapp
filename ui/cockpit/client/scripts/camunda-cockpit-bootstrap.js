@@ -82,7 +82,7 @@ const loadConfig = (async function() {
 
   await loadPlugins(config);
 
-  if (Array.isArray(config.bpmnJs?.additionalModules)) {
+  if (Array.isArray(config.bpmnJs && config.bpmnJs.additionalModules)) {
     const fetchers = config.bpmnJs.additionalModules.map(el =>
       import(withSuffix(baseImportPath + el, '.js'))
     );
