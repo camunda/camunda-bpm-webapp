@@ -10,7 +10,7 @@ module.exports = function(config, copyConf) {
   var version = grunt.file.readJSON(path.resolve(__dirname, '../../../../package.json')).version;
   version = (version.indexOf('-SNAPSHOT') > -1 ? (version +'-'+ now) : version);
 
-  function prod () {
+  function prod() {
     return grunt.config('buildMode') === 'prod';
   }
 
@@ -61,103 +61,103 @@ module.exports = function(config, copyConf) {
   };
 
   copyConf.admin_dist = {
-      options: {
-        process: function(content, srcpath) {
-          content = cacheBust(content, srcpath);
-          return distFileProcessing(content, srcpath);
-        }
+    options: {
+      process: function(content, srcpath) {
+        content = cacheBust(content, srcpath);
+        return distFileProcessing(content, srcpath);
+      }
+    },
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.adminSourceDir %>/scripts/WEB-INF',
+        src: ['*'],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/WEB-INF'
       },
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.adminSourceDir %>/scripts/WEB-INF',
-          src: ['*'],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/WEB-INF'
-        },
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.adminSourceDir %>/scripts/',
-          src: [
-            'index.html',
-            'camunda-admin-bootstrap.js'
-          ],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/'
-        }
-      ]
-    };
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.adminSourceDir %>/scripts/',
+        src: [
+          'index.html',
+          'camunda-admin-bootstrap.js'
+        ],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/'
+      }
+    ]
+  };
 
-    copyConf.admin_assets = {
-      files: [
+  copyConf.admin_assets = {
+    files: [
         // custom styles and/or other css files
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.adminSourceDir %>/styles',
-          src: ['*.css'],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/styles/'
-        },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.adminSourceDir %>/styles',
+        src: ['*.css'],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/styles/'
+      },
 
         // images, fonts & stuff
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.adminSourceDir %>/',
-          src:  [
-            '{fonts,images}/**/*.*'
-          ],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/assets'
-        },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.adminSourceDir %>/',
+        src:  [
+          '{fonts,images}/**/*.*'
+        ],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/assets'
+      },
 
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/resources/img',
-          src: [
-            '**'
-          ],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/assets/images/'
-        },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.commonsUiDir %>/resources/img',
+        src: [
+          '**'
+        ],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/assets/images/'
+      },
         // bootstrap fonts
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/node_modules/bootstrap/fonts',
-          src: [
-            '*.{eot,ttf,svg,woff,woff2}'
-          ],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/fonts/'
-        },
+      {
+        expand: true,
+        cwd: 'node_modules/bootstrap/fonts',
+        src: [
+          '*.{eot,ttf,svg,woff,woff2}'
+        ],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/fonts/'
+      },
         // open sans fonts
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor/fonts',
-          src: ['*.{eot,svg,ttf,woff,woff2}'],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/fonts/'
-        },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor/fonts',
+        src: ['*.{eot,svg,ttf,woff,woff2}'],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/fonts/'
+      },
         // bpmn fonts
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/node_modules/bpmn-font/dist/font',
-          src: [
-            '*.{eot,ttf,svg,woff}'
-          ],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/fonts/'
-        },
+      {
+        expand: true,
+        cwd: 'node_modules/bpmn-font/dist/font',
+        src: [
+          '*.{eot,ttf,svg,woff}'
+        ],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/fonts/'
+      },
 
         // placeholder shims
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor',
-          src: ['placeholders.*'],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/scripts/'
-        }
-      ]
-    };
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor',
+        src: ['placeholders.*'],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/scripts/'
+      }
+    ]
+  };
 
   copyConf.admin_config = {
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.adminSourceDir %>/scripts',
-          src: ['config.js'],
-          dest: '<%= pkg.gruntConfig.adminBuildTarget %>/scripts/'
-        }
-      ]
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.adminSourceDir %>/scripts',
+        src: ['config.js'],
+        dest: '<%= pkg.gruntConfig.adminBuildTarget %>/scripts/'
+      }
+    ]
   };
 };

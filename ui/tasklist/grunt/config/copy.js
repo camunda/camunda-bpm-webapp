@@ -8,7 +8,7 @@ module.exports = function(config, copyConf) {
   var version = grunt.file.readJSON(path.resolve(__dirname, '../../../../package.json')).version;
   version = (version.indexOf('-SNAPSHOT') > -1 ? (version +'-'+ now) : version);
 
-  function prod () {
+  function prod() {
     return grunt.config('buildMode') === 'prod';
   }
 
@@ -60,103 +60,103 @@ module.exports = function(config, copyConf) {
   }
 
   copyConf.tasklist_index = {
-      options: {
-        process: copyReplace
-      },
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>',
-          src: [
-            'index.html'
-          ],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/',
-        }
-      ]
+    options: {
+      process: copyReplace
+    },
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>',
+        src: [
+          'index.html'
+        ],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/'
+      }
+    ]
   };
 
   copyConf.tasklist_bootstrap = {
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/scripts/',
-          src: [
-            'camunda-tasklist-bootstrap.js'
-          ],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/',
-        }
-      ]
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/scripts/',
+        src: [
+          'camunda-tasklist-bootstrap.js'
+        ],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/'
+      }
+    ]
   };
 
   copyConf.tasklist_assets = {
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>',
-          src: [
-            '*.{ico,txt}'
-          ],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/',
-        },
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor/fonts',
-          src: ['*.{eot,svg,ttf,woff,woff2}'],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/fonts/'
-        },
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/node_modules/bootstrap/fonts',
-          src: ['**'],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/fonts/'
-        },
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/resources/img',
-          src: ['**'],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/assets/images/'
-        },
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>',
+        src: [
+          '*.{ico,txt}'
+        ],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/'
+      },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor/fonts',
+        src: ['*.{eot,svg,ttf,woff,woff2}'],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/fonts/'
+      },
+      {
+        expand: true,
+        cwd: 'node_modules/bootstrap/fonts',
+        src: ['**'],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/fonts/'
+      },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.commonsUiDir %>/resources/img',
+        src: ['**'],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/assets/images/'
+      },
         // bpmn fonts
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/node_modules/bpmn-font/dist/font',
-          src: [
-            '*.{eot,ttf,svg,woff}'
-          ],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/fonts/'
-        },
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/images',
-          src: ['**'],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/assets/images/'
-        },
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/styles',
-          src: ['*.css'],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/styles/'
-        },
+      {
+        expand: true,
+        cwd: 'node_modules/bpmn-font/dist/font',
+        src: [
+          '*.{eot,ttf,svg,woff}'
+        ],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/fonts/'
+      },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/images',
+        src: ['**'],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/assets/images/'
+      },
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/styles',
+        src: ['*.css'],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/styles/'
+      },
 
         // placeholder shims
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor',
-          src: ['placeholders.*'],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/scripts/'
-        }
-      ]
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.commonsUiDir %>/vendor',
+        src: ['placeholders.*'],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/scripts/'
+      }
+    ]
   };
 
   copyConf.tasklist_config = {
-      files: [
-        {
-          expand: true,
-          cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/scripts/config',
-          src: ['config.js'],
-          dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/scripts/'
-        }
-      ]
+    files: [
+      {
+        expand: true,
+        cwd: '<%= pkg.gruntConfig.tasklistSourceDir %>/scripts/config',
+        src: ['config.js'],
+        dest: '<%= pkg.gruntConfig.tasklistBuildTarget %>/scripts/'
+      }
+    ]
   };
 
 };
