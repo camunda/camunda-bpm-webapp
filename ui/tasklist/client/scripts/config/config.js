@@ -49,6 +49,7 @@ window.camTasklistConf = {
   // },
   // csrfCookieName: 'XSRF-TOKEN',
   // disableWelcomeMessage: false,
+  // assignProcessInstanceIdToTaskComment: true,
 
   shortcuts: {
     claimTask: {
