@@ -151,7 +151,6 @@ module.exports = function(grunt) {
   require('./ui/cockpit/grunt/config/uglify')(config, uglifyConf);
   require('./camunda-bpm-sdk-js/grunt/config/uglify')(config, uglifyConf);
 
-
   var eslintConf = {};
   require('./ui/welcome/grunt/config/eslint')(config, eslintConf);
   require('./ui/admin/grunt/config/eslint')(config, eslintConf);
