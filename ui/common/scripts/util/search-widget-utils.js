@@ -264,7 +264,7 @@ function getSearchValue(search) {
     return true;
   }
 
-  return sanitizeValue(search.value.value, search.operator.value.key, search);
+  return sanitizeValue(search.value.value, search.operator.value.key);
 }
 
 var simpleDateExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(|\.[0-9]{0,4})$/;
