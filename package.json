@@ -23,20 +23,20 @@
     "dependencies": "license-checker --production --json --relativeLicensePath"
   },
   "dependencies": {
-    "angular-data-depend": "git://github.com/camunda-third-party/angular-data-depend#8e3b66914c611069e3698fd5d4275e6cf8055d01",
+    "angular-data-depend": "https://github.com/camunda-third-party/angular-data-depend#8e3b66914c611069e3698fd5d4275e6cf8055d01",
     "angular-moment": "1.3.0",
     "angular-route": "1.8.0",
     "bootstrap": "3.4.1",
     "bpmn-font": "0.8.0",
-    "camunda-bpm-sdk-js": "git://github.com/camunda/camunda-bpm-sdk-js#7.11",
-    "camunda-commons-ui": "git://github.com/camunda/camunda-commons-ui#7.11",
-    "camunda-webapp-translations": "git://github.com/camunda/camunda-webapp-translations#7.11",
+    "camunda-bpm-sdk-js": "https://github.com/camunda/camunda-bpm-sdk-js#7.11",
+    "camunda-commons-ui": "https://github.com/camunda/camunda-commons-ui#7.11",
+    "camunda-webapp-translations": "https://github.com/camunda/camunda-webapp-translations#7.11",
     "events": "3.0.0",
     "jquery": "3.4.1",
     "jquery-ui": "1.12.1",
     "mousetrap": "1.6.3",
     "requirejs": "2.3.6",
-    "requirejs-angular-define": "git://github.com/camunda/requirejs-angular-define#aaa450a66e4d1a0588819804e1098c541bed585d"
+    "requirejs-angular-define": "https://github.com/camunda/requirejs-angular-define#aaa450a66e4d1a0588819804e1098c541bed585d"
   },
   "devDependencies": {
     "@babel/core": "7.7.7",
