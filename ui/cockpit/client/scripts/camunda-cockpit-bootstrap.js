@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-/*eslint-disable */
 window._import = path => {
+  // eslint-disable-next-line
   return import(path);
 };
 
@@ -25,14 +25,6 @@ const baseImportPath = document.querySelector('base').href + '../';
 
 function withSuffix(string, suffix) {
   return !string.endsWith(suffix) ? string + suffix : string;
-}
-
-function addCssSource(url) {
-  var link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = url;
-  document.head.appendChild(link);
 }
 
 const loadConfig = (async function() {
