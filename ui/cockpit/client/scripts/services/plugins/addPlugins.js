@@ -15,11 +15,13 @@
  * limitations under the License.
  */
 
+const loadPlugins = require('./loadPlugins');
 var addApiAttributes = require('./getApiAttributes');
 var getPassthroughData = require('./getPassthroughData');
 
-module.exports = function(module) {
-  window.camCockpitConf.plugins.forEach(plugin => {
+module.exports = async function(module, cockpitConfig) {
+  const loadedPlugins = await loadPlugins(cockpitConfig);
+  loadedPlugins.forEach(plugin => {
     const pluginDirectiveUID = Math.random()
       .toString(36)
       .substring(2);

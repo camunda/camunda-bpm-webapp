@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 
+window._import = path => {
+  // eslint-disable-next-line
+  return import(path);
+};
+
 //  Camunda-Cockpit-Bootstrap is copied as-is, so we have to inline everything
 const baseImportPath = document.querySelector('base').href + '../';
 
@@ -22,65 +27,13 @@ function withSuffix(string, suffix) {
   return !string.endsWith(suffix) ? string + suffix : string;
 }
 
-function addCssSource(url) {
-  var link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = url;
-  document.head.appendChild(link);
-}
-
-async function loadPlugins(config) {
-  const customScripts = config.customScripts || [];
-
-  const JARScripts = window.PLUGIN_PACKAGES.filter(
-    el =>
-      el.name !== 'cockpit-plugin-cockpitPlugins' &&
-      el.name !== 'cockpit-plugin-cockpitEE' &&
-      !el.name.startsWith('cockpit-plugin-legacy')
-  ).map(el => {
-    addCssSource(`${el.location}/plugin.css`);
-    return `${el.location}/${el.main}`;
-  });
-
-  const fetchers = customScripts.map(url =>
-    // eslint-disable-next-line
-    import(baseImportPath + withSuffix(url, ".js"))
-  );
-
-  fetchers.push(
-    ...JARScripts.map(url => {
-      try {
-        return import(url);
-      } catch (e) {
-        // Do nothing
-      }
-    })
-  );
-
-  const loadedPlugins = (await Promise.all(fetchers)).reduce((acc, module) => {
-    const plugins = module.default;
-    if (!plugins) {
-      return acc;
-    }
-
-    if (Array.isArray(plugins)) {
-      acc.push(...plugins);
-    } else {
-      acc.push(plugins);
-    }
-    return acc;
-  }, []);
-  config.plugins = loadedPlugins;
-}
-
 const loadConfig = (async function() {
   // eslint-disable-next-line
-  const config = (await import(
-    baseImportPath + 'scripts/config.js?bust=' + new Date().getTime()
-  )).default;
-
-  await loadPlugins(config);
+  const config = (
+    await import(
+      baseImportPath + 'scripts/config.js?bust=' + new Date().getTime()
+    )
+  ).default;
 
   if (Array.isArray(config.bpmnJs && config.bpmnJs.additionalModules)) {
     const fetchers = config.bpmnJs.additionalModules.map(el =>
