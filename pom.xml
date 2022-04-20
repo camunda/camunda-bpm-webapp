@@ -43,7 +43,7 @@
     <jdbcBatchProcessing>true</jdbcBatchProcessing>
 
     <license.includeTransitiveDependencies>false</license.includeTransitiveDependencies>
-    
+
     <!-- generate a bom of compile time dependencies for the license book.
     Note: Every compile time dependency will end up in the license book. Please
     declare only dependencies that are actually needed -->
@@ -942,7 +942,7 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <id>generate-zip</id>
+                <id>build-frontend</id>
                 <phase>generate-resources</phase>
                 <goals>
                   <goal>run</goal>
@@ -953,15 +953,21 @@
                   <target>
                     <!-- run node build -->
                     <exec executable="cmd" failonerror="true">
-                      <arg value="/c" />
-                      <arg value="npm" />
-                      <arg value="install" />
+                      <arg value="/c"/>
+                      <arg value="npm"/>
+                      <arg value="ci"/>
                     </exec>
                     <exec executable="cmd" failonerror="true">
-                      <arg value="/c" />
-                      <arg value="node_modules\.bin\grunt.cmd" />
-                      <arg value="build" />
-                      <arg value="--color=false" />
+                      <arg value="/c"/>
+                      <arg value="node"/>
+                      <arg value="scripts/xlts"/>
+                      <arg value="install"/>
+                    </exec>
+                    <exec executable="cmd" failonerror="true">
+                      <arg value="/c"/>
+                      <arg value="node_modules\.bin\grunt.cmd"/>
+                      <arg value="build"/>
+                      <arg value="--color=false"/>
                     </exec>
                   </target>
                 </configuration>
@@ -986,7 +992,7 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <id>generate-zip</id>
+                <id>build-frontend</id>
                 <phase>generate-resources</phase>
                 <goals>
                   <goal>run</goal>
@@ -997,11 +1003,15 @@
                   <target>
                     <!-- run node build -->
                     <exec executable="npm" failonerror="true">
-                      <arg value="install" />
+                      <arg value="ci"/>
+                    </exec>
+                    <exec executable="node" failonerror="true">
+                      <arg value="scripts/xlts"/>
+                      <arg value="install"/>
                     </exec>
                     <exec executable="./node_modules/grunt-cli/bin/grunt" failonerror="true">
-                      <arg value="build" />
-                      <arg value="--color=false" />
+                      <arg value="build"/>
+                      <arg value="--color=false"/>
                     </exec>
                   </target>
                 </configuration>
