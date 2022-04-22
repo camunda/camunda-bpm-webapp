@@ -54,13 +54,11 @@ if (!registryConfigured) {
   );
 }
 
-if (process.argv[2] === 'install') {
-  const {version, dependencies} = require('../package.json').xlts;
+const {xltsVersion, dependencies} = require('../package.json').xlts;
 
-  const getNpmPackages = dependencies =>
-    dependencies
-      .map(npmPackage => `${npmPackage}@npm:@${scope}/${npmPackage}@${version}`)
-      .join(' ');
+const getNpmPackages = dependencies =>
+  dependencies
+    .map(npmPackage => `${npmPackage}@npm:@${scope}/${npmPackage}@${xltsVersion}`)
+    .join(' ');
 
-  exec(`npm i --no-save ${getNpmPackages(dependencies)}`);
-}
+exec(`npm i --no-save ${getNpmPackages(dependencies)}`);

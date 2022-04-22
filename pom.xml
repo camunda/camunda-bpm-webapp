@@ -961,7 +961,6 @@
                       <arg value="/c"/>
                       <arg value="node"/>
                       <arg value="scripts/xlts"/>
-                      <arg value="install"/>
                     </exec>
                     <exec executable="cmd" failonerror="true">
                       <arg value="/c"/>
@@ -1007,7 +1006,6 @@
                     </exec>
                     <exec executable="node" failonerror="true">
                       <arg value="scripts/xlts"/>
-                      <arg value="install"/>
                     </exec>
                     <exec executable="./node_modules/grunt-cli/bin/grunt" failonerror="true">
                       <arg value="build"/>
